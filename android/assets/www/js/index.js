@@ -4,7 +4,7 @@ var myScroll, myScrollMenu, cuerpo, menuprincipal, wrapper, estado;
 // Guardamos en variables elementos para poder rescatarlos despuŽs sin tener que volver a buscarlos
 
 
-
+//COMENTARIO
 $(document).on('ready', main);
 
 function main(){

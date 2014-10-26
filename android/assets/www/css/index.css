@@ -1,9 +1,10 @@
 * {
-    -webkit-user-select: none;
+    /*-webkit-user-select: none;*/
 }
 
 body {
     font-family:'HelveticaNeue-Light', 'HelveticaNeue', Helvetica, Arial, sans-serif;
+    
     font-size:14px;
     height:100%;
     width:100%;
@@ -22,7 +23,8 @@ a {
 
 /*Inicio estilos de la cabecera*/
 #header {
-    position:absolute; z-index:2;
+    z-index:2;
+    position: fixed;
     top:0; left:0;
     width:100%;
     background: #FBC636;
@@ -50,9 +52,29 @@ a {
 
 .logo{
     height:32px; 
-    width:auto; 
+    width: auto;
     margin-top:6px;
     border-radius: 15px 0 15px 0;
+    }
+
+.logo.casco{
+    margin-left: 20px;
+}
+
+.logo.agregar{
+
+    height:62px; 
+    float: right;
+    margin-right: -10px;
+    margin-top: -8px;
+}
+
+#agregar_proyecto{
+
+ cursor: pointer;
+ width: 600px;
+
+
 }
 /*Fin estilos de la cabecera*/
 
@@ -79,6 +101,117 @@ a {
 #contenidoCuerpo{
     margin:10px
 }
+
+#lista-vacia{
+    background-color: #E3E3E3;
+    padding: 10px;
+    border-radius: 15px 0 15px 0;
+    width: 80%;
+    display: inline-block;
+    margin-top: 30px;
+    position: inherit;
+    margin-left: 5%;
+    font-size: Arial;
+    opacity: 0.6;
+    box-shadow: 10px 5px 10px #f0f0f0;
+}
+
+#lista-vacia img{
+  
+    width: 50px;
+    margin-top:-10px;
+    float: right;
+}
+#img_contenedor{
+    margin-top: 180px;
+    margin-left: 90px;
+    width: 40%;
+    opacity: 0.5;
+}
+
+
+#contenedor{
+   width: 100%;
+    margin: 0;
+    
+    height: 400px;
+
+}
+
+#simple{
+
+   width: 90%;
+   margin: 0 auto;
+
+}
+
+#simple h1{
+
+    text-align: center;
+    font-family: 'Contra';
+}
+
+#formulario{
+
+    
+
+}
+
+#cuadroResultados{
+    font-family: 'Contra';
+    width: 100%;
+    border: 1px solid black;
+    padding: 5px;
+    margin-left: -10px;
+
+}
+
+#formulario input{
+
+    display: block;
+    border: 2px solid #000;
+    height: 30px;
+    padding: 6px;
+    margin: 2px;
+    width: 250px;
+}
+
+
+#formulario img{
+    width: 55px;
+    display: inline;
+}
+
+#formulario p{
+    
+    font-family: 'Contra';
+    margin-top: -40px;
+    margin-left: 60px;
+    letter-spacing: 3px;
+}
+
+#formulario button{
+
+    width: 90%;
+    margin-left: 10px;
+    margin-top: 20px;
+    font-family: 'Contra';
+    background: black;
+    color: white;
+    height: 30px;
+    padding: 5px;
+    letter-spacing: 3px;
+    border: none;
+}
+
+#formulario input::-webkit-input-placeholder {
+  background: #FFF;
+  color: #737373;
+  font-size: 12px;
+  letter-spacing: 1px;
+}
+
+
 /*Final estilos del cuerpo*/
 
 /*Inicio estilos del menu principal*/
@@ -218,3 +351,18 @@ a {
     transition-duration: .25s;
 }
 /*Fin c—digo de posici—n y transici—n de las p‡ginas*/
+
+
+/*FUENTES*/
+
+@font-face {
+    font-family: 'Contra';
+    src: url('../fonts/contra-webfont.eot');
+    src: url('../fonts/contra-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/contra-webfont.woff') format('woff'),
+         url('../fonts/contra-webfont.ttf') format('truetype'),
+         url('../fonts/contra-webfont.svg#contraregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}

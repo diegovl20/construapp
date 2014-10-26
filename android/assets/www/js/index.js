@@ -1,5 +1,6 @@
 // Declaraci—n de variables globales
 var myScroll, myScrollMenu, cuerpo, menuprincipal, wrapper, estado;
+var xhReq = new XMLHttpRequest();
 
 // Guardamos en variables elementos para poder rescatarlos despuŽs sin tener que volver a buscarlos
 
@@ -21,6 +22,7 @@ function main(){
     $("#cuerpo").addClass('page center');
     $("#menuprincipal").addClass('page center');
     $("#wrapper").addClass('cssClass');
+
     
       
     // Leemos por ajax el archivos opcion1.html de la carpeta opciones
@@ -31,9 +33,103 @@ function main(){
     //myScroll = new iScroll('wrapper', { hideScrollbar: true });
     //myScrollMenu = new iScroll('wrapperMenu', { hScroll: true });
 
+    /*onBeforeScrollStart: function(e) {
+        var target = e.target;
+        while (target.nodeType != 1) target = target.parentNode;
+        if(target.tagName != 'select'
+            && target.tagName != 'input'
+            && target.tagName != 'textarea') {
+            e.preventDefault();
+        }
+    } - See more at: http://www.phonegapspain.com/topic/problemas-con-form/#sthash.EaGxXE4n.dpuf
+    */
+
     new FastClick(document.body);
 
+    //Comprobamos si hay algo en la base de datos
+    comprobarRegistros();
+    
+
 }
+
+
+  function comprobarRegistros(){
+
+    var comprobar = true;
+
+    if(comprobar){
+           //si la consulta no trae registros mostrar esto
+
+           $("#contenidoCuerpo").load("contenedor_vacio/contenedor_vacio.html");
+    }else{
+
+    }
+  }
+
+
+  function calculoSuperficieSimple(){
+
+     //capturamos los datos del usuario
+     var medida1 = $("#txtMedida1").val();
+     var medida2 = $("#txtMedida2").val();
+     var rendimientoCaja = $("#txtMedida3").val();
+
+     //variables locales
+
+     var superficie;
+     var superficieTotal;
+     var totalCajas;
+     var excedente;
+
+
+     try{
+         
+          superficie = medida1 * medida2;
+          superficieTotal = superficie * 1.05;
+          excedente = superficie * 0.05;
+          totalCajas = superficieTotal / rendimientoCaja;
+           if(!isNaN(totalCajas)){
+          //alert("Superficie"+superficie+"superficieTotal"+superficieTotal+"totalCajas"+totalCajas);
+          //Reducir decimales
+
+           
+           superficie = Math.round(superficie * 100) / 100;
+           superficieTotal = Math.round(superficieTotal * 100) / 100;
+           excedente = Math.round(excedente * 100) / 100;
+           totalCajas = Math.round(totalCajas * 100) / 100;
+
+          //Cambiar Contendio de la pantalla
+           
+           xhReq.open("GET", "resultados/opcion1.html", false);
+           xhReq.send(null);
+           document.getElementById("contenidoCuerpo").innerHTML=xhReq.responseText;
+
+           //document.getElementById('total_superficie').firstChild.nodeValue = superficie+" m2";
+           $("#total_superficie").text(superficie+" m2");
+           $("#excedente_material").text(excedente+" m2");
+           $("#metros_total").text(superficieTotal+" m2");
+           $("#cajas_total").text(totalCajas+" m2");
+           //document.getElementById('excedente_material').firstChild.nodeValue = superficie;
+           //document.getElementById('cajas_total').firstChild.nodeValue = totalCajas;
+
+
+
+
+
+
+
+
+
+          }else{
+              
+             alert("Ingrese números correctos");
+          }
+
+     }catch(e){
+          alert(e);
+     }
+
+  }
 
 
 
@@ -64,10 +160,12 @@ function menu(opcion){
     if(estado=="cuerpo"){
       $("#cuerpo").removeClass();
       $("#cuerpo").addClass('page transition right');
+      //$("#header").css("position", "absolute");
       estado="menuprincipal";
     }else if(estado=="menuprincipal"){
       $("#cuerpo").removeClass();
       $("#cuerpo").addClass('page transition center');
+      //$("#header").css("position", "fixed");
       estado="cuerpo";  
     }
   // Si pulsamos un bot—n del menu principal entramos en el else
@@ -77,17 +175,30 @@ function menu(opcion){
     addClass('li-menu-activo' , document.getElementById("ulMenu").getElementsByTagName("li")[opcion]);
     
     // Recogemos mediante ajax el contenido del html segœn la opci—n clickeada en el menu
-    xhReq.open("GET", "opciones/opcion"+opcion+".html", false);
+    if(opcion == 0){
+      comprobarRegistros();
+    }else{
+
+    xhReq.open("GET", "ceramicas/opcion"+opcion+".html", false);
     xhReq.send(null);
     document.getElementById("contenidoCuerpo").innerHTML=xhReq.responseText;
+  }
+
+
+        // A–adimos las clases necesarias para que la capa cuerpo se mueva al centro de nuestra app y muestre el contenido
+     $("#cuerpo").removeClass();
+     $("#cuerpo").addClass('page transition center');
+
+    estado="cuerpo";
+
+    //Cargar los eventos
+    $("#btn_guardar").on("click",calculoSuperficieSimple);
     
     // Refrescamos el elemento iscroll segœn el contenido ya a–adido mediante ajax, y hacemos que se desplace al top
-    myScroll.refresh();
-    myScroll.scrollTo(0,0);
+    //myScroll.refresh();
+    //myScroll.scrollTo(0,0);
     
-    // A–adimos las clases necesarias para que la capa cuerpo se mueva al centro de nuestra app y muestre el contenido
-    cuerpo.className = 'page transition center';
-    estado="cuerpo";
+
     
     // Quitamos la clase a–adida al li que hemos presionado
     setTimeout(function() {

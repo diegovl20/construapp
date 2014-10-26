@@ -14,4 +14,6 @@
     </author>
     <content src="index.html" />
     <access origin="*" />
+    <preference name="fullscreen" value="false" />
+    <preference name="android-windowSoftInputMode" value="stateVisible" />
 </widget>

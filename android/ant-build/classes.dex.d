@@ -1,6 +1,6 @@
 C:\Users\diego\construApp\platforms\android\ant-build\classes.dex : \
 C:\Users\diego\construApp\platforms\android\ant-build\classes\com\proyecto\construApp\BuildConfig.class \
-C:\Users\diego\construApp\platforms\android\ant-build\classes\com\proyecto\construApp\construApp.class \
+C:\Users\diego\construApp\platforms\android\ant-build\classes\com\proyecto\construApp\CordovaApp.class \
 C:\Users\diego\construApp\platforms\android\ant-build\classes\com\proyecto\construApp\R$attr.class \
 C:\Users\diego\construApp\platforms\android\ant-build\classes\com\proyecto\construApp\R$drawable.class \
 C:\Users\diego\construApp\platforms\android\ant-build\classes\com\proyecto\construApp\R$string.class \

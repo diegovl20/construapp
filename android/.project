@@ -44,7 +44,7 @@
 		<link>
 			<name>www</name>
 			<type>2</type>
-			<location>C:/Users/diego/Desktop/construapp-master/android/assets/www</location>
+			<locationURI>$%7BPARENT-2-PROJECT_LOC%7D/www</locationURI>
 		</link>
 	</linkedResources>
 </projectDescription>

@@ -190,7 +190,7 @@ a {
     letter-spacing: 3px;
 }
 
-#formulario button{
+#formulario button, #btn_guardar{
 
     width: 90%;
     margin-left: 10px;
@@ -222,6 +222,109 @@ img#imgLugar{
 
 
 /*Final estilos del cuerpo*/
+
+
+
+
+
+
+
+
+/* Estilos Lista de proyectos */
+
+ #rojo, #celeste, #amarillo, #naranjo{
+    float: left;
+    margin-top: 7px;
+    border-radius: 5px;
+    width: 50px;
+    height: 50px;
+
+ }
+
+
+ #rojo{
+        background: red;
+ }
+
+ #celeste{
+        background: #3398dc;
+ }
+
+ #amarillo{
+        background: #f4c601;
+ }
+
+ #naranjo{
+     background: #f9870b;
+ }
+
+ ul#lista-proyectos{
+
+    list-style: none;
+    
+
+ }
+
+ ul#lista-proyectos li{
+
+   background-color: #f0f0f0;
+   height: 60px;
+   margin-bottom: 10px;
+ }
+
+
+ .informacion{
+   float: left;
+   width: 80%;
+   height: 45px;
+   padding: 2px;
+   color: black;
+   margin-top: -60px;
+   margin-left: 35px;
+   position: relative;
+ }
+
+
+ .informacion span{
+
+    
+    float: left;
+    margin-right: 5px;
+ }
+
+ .fecha-proyecto{
+    font-style: italic;
+    margin-top: -25px;
+    margin-left: 175px;
+    position: relative;
+    font-size: 9px;
+ }
+
+ img.imgThumbUp{
+    width: 20px;
+    height: 20px;
+    margin-left: -255px;
+    margin-top: 28px;
+    position: relative;
+ 
+ }
+
+ span.span-tipo{
+    margin-left: 18px;
+    margin-top: -10px;
+    font-size: 13px;
+ }
+
+ .id_proyecto{
+    display: none;
+ }
+
+ /*Fin estilo lista de proyectos*/
+
+
+
+
+
 
 /*Inicio estilos del menu principal*/
 #menuprincipal{

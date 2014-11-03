@@ -2,7 +2,13 @@
 var myScroll, myScrollMenu, cuerpo, menuprincipal, wrapper, estado;
 var xhReq = new XMLHttpRequest();
 var pictureSource,destinationType;
-var imagen;
+var imagen = null;
+var key = "estado";
+var storage;
+var tipo;
+var array_tipo_proyecto = new Array("Inicio","Cerámicas","Ladrillos","Alfombras", "Pinturas");
+var array_colores = new Array("Inicio","celeste","amarillo","rojo","naranjo");
+var array_codigo_colores = new Array("Inicio", "#3398dc", "#f4c601", "red", "#f9870b");
 
 // Guardamos en variables elementos para poder rescatarlos despuŽs sin tener que volver a buscarlos
 
@@ -15,13 +21,16 @@ document.addEventListener("deviceready",onDeviceReady,false);
 function onDeviceReady() {
     pictureSource=navigator.camera.PictureSourceType;
     destinationType=navigator.camera.DestinationType;
-}
+    //storage = window.localStorage;
+  }
 
 
 
 
 function main(){
    estado="cuerpo";
+      storage = window.localStorage;
+      //storage.setItem(key,"ok");
       
       // Creamos el elemento style, lo a–adimos al html y creamos la clase cssClass para aplicarsela al contenedor wrapper
       var heightCuerpo=window.innerHeight-46;
@@ -62,7 +71,7 @@ function main(){
     //comprobarRegistros();
 
     //Crear la base de datos
-    var db = window.openDatabase("ConstruApp", "1.0", "DB ConstruApp", 20000);
+    var db = window.openDatabase("ConstruApp", "1.0", "DB ConstruApp", 200000);
     db.transaction(populateDB, errorDB, succesDB);
 
     //destinationType=navigator.camera.DestinationType;
@@ -75,14 +84,29 @@ function main(){
          function populateDB(tx)
          {
 
-           var tabla_tipo_proyecto = "CREATE TABLE IF NOT EXISTS tipo_proyecto( id_tipo_proyecto INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT)";
-           var tabla_proyecto = "CREATE TABLE IF NOT EXISTS proyecto( id_proyecto INTEGER PRIMARY KEY AUTOINCREMENT, id_tipo_proyecto INTEGER, fecha DATE, fotografia TEXT, FOREIGN KEY(id_tipo_proyecto) references tipo_proyecto(id_tipo_proyecto))";
+           var tabla_tipo_proyecto = "CREATE TABLE IF NOT EXISTS tipo_proyecto( id_tipo_proyecto INTEGER PRIMARY KEY, nombre TEXT)";
+           var tabla_proyecto = "CREATE TABLE IF NOT EXISTS proyecto( id_proyecto INTEGER PRIMARY KEY AUTOINCREMENT, id_tipo_proyecto INTEGER, fecha DATE, fotografia TEXT,superficie_total float, total_cajas float, FOREIGN KEY(id_tipo_proyecto) references tipo_proyecto(id_tipo_proyecto))";
            tx.executeSql(tabla_tipo_proyecto);
            tx.executeSql(tabla_proyecto);
-           var execute = "INSERT INTO tipo_proyecto VALUES(null, 'prueba')";
-           var execute2 = "INSERT INTO proyecto VALUES(null,1, '29-10-2014','foto')";
-           tx.executeSql(execute);
-           tx.executeSql(execute2);
+           //tratar de usar localstorage
+           var l = storage[key];
+           if(typeof l === 'undefined'){
+
+              var execute = "INSERT INTO tipo_proyecto VALUES(1, 'ceramica')";
+              tx.executeSql(execute);
+              var execute = "INSERT INTO tipo_proyecto VALUES(2, 'pintura')";
+              tx.executeSql(execute);
+              var execute = "INSERT INTO tipo_proyecto VALUES(3, 'ladrillos')";
+              tx.executeSql(execute);
+
+              storage.setItem(key,"ingresado");
+
+           }
+        
+           
+           //var execute2 = "INSERT INTO proyecto VALUES(null,1,'29-10-2014','foto')";
+           
+           //tx.executeSql(execute2);
 
 
          }
@@ -91,7 +115,7 @@ function main(){
          function errorDB(error)
          {
 
-          alert("Error DB");
+          alert("Error DB   "+error.code);
 
 
          }
@@ -117,7 +141,7 @@ function main(){
          {
 
           var consulta = "SELECT * FROM proyecto";
-          tx.executeSql(consulta, [], consultaSuccess, consultaError)
+          tx.executeSql(consulta, [], consultaSuccess, consultaError);
 
          }
 
@@ -134,20 +158,192 @@ function main(){
          {
 
            var filas = results.rows.length;
+           //alert("consultaSucces Filas"+filas);
 
                if(filas <= 0){
+                      pantallaPrincipal();
                       MostrarcontenedorVacio()
                }else{
-                      //alert("hay registro");
-                      //$("#contenidoCuerpo").empty();
+
+
+                      xhReq.open("GET", "listado_proyectos/listado_proyectos.html", false);
+                      xhReq.send(null);
+                      document.getElementById("contenidoCuerpo").innerHTML=xhReq.responseText;
+
+
+
+
+
+                      for (var i = 0; i < results.rows.length ; i++) {
+                        
+                          //alert("entro al for");
+                          var item = results.rows.item(i);
+                           if(i!=0){
+                              
+                                 $("#lista-proyectos").append('<li class="listado-proyecto"><div id="'+array_colores[item.id_tipo_proyecto]+'_'+item.id_proyecto+'"></div><div class="informacion_'+item.id_proyecto+'"><span class="span-tipo_'+item.id_proyecto+'">'+array_tipo_proyecto[item.id_tipo_proyecto]+'</span><span class="fecha-proyecto_'+item.id_proyecto+'">'+item.fecha+'</span><img class="imgThumbUp_'+item.id_proyecto+'" src="img/ic_thumb_up.png"><span class="id_proyecto'+item.id_proyecto+'"></span></div></li>');
+                               
+
+                                 //Obtener margin-top original
+                                 var margin = $(".fecha-proyecto").css("margin-top");
+                                 margin = margin.split("px");
+                                 var marginTop = parseInt(margin[0]);
+                                 marginTop+=35;
+
+
+                                 //Obtener margin-left original
+
+
+                                 var numero = $(".fecha-proyecto").css("margin-left");
+                                 numero = numero.split("px");
+                                 var marginLeft = parseInt(numero[0]);
+                                 marginLeft+=-20;
+                                 
+                                var cambioCSSFecha = {
+
+                                    "font-style": "italic",
+                                    "margin-top": marginTop+"px",
+                                    "margin-left": marginLeft+"px",
+                                    "position": "relative",
+                                    "font-size": "9px",
+                                    "color": "black"
+                               };
+
+
+
+                               $(".fecha-proyecto_"+item.id_proyecto).css(cambioCSSFecha);
+
+                               
+                                 var numero1 = $(".informacion").css("margin-left");
+                                 numero1 = numero1.split("px");
+                                 var marginLeftInfo = parseInt(numero1[0]);
+                                 marginLeftInfo+=30;
+
+                                var cambioCSSInformacion =
+                                 {
+                                     float: "left",
+                                     width: "80%",
+                                     height: "45px",
+                                     padding: "2px",
+                                     color: "black",
+                                     "margin-top": "-60px",
+                                     "margin-left": marginLeftInfo+"px",
+                                     position: "relative",
+                                     color: "black"
+
+
+                                 };
+
+                                 $(".informacion_"+item.id_proyecto).css(cambioCSSInformacion);
+
+
+
+                              var cambioCSSImagen =
+                              {
+                                    width: "20px",
+                                    height: "20px",
+                                    "margin-left": "-75px",
+                                    "margin-top": "28px",
+                                    position: "relative"
+                              };
+
+
+                              $(".imgThumbUp_"+item.id_proyecto).css(cambioCSSImagen);
+
+
+
+                              var cambioCSSTipo = 
+                              {
+                                    "margin-left": "18px",
+                                    "margin-top": "-10px",
+                                    "font-size": "13px"
+                              };
+                                
+                              $(".span-tipo"+item.id_proyecto).css(cambioCSSTipo);
+
+
+                                
+                               var cambioCSSInformacionSpan =
+                               {
+
+                                  float: "left",
+                                  "margin-right": "5px"
+
+
+                               };
+
+                               var texto = ".informacion_"+item.id_proyecto+" span";
+
+                              $(texto).css(cambioCSSInformacionSpan);
+
+
+                              var cambioCSSColores = {
+                                    float: "left",
+                                    "margin-top": "7px",
+                                    "margin-left": "11px",
+                                    "border-radius": "5px",
+                                    "width": "50px",
+                                    "height": "50px",
+                                    "background": array_codigo_colores[item.id_tipo_proyecto]
+
+                              };
+
+
+                               var idColores = "#"+array_colores[item.id_tipo_proyecto]+'_'+item.id_proyecto;
+                              $(idColores).css(cambioCSSColores);
+                                
+
+                              
+ 
+
+                           }
+                           else{
+
+                             $("#lista-proyectos").append('<li class="listado-proyecto"><div id="'+array_colores[item.id_tipo_proyecto]+'"></div><div class="informacion"><span class="span-tipo">'+array_tipo_proyecto[item.id_tipo_proyecto]+'</span><span class="fecha-proyecto">'+item.fecha+'</span><img class="imgThumbUp" src="img/ic_thumb_up.png"><span class="id_proyecto">'+item.id_proyecto+'</span></div></li>');
+
+                           }
+                          //alert("id proyecto: "+item.id_proyecto+" tipo proyecto: "+item.id_tipo_proyecto+" foto: "+item.fotografia);
+                         
+
+                          
+
+
+
+
+
+
+                      }
                }
 
          }
 
          function consultaError(err){
 
-           alert(err);
+           alert("consulta error"+err.code);
 
+         }
+
+
+         function guardarProyectoDB(tx,superficieTotal, totalCajas)
+         {
+            //alert("guardar proyecto: "+superficieTotal+" totalCajas: "+totalCajas);
+            var fecha_actual = new Date();
+            var fecha = fecha_actual.getDate()+"-"+(fecha_actual.getMonth()+1)+"-"+fecha_actual.getFullYear();
+            tx.executeSql("INSERT INTO proyecto (id_proyecto, id_tipo_proyecto, fecha, fotografia, superficie_total, total_cajas) values (?,?,?,?,?,?)",[null,tipo,fecha,imagen,superficieTotal,totalCajas]);
+
+
+         }
+
+         function correctoGuardarProyectoDB()
+         {
+            alert("Proyecto ingresado correctamente");
+            imagen = null;
+            verificarProyectos();
+            //cambiar de vista, a la lista de proyectos
+         }
+
+         function errorGuardarProyectoDB(err)
+         {
+           alert("errorGuardarProyecto: "+err.code);
          }
 
   /*FUNCIONES PARA LA CAMARA */
@@ -160,7 +356,9 @@ function main(){
         allowEdit: false,
         destinationType: destinationType.FILE_URI,
         saveToPhotoAlbum: true,
-        sourceType: Camera.PictureSourceType.CAMERA
+        sourceType: Camera.PictureSourceType.CAMERA,
+        correctOrientation: true
+
         //correctOrientation: true,
         //targetWidth: 1000, 
         //targetHeight: 1000
@@ -227,7 +425,7 @@ function main(){
           superficieTotal = superficie * 1.05;
           excedente = superficie * 0.05;
           totalCajas = superficieTotal / rendimientoCaja;
-           if(!isNaN(totalCajas)){
+           if(!isNaN(totalCajas) && imagen != null){
           //alert("Superficie"+superficie+"superficieTotal"+superficieTotal+"totalCajas"+totalCajas);
           //Reducir decimales
 
@@ -242,6 +440,14 @@ function main(){
            xhReq.open("GET", "resultados/opcion1.html", false);
            xhReq.send(null);
            document.getElementById("contenidoCuerpo").innerHTML=xhReq.responseText;
+           $(".guardar_proyecto").on("click", function(){
+               
+
+                  guardarProyecto(superficieTotal, totalCajas);
+               
+               
+
+           });
 
            //document.getElementById('total_superficie').firstChild.nodeValue = superficie+" m2";
            $("#total_superficie").text(superficie+" m2");
@@ -265,13 +471,28 @@ function main(){
 
 
           }else{
-              
-             alert("Ingrese números correctos");
+
+
+                      if(imagen == null){
+                        
+                          alert("Debe tomar una fotografía del lugar");
+                      }else{              
+                       alert("Ingrese números correctos");
+                     }
           }
 
      }catch(e){
           alert(e);
      }
+
+  }
+
+  function guardarProyecto(superficieTotal, totalCajas)
+  {
+    
+
+     var db = window.openDatabase("ConstruApp", "1.0", "DB ConstruApp", 20000);
+     db.transaction(function(tx){guardarProyectoDB(tx,superficieTotal,totalCajas)}, errorGuardarProyectoDB, correctoGuardarProyectoDB);
 
   }
 
@@ -320,11 +541,15 @@ function menu(opcion){
         
         // Recogemos mediante ajax el contenido del html segœn la opci—n clickeada en el menu
         if(opcion == 0){
-          verificarProyectos();
+          
+        pantallaPrincipal();
+        verificarProyectos();
+
           
         }else{
 
         xhReq.open("GET", "proyectos/opcion"+opcion+".html", false);
+        tipo = opcion; //para guardarlo en la base de datos; el tipo de proyecto
         xhReq.send(null);
         document.getElementById("contenidoCuerpo").innerHTML=xhReq.responseText;
         }
@@ -354,4 +579,12 @@ function menu(opcion){
          
        }
 
+}
+
+function pantallaPrincipal()
+{
+
+      xhReq.open("GET", "index.html", false);
+      xhReq.send(null);
+      document.getElementById("contenidoCuerpo").innerHTML=xhReq.responseText;
 }

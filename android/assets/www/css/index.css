@@ -21,6 +21,8 @@ a {
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
+hr {border: 0; height: 12px; box-shadow: inset 0 12px 12px -12px orange;}
+
 /*Inicio estilos de la cabecera*/
 #header {
     z-index:2;
@@ -41,13 +43,21 @@ a {
     position: absolute;
     top: 5px;
     left: 5px;
-    width:9%;
+    width:10%;/*9*/
     line-height: 20px;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
 }
 
+#header a div{
+
+
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border: 1px solid black;
+}
 
 
 .logo{
@@ -133,7 +143,7 @@ a {
 #contenedor{
    width: 100%;
     margin: 0;
-    
+    background: white;
     height: 400px;
 
 }
@@ -163,6 +173,8 @@ a {
     border: 1px solid black;
     padding: 5px;
     margin-left: -10px;
+    background: #f0f0f0;
+    border-radius: 8px 0 8px 0;
 
 }
 
@@ -192,13 +204,13 @@ a {
 
 #formulario button, #btn_guardar{
 
-    width: 90%;
-    margin-left: 10px;
+    width: 95%;
+    margin-left: 7px;
     margin-top: 20px;
     font-family: 'Contra';
     background: black;
     color: white;
-    height: 30px;
+    height: 45px;
     padding: 5px;
     letter-spacing: 3px;
     border: none;
@@ -207,8 +219,9 @@ a {
 img#imgLugar{
 
     display: none;
-    height: 150px;
-    width:  300px
+    height: 130px;
+    width:  265px;
+    margin-right: -10px;
   
 
 }
@@ -261,15 +274,18 @@ img#imgLugar{
  ul#lista-proyectos{
 
     list-style: none;
+    border: 1px solid black;
+    margin-top: -10px;
     
 
  }
 
  ul#lista-proyectos li{
 
-   background-color: #f0f0f0;
+   background-color: white;
    height: 60px;
-   margin-bottom: 10px;
+   margin-bottom: 3px;
+   border: none;
  }
 
 
@@ -298,6 +314,7 @@ img#imgLugar{
     margin-left: 175px;
     position: relative;
     font-size: 9px;
+    font-weight: bold;
  }
 
  img.imgThumbUp{
@@ -317,6 +334,17 @@ img#imgLugar{
 
  .id_proyecto{
     display: none;
+ }
+
+ #listaProyecto{
+    background: white;
+    height: 50px;
+    width: 100%;
+ }
+
+ #listaProyecto h1{
+    font-size: "Contra";
+    text-align: center;
  }
 
  /*Fin estilo lista de proyectos*/

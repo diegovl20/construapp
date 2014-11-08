@@ -135,6 +135,27 @@ module.exports = [
         ]
     },
     {
+        "file": "plugins/org.apache.cordova.globalization/www/GlobalizationError.js",
+        "id": "org.apache.cordova.globalization.GlobalizationError",
+        "clobbers": [
+            "window.GlobalizationError"
+        ]
+    },
+    {
+        "file": "plugins/org.apache.cordova.globalization/www/globalization.js",
+        "id": "org.apache.cordova.globalization.globalization",
+        "clobbers": [
+            "navigator.globalization"
+        ]
+    },
+    {
+        "file": "plugins/org.apache.cordova.splashscreen/www/splashscreen.js",
+        "id": "org.apache.cordova.splashscreen.SplashScreen",
+        "clobbers": [
+            "navigator.splashscreen"
+        ]
+    },
+    {
         "file": "plugins/org.apache.cordova.file/www/DirectoryEntry.js",
         "id": "org.apache.cordova.file.DirectoryEntry",
         "clobbers": [
@@ -291,6 +312,9 @@ module.exports.metadata =
     "org.apache.cordova.file-transfer": "0.4.7",
     "org.apache.cordova.dialogs": "0.2.10",
     "org.apache.cordova.vibration": "0.3.11",
+    "org.apache.cordova.globalization": "0.3.2",
+    "org.apache.cordova.geolocation": "0.3.10",
+    "org.apache.cordova.splashscreen": "0.3.4",
     "org.apache.cordova.file": "1.3.1"
 }
 // BOTTOM OF METADATA

@@ -9,6 +9,13 @@ var tipo;
 var array_tipo_proyecto = new Array("Inicio","Cerámicas","Ladrillos","Alfombras", "Pinturas");
 var array_colores = new Array("Inicio","celeste","amarillo","rojo","naranjo");
 var array_codigo_colores = new Array("Inicio", "#3398dc", "#f4c601", "red", "#f9870b");
+var toggleMenu = true;
+var idComplementar;
+var salirApp = true;
+//EN DUDA
+
+var fotografiaComplementar = ""; 
+var superficieTotalComplementar, totalCajasComplementar;
 
 // Guardamos en variables elementos para poder rescatarlos despuŽs sin tener que volver a buscarlos
 
@@ -21,7 +28,19 @@ document.addEventListener("deviceready",onDeviceReady,false);
 function onDeviceReady() {
     pictureSource=navigator.camera.PictureSourceType;
     destinationType=navigator.camera.DestinationType;
+    document.addEventListener("backbutton", onBackKeyDown, false);
     //storage = window.localStorage;
+  }
+
+
+  function onBackKeyDown(){
+
+       if(salirApp){
+        navigator.app.exitApp();
+       }else{
+            pantallaPrincipal();
+        verificarProyectos();
+      }
   }
 
 
@@ -137,6 +156,7 @@ function main(){
          }
 
 
+
          function queryDB(tx)
          {
 
@@ -154,6 +174,62 @@ function main(){
          }
 
 
+        function complementarBD(){
+
+              var db = window.openDatabase("ConstruApp", "1.0", "DB ConstruApp", 20000);
+              //consulta principar para listar proyectos
+              db.transaction(queryComplementarDB, errorComplementarDBQueryDB);  
+
+
+         }
+
+         function queryComplementarDB(tx){
+             var consulta = "SELECT * FROM proyecto WHERE id_proyecto ="+idComplementar;
+             tx.executeSql(consulta,[],consultaComplementarSucces, consultaComplementarError);
+
+
+         }
+
+         function consultaComplementarError(){
+
+          alert("consultaComplementarError");
+         }
+
+         function errorComplementarDBQueryDB(err){
+
+          alert("errorComplementarDBQueryDB"+err.code)
+         }
+
+
+         function consultaComplementarSucces(tx,results){
+               
+             for (var i = 0; i < results.rows.length ; i++) {
+
+                 var item = results.rows.item(i);
+                  //fecha DATE, fotografia TEXT,superficie_total float, total_cajas float, FOREIGN KEY(id_tipo_proyecto) references tipo_proyecto(id_tipo_proyecto))";
+                 //var proyecto = new Array(item.id_proyecto, item.id_tipo_proyecto, item.fecha, item.fotografia, item.superficie_total, item.total_cajas );
+                 /*arrayProyecto[0] = item.id_proyecto;
+                 arrayProyecto[1] = item.id_tipo_proyecto;
+                 arrayProyecto[2] = item.fecha;
+                 arrayProyecto[3] = item.fotografia;
+                 arrayProyecto[4] = item.superficie_total;
+                 arrayProyecto[5] = item.total_cajas;*/
+
+                 fotografiaComplementar = item.fotografia;
+                 $("#imgLugar").attr("src", fotografiaComplementar);
+                 $("#total_superficie").text(item.superficie_total);
+                 $("#tipo_proyecto_complementar").text(array_tipo_proyecto[item.id_tipo_proyecto]);
+                 $("#cajas_total").text(item.total_cajas);
+                 //alert(fotografiaComplementar);
+                 superficieTotalComplementar = item.superficie_total;
+                 totalCajasComplementar = item.total_cajas;
+
+             }
+
+         }
+
+
+
          function consultaSuccess(tx, results)
          {
 
@@ -169,6 +245,7 @@ function main(){
                       xhReq.open("GET", "listado_proyectos/listado_proyectos.html", false);
                       xhReq.send(null);
                       document.getElementById("contenidoCuerpo").innerHTML=xhReq.responseText;
+                      
 
 
 
@@ -176,11 +253,13 @@ function main(){
 
                       for (var i = 0; i < results.rows.length ; i++) {
                         
+
+                          $("#contenidoCuerpo").css("background", "#f0f0f0");
                           //alert("entro al for");
                           var item = results.rows.item(i);
                            if(i!=0){
                               
-                                 $("#lista-proyectos").append('<li class="listado-proyecto"><div id="'+array_colores[item.id_tipo_proyecto]+'_'+item.id_proyecto+'"></div><div class="informacion_'+item.id_proyecto+'"><span class="span-tipo_'+item.id_proyecto+'">'+array_tipo_proyecto[item.id_tipo_proyecto]+'</span><span class="fecha-proyecto_'+item.id_proyecto+'">'+item.fecha+'</span><img class="imgThumbUp_'+item.id_proyecto+'" src="img/ic_thumb_up.png"><span class="id_proyecto'+item.id_proyecto+'"></span></div></li>');
+                                 $("#lista-proyectos").append('<li class="listado-proyecto" id="'+item.id_proyecto+'"><div id="'+array_colores[item.id_tipo_proyecto]+'_'+item.id_proyecto+'"></div><div class="informacion_'+item.id_proyecto+'"><span class="span-tipo_'+item.id_proyecto+'">'+array_tipo_proyecto[item.id_tipo_proyecto]+'</span><span class="fecha-proyecto_'+item.id_proyecto+'">'+item.fecha+'</span><img class="imgThumbUp_'+item.id_proyecto+'" src="img/ic_thumb_up.png"><span class="id_proyecto'+item.id_proyecto+'"></span></div></li>');
                                
 
                                  //Obtener margin-top original
@@ -205,7 +284,8 @@ function main(){
                                     "margin-left": marginLeft+"px",
                                     "position": "relative",
                                     "font-size": "9px",
-                                    "color": "black"
+                                    "color": array_codigo_colores[item.id_tipo_proyecto],
+                                    "font-weight": "bold"
                                };
 
 
@@ -298,7 +378,7 @@ function main(){
                            }
                            else{
 
-                             $("#lista-proyectos").append('<li class="listado-proyecto"><div id="'+array_colores[item.id_tipo_proyecto]+'"></div><div class="informacion"><span class="span-tipo">'+array_tipo_proyecto[item.id_tipo_proyecto]+'</span><span class="fecha-proyecto">'+item.fecha+'</span><img class="imgThumbUp" src="img/ic_thumb_up.png"><span class="id_proyecto">'+item.id_proyecto+'</span></div></li>');
+                             $("#lista-proyectos").append('<li class="listado-proyecto" id="'+item.id_proyecto+'"><div id="'+array_colores[item.id_tipo_proyecto]+'"></div><div class="informacion"><span class="span-tipo">'+array_tipo_proyecto[item.id_tipo_proyecto]+'</span><span class="fecha-proyecto" style="color: '+array_codigo_colores[item.id_tipo_proyecto]+'">'+item.fecha+'</span><img class="imgThumbUp" src="img/ic_thumb_up.png"><span class="id_proyecto">'+item.id_proyecto+'</span></div></li>');
 
                            }
                           //alert("id proyecto: "+item.id_proyecto+" tipo proyecto: "+item.id_tipo_proyecto+" foto: "+item.fotografia);
@@ -312,6 +392,8 @@ function main(){
 
 
                       }
+                      $(".listado-proyecto").on("click", accederProyecto);
+
                }
 
          }
@@ -403,6 +485,34 @@ function main(){
   }
    
    /*FIN FUNCIONES BASE DE DATOS */
+
+
+
+   function accederProyecto()
+   {
+
+        var id = $(this).attr('id');
+        idComplementar = id;
+        xhReq.open("GET", "complementacion/opcion1.html", false);
+        xhReq.send(null);
+        document.getElementById("contenidoCuerpo").innerHTML=xhReq.responseText;
+        salirApp = false;
+        fondoBlanco();
+        complementarBD();
+        //wait(10);
+
+       //aqui comenzar a programar
+
+
+
+
+
+   }
+
+   function wait(nsegundos) {
+objetivo = (new Date()).getTime() + 1000 * Math.abs(nsegundos);
+while ( (new Date()).getTime() < objetivo );
+}
 
   function calculoSuperficieSimple(){
 
@@ -522,9 +632,17 @@ function menu(opcion){
   
   // Si pulsamos en el bot—n de "menu" entramos en el if
   if(opcion=="menu"){
+     salirApp = false;
     if(estado=="cuerpo"){
-          $("#cuerpo").removeClass();
-          $("#cuerpo").addClass('page transition right');
+              if(toggleMenu){
+                     $("#cuerpo").removeClass();
+                     $("#cuerpo").addClass('page transition right');
+                     toggleMenu = false;
+              }else{
+                     toggleMenu = true;
+                     $("#cuerpo").removeClass();
+                     $("#cuerpo").addClass('page transition center');
+              }
           //$("#header").css("position", "absolute");
           estado="menuprincipal";
     }else if(estado=="menuprincipal"){
@@ -544,14 +662,16 @@ function menu(opcion){
           
         pantallaPrincipal();
         verificarProyectos();
+        salirApp = true;
 
           
         }else{
-
+         salirApp = false;
         xhReq.open("GET", "proyectos/opcion"+opcion+".html", false);
         tipo = opcion; //para guardarlo en la base de datos; el tipo de proyecto
         xhReq.send(null);
         document.getElementById("contenidoCuerpo").innerHTML=xhReq.responseText;
+        fondoBlanco();
         }
 
 
@@ -587,4 +707,15 @@ function pantallaPrincipal()
       xhReq.open("GET", "index.html", false);
       xhReq.send(null);
       document.getElementById("contenidoCuerpo").innerHTML=xhReq.responseText;
+      salirApp = true;
+}
+
+
+
+function fondoBlanco()
+{
+
+  $("#contenidoCuerpo").css("background", "white");
+
+
 }

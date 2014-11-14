@@ -155,17 +155,21 @@ hr {border: 0; height: 12px; box-shadow: inset 0 12px 12px -12px orange;}
 
 }
 
-#simple h1{
+#simple h1, #divCalculoDinero h1, #divVideoYoutube h1{
 
     text-align: center;
     font-family: 'Contra';
 }
 
-#formulario{
 
-    
+#formularioCalculoDinero p{
 
+    font-family: 'Contra';
 }
+
+
+
+
 
 #cuadroResultados{
     font-family: 'Contra';
@@ -178,7 +182,25 @@ hr {border: 0; height: 12px; box-shadow: inset 0 12px 12px -12px orange;}
 
 }
 
-#formulario input{
+#divCalculoDinero, #divVideoYoutube{
+
+    font-family: 'Contra';
+    width: 90%;
+    border: 1px solid black;
+    padding: 5px;
+    margin-left: 10px;
+    background: #f0f0f0;
+    border-radius: 8px 0 8px 0;
+
+}
+
+
+
+
+
+
+
+#formulario input, #formularioCalculoDinero input{
 
     display: block;
     border: 2px solid #000;
@@ -187,6 +209,7 @@ hr {border: 0; height: 12px; box-shadow: inset 0 12px 12px -12px orange;}
     margin: 2px;
     width: 250px;
 }
+
 
 
 #formulario img{
@@ -202,7 +225,7 @@ hr {border: 0; height: 12px; box-shadow: inset 0 12px 12px -12px orange;}
     letter-spacing: 3px;
 }
 
-#formulario button, #btn_guardar{
+#formulario button, #btn_guardar, #btn_calcular{
 
     width: 95%;
     margin-left: 7px;
@@ -216,6 +239,21 @@ hr {border: 0; height: 12px; box-shadow: inset 0 12px 12px -12px orange;}
     border: none;
 }
 
+.compartir-btn-espacio{
+    width: 45%;
+    margin-left: 7px;
+    margin-top: 20px;
+    font-family: 'Contra';
+    background: black;
+    color: white;
+    height: 45px;
+    padding: 5px;
+    letter-spacing: 3px;
+    border: none;
+}
+
+
+
 img#imgLugar{
 
     display: none;
@@ -226,12 +264,55 @@ img#imgLugar{
 
 }
 
+
+#ic_left, #ic_right, #texto_izquierda, #texto_derecha{
+
+  display: inline-block;
+  width: 40%;
+  padding: 0;
+  text-align: center;
+
+}
+
+#ic_left img{
+    margin-right: -50px;
+}
+
+#ic_right img{
+   
+    margin-left: 0px;
+}
+
+
+#texto_izquierda{
+    margin-left: 20px;
+}
+
+
+#texto_izquierda, #texto_derecha{
+    margin-bottom: 10px;
+    font-family: 'Contra';
+    font-weight:bold;
+    font-size: 14px;
+    box-shadow: 0px 2px 5px rgb(119, 111, 70);
+}
+
+
+
 #formulario input::-webkit-input-placeholder {
   background: #FFF;
   color: #737373;
   font-size: 12px;
   letter-spacing: 1px;
 }
+
+#formularioCalculoDinero input::-webkit-input-placeholder {
+  background: #FFF;
+  color: #737373;
+  font-size: 12px;
+  letter-spacing: 1px;
+}
+
 
 
 /*Final estilos del cuerpo*/
@@ -311,7 +392,7 @@ img#imgLugar{
  .fecha-proyecto{
     font-style: italic;
     margin-top: -25px;
-    margin-left: 175px;
+    margin-left: 160px;
     position: relative;
     font-size: 9px;
     font-weight: bold;
@@ -405,11 +486,7 @@ img#imgLugar{
 /*Fin del estilo del menu principal*/
 
 /*Inicio estilos de las capas internas de los iscroll, tanto cuerpo como menu*/
-.scroller {
-    position:absolute; z-index:1;
-    width:100%;
-    padding:0;
-}
+
 
 .scroller ul {
     list-style:none;
@@ -490,6 +567,44 @@ img#imgLugar{
     -webkit-transition-duration: .25s;
     transition-duration: .25s;
 }
+
+
+
+
+
+
+/*SWIPE*/
+
+.scroller {
+    position:absolute; z-index:1;
+    -webkit-tap-highlight-color:rgba(0,0,0,0);
+    width:100%;
+    padding:0;
+}
+#wrapper_swipe { height:100%; border:1px solid #cecece; margin: 0 auto; background: #dedede; }
+
+
+.slidepage-container { height:330px; position:relative; overflow: hidden;  background:#cecece;  }
+.slidepage-container .content { padding:15px;}
+
+.psPage { position: absolute; top: 0; left: 0; width: 100%; height: 100%; -webkit-transform: translate3d(0, 0, 0); transform: translate3d(0, 0, 0); }
+.psPage.left { -webkit-transform: translate3d(-100%, 0, 0); transform: translate3d(-100%, 0, 0); }
+.psPage.center { -webkit-transform: translate3d(0, 0, 0); transform: translate3d(0, 0, 0); }
+.psPage.right { -webkit-transform: translate3d(100%, 0, 0); transform: translate3d(100%, 0, 0); }
+.psPage.transition { -webkit-transition-duration: .25s; transition-duration: .25s; }
+
+/*FIN SWIPE*/
+
+
+
+
+
+
+
+
+
+
+
 /*Fin c—digo de posici—n y transici—n de las p‡ginas*/
 
 

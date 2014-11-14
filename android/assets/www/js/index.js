@@ -12,6 +12,7 @@ var array_codigo_colores = new Array("Inicio", "#3398dc", "#f4c601", "red", "#f9
 var toggleMenu = true;
 var idComplementar;
 var salirApp = true;
+var precio;
 //EN DUDA
 
 var fotografiaComplementar = ""; 
@@ -104,7 +105,7 @@ function main(){
          {
 
            var tabla_tipo_proyecto = "CREATE TABLE IF NOT EXISTS tipo_proyecto( id_tipo_proyecto INTEGER PRIMARY KEY, nombre TEXT)";
-           var tabla_proyecto = "CREATE TABLE IF NOT EXISTS proyecto( id_proyecto INTEGER PRIMARY KEY AUTOINCREMENT, id_tipo_proyecto INTEGER, fecha DATE, fotografia TEXT,superficie_total float, total_cajas float, FOREIGN KEY(id_tipo_proyecto) references tipo_proyecto(id_tipo_proyecto))";
+           var tabla_proyecto = "CREATE TABLE IF NOT EXISTS proyecto( id_proyecto INTEGER PRIMARY KEY AUTOINCREMENT, id_tipo_proyecto INTEGER, fecha DATE, fotografia TEXT,superficie_total float, total_cajas float, precio_total INTEGER, FOREIGN KEY(id_tipo_proyecto) references tipo_proyecto(id_tipo_proyecto))";
            tx.executeSql(tabla_tipo_proyecto);
            tx.executeSql(tabla_proyecto);
            //tratar de usar localstorage
@@ -169,7 +170,7 @@ function main(){
          function errorQueryDB(err)
          {
 
-          alert("errorQueryDB "+err);
+          alert("errorQueryDB "+err.code);
 
          }
 
@@ -197,7 +198,7 @@ function main(){
 
          function errorComplementarDBQueryDB(err){
 
-          alert("errorComplementarDBQueryDB"+err.code)
+          alert("errorComplementarDBQueryDB"+err.code);
          }
 
 
@@ -214,15 +215,16 @@ function main(){
                  arrayProyecto[3] = item.fotografia;
                  arrayProyecto[4] = item.superficie_total;
                  arrayProyecto[5] = item.total_cajas;*/
-
+                
                  fotografiaComplementar = item.fotografia;
+                 totalCajasComplementar = item.total_cajas;
                  $("#imgLugar").attr("src", fotografiaComplementar);
                  $("#total_superficie").text(item.superficie_total);
                  $("#tipo_proyecto_complementar").text(array_tipo_proyecto[item.id_tipo_proyecto]);
-                 $("#cajas_total").text(item.total_cajas);
+                 $("#cajas_total").text(Math.round(item.total_cajas));
                  //alert(fotografiaComplementar);
                  superficieTotalComplementar = item.superficie_total;
-                 totalCajasComplementar = item.total_cajas;
+                 //totalCajasComplementar = Math.round(item.total_cajas);
 
              }
 
@@ -410,7 +412,7 @@ function main(){
             //alert("guardar proyecto: "+superficieTotal+" totalCajas: "+totalCajas);
             var fecha_actual = new Date();
             var fecha = fecha_actual.getDate()+"-"+(fecha_actual.getMonth()+1)+"-"+fecha_actual.getFullYear();
-            tx.executeSql("INSERT INTO proyecto (id_proyecto, id_tipo_proyecto, fecha, fotografia, superficie_total, total_cajas) values (?,?,?,?,?,?)",[null,tipo,fecha,imagen,superficieTotal,totalCajas]);
+            tx.executeSql("INSERT INTO proyecto (id_proyecto, id_tipo_proyecto, fecha, fotografia, superficie_total, total_cajas, precio_total) values (?,?,?,?,?,?,?)",[null,tipo,fecha,imagen,superficieTotal,totalCajas,0]);
 
 
          }
@@ -427,6 +429,42 @@ function main(){
          {
            alert("errorGuardarProyecto: "+err.code);
          }
+
+
+        function ActualizarPrecioBD(){
+
+              var db = window.openDatabase("ConstruApp", "1.0", "DB ConstruApp", 20000);
+              //consulta principar para listar proyectos
+              db.transaction(queryActualizarPrecioDB, errorQueryDB);
+
+
+
+        }
+
+        function errorActualizarPrecioQueryDB(err){
+
+          alert("errorActualizarPrecioQueryDB"+err.code)
+        }
+
+
+        function queryActualizarPrecioDB(tx){
+
+             var consulta = "update proyecto set precio_total ="+precio+" where id_proyecto ="+idComplementar;
+             tx.executeSql(consulta,[],consultaSuccesActualizarPrecioDB, errorQueryDB);
+
+
+        }
+
+        function consultaSuccesActualizarPrecioDB(){
+
+
+        }
+
+        function consultaErrorActualizarPrecio(err){
+
+          alert("error Lol"+err.code);
+        }
+
 
   /*FUNCIONES PARA LA CAMARA */
 
@@ -493,21 +531,104 @@ function main(){
 
         var id = $(this).attr('id');
         idComplementar = id;
+
         xhReq.open("GET", "complementacion/opcion1.html", false);
         xhReq.send(null);
         document.getElementById("contenidoCuerpo").innerHTML=xhReq.responseText;
         salirApp = false;
         fondoBlanco();
+        //debugger;
         complementarBD();
+      
+        $("#btn_ayuda").on("click", funcionesDeAyuda);
+        //btn_complementar...
         //wait(10);
 
        //aqui comenzar a programar
 
 
 
+   }
+
+
+
+
+   function funcionesDeAyuda(){
+      
+      xhReq.open("GET", "ayuda/ayuda.html", false);
+      xhReq.send(null);
+      document.getElementById("contenidoCuerpo").innerHTML=xhReq.responseText;
+      $("#cajas_total").text(Math.round(totalCajasComplementar));
+      $("#btn_calcular").on("click", calculoPrecio);
+      $("#ic_right").on("click", flechaDerecha);
+      
 
 
    }
+
+
+   function calculoPrecio(){
+
+     precio = $("#txtPrecio").val();
+     var resultado = precio * Math.round(totalCajasComplementar);
+     precio = resultado;
+     $("#precio_total").text("$"+resultado);
+  
+     ActualizarPrecioBD();
+
+
+
+
+   }
+
+   function flechaDerecha()
+   {
+
+          navigator.notification.confirm(
+          "Para ver el vídeo necesitas conexión a internet ¿Dispones de dicha conexión?",
+          onConfirm,
+          "Aviso",
+          "No,Sí"
+
+      );
+
+   }
+
+    function cargarVideo()
+    {
+      var conexion = verificarConexion();
+          if(conexion != 'No network connection' && conexion != 'Unknown connection'){
+
+          xhReq.open("GET", "ayuda/video.html", false);
+          xhReq.send(null);
+          document.getElementById("contenidoCuerpo").innerHTML=xhReq.responseText;
+               
+               
+          }
+
+          else{
+            funcionesDeAyuda();
+            alert("No dispones de conexión a internet");
+          }
+
+    }
+
+
+   function onConfirm(button){
+     
+     if(button == 1){
+
+          funcionesDeAyuda();
+
+     }else{
+
+            cargarVideo();
+     }
+
+   }
+
+
+
 
    function wait(nsegundos) {
 objetivo = (new Date()).getTime() + 1000 * Math.abs(nsegundos);
@@ -535,7 +656,7 @@ while ( (new Date()).getTime() < objetivo );
           superficieTotal = superficie * 1.05;
           excedente = superficie * 0.05;
           totalCajas = superficieTotal / rendimientoCaja;
-           if(!isNaN(totalCajas) && imagen != null){
+           if(!isNaN(totalCajas)){
           //alert("Superficie"+superficie+"superficieTotal"+superficieTotal+"totalCajas"+totalCajas);
           //Reducir decimales
 
@@ -719,3 +840,22 @@ function fondoBlanco()
 
 
 }
+
+function verificarConexion(){
+
+        var networkState = navigator.connection.type;
+
+        var states = {};
+        states[Connection.UNKNOWN]  = 'Unknown connection';
+        states[Connection.ETHERNET] = 'Ethernet connection';
+        states[Connection.WIFI]     = 'WiFi connection';
+        states[Connection.CELL_2G]  = 'Cell 2G connection';
+        states[Connection.CELL_3G]  = 'Cell 3G connection';
+        states[Connection.CELL_4G]  = 'Cell 4G connection';
+        states[Connection.CELL]     = 'Cell generic connection';
+        states[Connection.NONE]     = 'No network connection';
+
+        return states[networkState];
+    
+
+   }

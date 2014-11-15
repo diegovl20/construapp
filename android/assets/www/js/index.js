@@ -105,8 +105,10 @@ function main(){
          {
 
            var tabla_tipo_proyecto = "CREATE TABLE IF NOT EXISTS tipo_proyecto( id_tipo_proyecto INTEGER PRIMARY KEY, nombre TEXT)";
+           var tabla_ceramicas = "CREATE TABLE IF NOT EXISTS ceramicas( id_ceramicas INTEGER PRIMARY KEY AUTOINCREMENT, url TEXT, rendimiento_caja FLOAT, modelo TEXT, marca TEXT, color TEXT, uso TEXT, formato TEXT, precio INTEGER, lugar TEXT)";
            var tabla_proyecto = "CREATE TABLE IF NOT EXISTS proyecto( id_proyecto INTEGER PRIMARY KEY AUTOINCREMENT, id_tipo_proyecto INTEGER, fecha DATE, fotografia TEXT,superficie_total float, total_cajas float, precio_total INTEGER, FOREIGN KEY(id_tipo_proyecto) references tipo_proyecto(id_tipo_proyecto))";
            tx.executeSql(tabla_tipo_proyecto);
+           tx.executeSql(tabla_ceramicas);
            tx.executeSql(tabla_proyecto);
            //tratar de usar localstorage
            var l = storage[key];
@@ -118,6 +120,65 @@ function main(){
               tx.executeSql(execute);
               var execute = "INSERT INTO tipo_proyecto VALUES(3, 'ladrillos')";
               tx.executeSql(execute);
+              /*ingresar ceramicas*/
+
+              var execute = "INSERT INTO ceramicas VALUES(null, 'ceramica/1.jpg', 1.53,'Cima Gris', 'Lamosa','Gris','Pisos y Muros','33x33',3810,'Sodimac');"
+              tx.executeSql(execute);
+
+              var execute = "INSERT INTO ceramicas VALUES(null, 'ceramica/2.jpg', 0.72,'Arcilla', 'Alberdi','Café Rojizo','Pisos y Muros','30x30',3953,'Sodimac');"
+              tx.executeSql(execute);
+
+              var execute = "INSERT INTO ceramicas VALUES(null, 'ceramica/3.jpg', 1.52,'Caribe', 'Lamosa','Gris','Muros','20x30',4241,'Sodimac');"
+              tx.executeSql(execute);
+
+              var execute = "INSERT INTO ceramicas VALUES(null, 'ceramica/4.jpg', 1.52,'Caribe', 'Lamosa','Beige','Muros','20x30',4241,'Sodimac');"
+              tx.executeSql(execute);
+
+              var execute = "INSERT INTO ceramicas VALUES(null, 'ceramica/5.jpg', 1.50,'Engobe', 'Kaztelo','Blanco','Muros','20x20',4485,'Sodimac');"
+              tx.executeSql(execute);
+
+              var execute = "INSERT INTO ceramicas VALUES(null, 'ceramica/6.jpg', 1.95,'Vulcano', 'Celima','Gris','Pisos','30x30',5246,'Sodimac');"
+              tx.executeSql(execute);
+
+              var execute = "INSERT INTO ceramicas VALUES(null, 'ceramica/7.jpg', 1.53,'Cima', 'Lamosa','Beige','Pisos y Muros','33x33',5340,'Sodimac');"
+              tx.executeSql(execute);
+
+              var execute = "INSERT INTO ceramicas VALUES(null, 'ceramica/8.jpg', 1.28,'Woodriver', 'Lamosa','Gris','Pisos y Muros','40x40',5747,'Sodimac');"
+              tx.executeSql(execute);
+
+              var execute = "INSERT INTO ceramicas VALUES(null, 'ceramica/9.jpg', 1.95,'Catahua', 'Celima','Café','Pisos','30x30',5831,'Sodimac');"
+              tx.executeSql(execute);
+
+              var execute = "INSERT INTO ceramicas VALUES(null, 'ceramica/10.jpg', 1.53,'Catalán', 'Celima','Café','Pisos','30x30',5831,'Sodimac');"
+              tx.executeSql(execute);
+
+              var execute = "INSERT INTO ceramicas VALUES(null, 'ceramica/11.jpg', 2.00,'Toledo', 'Moliza','Café','Pisos','40x40',5980,'Sodimac');"
+              tx.executeSql(execute);
+
+              var execute = "INSERT INTO ceramicas VALUES(null, 'ceramica/12.jpg', 1.50,'Enix Marfil', 'Cordillera','Beige','Muros','20x33',5985,'Sodimac');"
+              tx.executeSql(execute);
+
+              var execute = "INSERT INTO ceramicas VALUES(null, 'ceramica/13.jpg', 2.00,'Roca', 'Roca','Beige','Pisos','30x30',5980,'Easy');"
+              tx.executeSql(execute);
+
+              var execute = "INSERT INTO ceramicas VALUES(null, 'ceramica/14.jpg', 2.33,'Nativa', 'Nativa','Café','Pisos','36x36',8365,'Easy');"
+              tx.executeSql(execute);
+
+              var execute = "INSERT INTO ceramicas VALUES(null, 'ceramica/15.jpg', 2.00,'Evora HD', 'Evora HD','Variado','Pisos','45x45',11980,'Easy');"
+              tx.executeSql(execute);
+
+              var execute = "INSERT INTO ceramicas VALUES(null, 'ceramica/16.jpg', 1.50,'Alhambra', 'Alhambra','Verde','Pisos','33x20',8685,'Easy');"
+              tx.executeSql(execute);
+
+              var execute = "INSERT INTO ceramicas VALUES(null, 'ceramica/17.jpg', 0.96,'Piedra Pizarra', 'Piedra Pizarra','Gris','Pisos','40x40',9590,'Easy');"
+              tx.executeSql(execute);
+
+              var execute = "INSERT INTO ceramicas VALUES(null, 'ceramica/18.jpg', 1.99,'Cemento', 'Cemento','Gris Plata','Pisos','40x40',6945,'Easy');"
+              tx.executeSql(execute);
+
+
+
+
 
               storage.setItem(key,"ingresado");
 
@@ -466,6 +527,188 @@ function main(){
         }
 
 
+         function ListarCeramicasBD(){
+
+              var db = window.openDatabase("ConstruApp", "1.0", "DB ConstruApp", 20000);
+              //consulta principar para listar proyectos
+              db.transaction(queryListarDB, errorQueryDB);  
+
+
+         }
+
+         function queryListarDB(tx){
+             var consulta = "SELECT * FROM ceramicas";
+             tx.executeSql(consulta,[],consultaListarSuccess, consultaListarError);
+
+
+         }
+         function consultaListarSuccess(tx,results){
+            // programar aquí 
+            
+
+                 $("#contenidoCuerpo").css("background", "#FBC636");
+                  var topp = 110;
+                  for (var i = 0; i < results.rows.length ; i++) {
+                        
+
+                          var item = results.rows.item(i);
+                          var imagenCeramica = "img/"+item.url;
+                      if(i !=0){
+
+                          $("#lista-proyectos").append('<li class="listado-proyecto"><div class="contenedor-ceramica_'+item.id_ceramicas+'"><img src="'+imagenCeramica+'" class="imagen_ceramica_'+item.id_ceramicas+'"/><span class="span-uso_'+item.id_ceramicas+'">Uso:</span> <span class="info_uso_'+item.id_ceramicas+'">'+item.uso+'</span><span class="span-dimension_'+item.id_ceramicas+'">Dimensión:</span> <span class="info_dimension_'+item.id_ceramicas+'">'+item.formato+'</span><span class="span-precio_'+item.id_ceramicas+'">Precio: </span> <span class="info-precio_'+item.id_ceramicas+'">$'+item.precio+'</span><span class="id-listado-ceramica">'+item.id_ceramicas+'</span></div><img class="btn-mas-info_'+item.id_ceramicas+'" src="img/ic_entrar.png"/></li>');
+
+                           var contenedorCeramicaCSS = {
+                                "width": "100%",
+                                "height": "63px"  
+
+
+                            };
+
+                            $(".contenedor-ceramica_"+item.id_ceramicas).css(contenedorCeramicaCSS);
+
+
+                            var imagenCeramicaCSS = {
+                                  float: "left",
+                                  "margin-top": "7px",
+                                  "border-radius": "5px",
+                                  "width": "50px",
+                                  "height": "50px",
+                                  "margin-left": "11px"
+                            };
+
+                            $(".imagen_ceramica_"+item.id_ceramicas).css(imagenCeramicaCSS);
+
+                            //sigue span-uso_
+
+                            var spanUsoCSS = {
+
+                                  "margin-left": "2px", /*Disminuir mueve a la derecha; aumentar hacia la izquierda*/
+                                  "margin-top": "15px",
+                                  "font-size": "10px",
+                                  "color": "black",
+                                  "font-family": 'Contra',
+                                  "font-weight": "bold",
+                                  "position": "absolute"
+                            };
+
+                            $(".span-uso_"+item.id_ceramicas).css(spanUsoCSS);
+
+
+                            var infoUsoCSS = {
+                                  "margin-left": "25px",/*aumentar mueve hacia la derecha*/
+                                  "margin-top": "15px",
+                                  "font-size": "10px",
+                                  "color": "black",
+                                  "font-family": 'Contra',
+                                  "font-weight": "bold",
+                                  "position": "absolute"
+                             
+                            };
+
+                            $(".info_uso_"+item.id_ceramicas).css(infoUsoCSS);
+
+                            //span-dimension
+
+                            var dimensionCSS = {
+                                  "margin-left": "2px", /*aumentar mueve hacia la izquierda; disminuir hacia la derecha*/
+                                  "margin-top": "26px",
+                                  "font-size": "10px",
+                                  "color": "black",
+                                  "font-family": 'Contra',
+                                  "font-weight": "bold",
+                                  "position": "absolute"
+
+                            };
+
+                            $(".span-dimension_"+item.id_ceramicas).css(dimensionCSS);
+
+
+                            var infoDimesionCSS = {
+
+                                  "margin-left": "57px", /*disminuir mueve hacia la izquierda; aumentar hacia la derecha*/
+                                  "margin-top": "26px",
+                                  "font-size": "10px",
+                                  "color": "black",
+                                  "font-family": 'Contra',
+                                  "font-weight": "bold",
+                                  "position": "absolute"
+
+
+                            };
+
+
+                            $(".info_dimension_"+item.id_ceramicas).css(infoDimesionCSS);
+
+                            var spanPrecioCSS = {
+
+                                  "margin-left": "2px",/*aumentar mueve a la izquierda*/
+                                  "margin-top": "38px",
+                                  "font-size": "10px",
+                                  "color": "black",
+                                  "font-family": 'Contra',
+                                  "font-weight": "bold",
+                                  "position": "absolute"
+
+                            };
+
+                            $(".span-precio_"+item.id_ceramicas).css(spanPrecioCSS);
+
+
+                            var infoPrecioCSS = {
+
+                                  "margin-left": "35px", /*aumentar move a la drecha;*/
+                                  "margin-top": "38px",
+                                  "font-size": "10px",
+                                  "color": "black",
+                                  "font-family": 'Contra',
+                                  "font-weight": "bold",
+                                  "position": "absolute"
+
+                            };
+
+                            $(".info-precio_"+item.id_ceramicas).css(infoPrecioCSS);
+
+
+                            var btnMasInfoCSS = {
+
+                                  "margin-left": "270px",
+                                  "margin-top": "-280px",/*aumentar*/
+                                  "top":"-33px", /*dis hacia abajo*/
+                                  "height": "20px",
+                                  "width": "20px",
+                                  "position": "relative"
+
+                            };
+
+                            $(".btn-mas-info_"+item.id_ceramicas).css(btnMasInfoCSS);
+                            //topp+=60;
+
+
+
+
+                      }else{ 
+
+
+                          
+                          $("#lista-proyectos").append('<li class="listado-proyecto"><div class="contenedor-ceramica"><img src="'+imagenCeramica+'" class="imagen_ceramica"/><span class="span-uso">Uso:</span> <span class="info_uso">'+item.uso+'</span><span class="span-dimension">Dimensión:</span> <span class="info_dimension">'+item.formato+'</span><span class="span-precio">Precio: </span> <span class="info-precio">$'+item.precio+'</span><span class="id-listado-ceramica">'+item.id_ceramicas+'</span></div><img class="btn-mas-info" src="img/ic_entrar.png"/></li>');
+                       }
+
+
+                }
+                wait(2);
+                
+                navigator.notification.activityStop();
+
+
+
+         }
+
+         function consultaListarError(err){
+          alert("consultaListarError: "+err.code);
+         }
+
+
+
   /*FUNCIONES PARA LA CAMARA */
 
   function capturarFotografiaEditable()
@@ -561,6 +804,7 @@ function main(){
       $("#cajas_total").text(Math.round(totalCajasComplementar));
       $("#btn_calcular").on("click", calculoPrecio);
       $("#ic_right").on("click", flechaDerecha);
+      $("#ic_left").on("click", flechaIzquierda)
       
 
 
@@ -624,6 +868,22 @@ function main(){
 
             cargarVideo();
      }
+
+   }
+
+
+
+   function flechaIzquierda(){
+     
+          navigator.notification.activityStart("Por favor espere", "Cargando Contenido.....");
+          xhReq.open("GET", "listado_ceramicas/listado_ceramicas.html", false);
+          xhReq.send(null);
+          document.getElementById("contenidoCuerpo").innerHTML=xhReq.responseText;
+
+          ListarCeramicasBD();
+
+
+
 
    }
 

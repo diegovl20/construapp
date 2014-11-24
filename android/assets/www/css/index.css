@@ -21,7 +21,7 @@ a {
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
-hr {border: 0; height: 12px; box-shadow: inset 0 12px 12px -12px orange;}
+hr {border: 0; height: 12px; box-shadow: inset 0 12px 12px -12px orange; margin-top: 5%; margin-bottom: -5%;}
 
 /*Inicio estilos de la cabecera*/
 #header {
@@ -148,14 +148,8 @@ hr {border: 0; height: 12px; box-shadow: inset 0 12px 12px -12px orange;}
 
 }
 
-#simple{
 
-   width: 90%;
-   margin: 0 auto;
-
-}
-
-#simple h1, #divCalculoDinero h1, #divVideoYoutube h1{
+#simple h1, #divCalculoDinero h1, #divVideoYoutube h1, #contenedor-tabla h1, #contenedor-imagen-ceramica h1, #divDragDrop h1{
 
     text-align: center;
     font-family: 'Contra';
@@ -174,15 +168,24 @@ hr {border: 0; height: 12px; box-shadow: inset 0 12px 12px -12px orange;}
 #cuadroResultados{
     font-family: 'Contra';
     width: 100%;
-    border: 1px solid black;
     padding: 5px;
-    margin-left: -10px;
+    margin-left: -1.9%;
     background: #f0f0f0;
     border-radius: 8px 0 8px 0;
 
 }
 
-#divCalculoDinero, #divVideoYoutube{
+#superficie_total, #total_metros, #total_cajas, #total_precio, #caja_precio, #excedente, #resultado{
+    margin-bottom: -3.1%;
+    font-size: 12px;
+    margin-left: 4%;
+}
+
+#resultado{
+    margin-bottom: 4%;
+}
+
+#divCalculoDinero, #divVideoYoutube, #contenedor-tabla, #contenedor-imagen-ceramica, #simple, #divDragDrop{
 
     font-family: 'Contra';
     width: 90%;
@@ -225,7 +228,7 @@ hr {border: 0; height: 12px; box-shadow: inset 0 12px 12px -12px orange;}
     letter-spacing: 3px;
 }
 
-#formulario button, #btn_guardar, #btn_calcular{
+#formulario button, #btn_guardar, #btn_calcular, #btnVerCeramica, #btnGuardarCeramica, #btnDeshacer, #btnRotar{
 
     width: 95%;
     margin-left: 7px;
@@ -238,6 +241,7 @@ hr {border: 0; height: 12px; box-shadow: inset 0 12px 12px -12px orange;}
     letter-spacing: 3px;
     border: none;
 }
+
 
 .compartir-btn-espacio{
     width: 45%;
@@ -258,8 +262,9 @@ img#imgLugar{
 
     display: none;
     height: 130px;
-    width:  265px;
-    margin-right: -10px;
+    width:  95%; /*265*/
+    /*margin-right: -10px;*/
+    margin: 0% auto;
   
 
 }
@@ -731,3 +736,338 @@ span.info-precio{
 }
 
 /*FIN LISTADO CERAMICa*/
+
+/*Tabla Detalles Cerámicas*/
+#tablaFichaT {
+height: auto;
+padding-left: 0px;
+padding-right: 18px;
+padding-top: 18px;
+width: 292px;
+}
+
+.tituloFT {
+border-bottom: 1px solid #CCC;
+color: #666;
+font-size: 11px;
+padding: 6px 0 6px 8px;
+font-weight: bold;
+}
+
+tr#fila2 {
+background-color: #f0f0f0;
+}
+
+tr#fila1 {
+background-color: #fff;
+}
+
+.contFT {
+border-bottom: 1px solid #CCC;
+color: #666;
+font-size: 10px;
+padding: 6px 0 6px 8px;
+}
+
+#contenedor-btn{
+
+    width: 100%;
+    margin-top: 20px;
+    margin-left: -7px;
+}
+/*FIN TABLAS*/
+
+#btnVerCeramica, #btnGuardarCeramica{
+
+    display: inline-block;
+    width: 35%;
+    font-size: 9px;
+}
+
+#btnGuardarCeramica{
+    position: absolute;
+    width: 90px;
+}
+
+#btnVerCeramica{
+    width: 90px;
+
+}
+
+
+#imgGps{
+
+    
+    margin-left: 200px;
+    margin-top: -44px; /*aumentar para subir*/
+    font-size: 11px;
+    font-family: 'Contra';
+    border:1px solid black;
+    width: 22%;
+    height: 32px;
+    padding: 5px;
+
+}
+
+
+#imgVerTiendaGPS{
+
+    width: 20px;
+    height: 20px;
+    margin-top:-5px;
+    margin-left:17px;
+
+
+}
+
+span#verTienda{
+    margin-top: 21px;
+    position: absolute;
+    margin-left: 4px;
+
+}
+
+#imgCeramicaWallpaper{
+    width: 100%;
+    margin: 0 auto;
+    height: 280px;
+}
+
+#contenedorCeramicaAgregada{
+    width: 10%;
+    margin-left: 81%;
+    margin-top: -26%;
+
+
+}
+
+#txtCeramicaAgregada{
+ font-size: 12px;
+ margin-left: -20%;
+
+
+}
+
+#imgCeramicaAgregada{
+    width: 150%;
+
+
+}
+
+#map-canvas{ 
+                width:100%; 
+                height:400px; 
+            }
+h1#h1ComoLlegar{
+
+font-size: 13px;
+font-family: 'Contra';
+background: white;
+margin-top: 15px;
+margin-left: -3px;
+line-height: 30px;
+} 
+/*DRAG DROP*/
+#fotografia{
+position: relative;
+width: 100%;
+height: 250px;
+background-color: #ccc;
+opacity: 1.0;
+}
+
+
+#resizeMe {
+position: absolute;
+width: 50%;
+height: 200px;
+top: 70px;
+cursor: move;
+opacity: 1.0;
+background-position: -190px -20px;
+background-repeat: no-repeat;
+border: 3px solid #E7EBDF;
+}
+
+#resizeSE, #resizeE, #resizeNE, #resizeN, #resizeNW, #resizeW, #resizeSW, #resizeS, #resizeA, #resizeB {
+position: absolute;
+width: 8px;
+height: 8px;
+background-color: #333;
+border: 1px solid #fff;
+overflow: hidden;
+}
+
+
+#resizeSE {
+bottom: -10px;
+right: -10px;
+cursor: se-resize;
+}
+
+#resizeE {
+top: 50%;
+right: -10px;
+margin-top: -5px;
+cursor: e-resize;
+}
+
+#resizeNE {
+top: -10px;
+right: -10px;
+cursor: ne-resize;
+}
+
+#resizeN {
+top: -10px;
+left: 50%;
+margin-left: -5px;
+cursor: n-resize;
+}
+
+#resizeNW {
+top: -10px;
+left: -10px;
+cursor: nw-resize;
+}
+
+#resizeW {
+top: 50%;
+left: -10px;
+margin-top: -5px;
+cursor: w-resize;
+}
+
+#resizeS {
+bottom: -10px;
+left: 50%;
+margin-left: -5px;
+cursor: s-resize;
+}
+
+#resizeA {
+bottom: -10px;
+left: 100%;
+margin-left: -5px;
+cursor: s-resize;
+}
+
+#resizeB {
+bottom: 58px;
+left: 0%;
+margin-left: -5px;
+cursor: s-resize;
+}
+
+
+
+#resizeSW {
+left: -10px;
+bottom: -10px;
+cursor: sw-resize;
+}
+
+#contenedorCeramicasDrag{
+
+    width: 100%;
+    height: 100px;
+    border: 1px solid black;
+}
+#fila9Ceramicas{
+    margin: 1px;
+}
+
+.ceramicaDrag{
+ width: 40px;
+ height: 40px;
+
+    
+}
+
+#control{
+    width: 90%;
+    height: 30px;
+}
+
+#controlDrag{
+font-family: 'Contra';
+font-size: 14px;
+padding: 2px;
+position: absolute;
+margin-top: 5px;
+margin-left: 50px;
+box-shadow: 1px 1px 1px 0.9px rgba(0, 0, 0, 0.48);
+
+}
+
+#btnAgrandar, #btnReducir{
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    border-radius: 2px;
+}
+
+#btnAgrandar{
+background-color: black;
+color: white;
+font-size: 10px;
+margin-left: 120px;
+}
+
+
+#btnReducir{
+     background-color: black;
+     margin-left: 8px;
+}
+
+#imgMas{
+    width: 10%;
+    height: 10%;
+}
+
+#hrDrag{
+margin-top: 1%;
+margin-bottom: -2%;
+box-shadow: inset 0 11px 12px -14px black;
+}
+
+#insideParent,#insideParent2,#insideParent3,#insideParent4,#insideParent5,#insideParent6,#insideParent7,#insideParent8,#insideParent9,#insideParent10,#insideParent11,#insideParent12{
+
+    width: auto;
+    height: auto;
+    margin-left: 2px;
+    margin-top: 2px;
+    opacity: 1.0;
+    position: absolute;
+    top:356px;
+    left:40px;
+}
+
+.buttonDrag{
+width: 30%;
+height: auto;
+margin-left: 60px;
+position: absolute;
+margin-top: 23px;
+}
+
+.status{
+
+    margin-left: 160px;
+}
+
+#btnDeshacer, #btnRotar{
+
+    margin-top: -0.2px;
+    height: 40px;
+}
+
+#slcLugarDeVenta {
+font-family: 'Contra';
+border: 2px solid #FBC636;
+top: 17px;
+margin-left: 75px;
+position: absolute;
+font-size: 11px;
+width: 70%;
+}

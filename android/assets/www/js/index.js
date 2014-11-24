@@ -3,6 +3,7 @@ var myScroll, myScrollMenu, cuerpo, menuprincipal, wrapper, estado;
 var xhReq = new XMLHttpRequest();
 var pictureSource,destinationType;
 var imagen = null;
+var imagenCeramicaEscogida;
 var key = "estado";
 var storage;
 var tipo;
@@ -13,6 +14,16 @@ var toggleMenu = true;
 var idComplementar;
 var salirApp = true;
 var precio;
+var idCeramica;
+var totalCajasParaPrecio;
+var map;
+var myLatLng;
+var directionsDisplay;
+var directionsService;
+var lugar;
+var statusDraggable = true;
+var fotografiaLugar;
+var anguloRotacionCeramica = 90;
 //EN DUDA
 
 var fotografiaComplementar = ""; 
@@ -94,6 +105,8 @@ function main(){
     var db = window.openDatabase("ConstruApp", "1.0", "DB ConstruApp", 200000);
     db.transaction(populateDB, errorDB, succesDB);
 
+
+
     //destinationType=navigator.camera.DestinationType;
     //pictureSource = navigator.camera.PictureSourceType;
     
@@ -106,7 +119,7 @@ function main(){
 
            var tabla_tipo_proyecto = "CREATE TABLE IF NOT EXISTS tipo_proyecto( id_tipo_proyecto INTEGER PRIMARY KEY, nombre TEXT)";
            var tabla_ceramicas = "CREATE TABLE IF NOT EXISTS ceramicas( id_ceramicas INTEGER PRIMARY KEY AUTOINCREMENT, url TEXT, rendimiento_caja FLOAT, modelo TEXT, marca TEXT, color TEXT, uso TEXT, formato TEXT, precio INTEGER, lugar TEXT)";
-           var tabla_proyecto = "CREATE TABLE IF NOT EXISTS proyecto( id_proyecto INTEGER PRIMARY KEY AUTOINCREMENT, id_tipo_proyecto INTEGER, fecha DATE, fotografia TEXT,superficie_total float, total_cajas float, precio_total INTEGER, FOREIGN KEY(id_tipo_proyecto) references tipo_proyecto(id_tipo_proyecto))";
+           var tabla_proyecto = "CREATE TABLE IF NOT EXISTS proyecto( id_proyecto INTEGER PRIMARY KEY AUTOINCREMENT, id_tipo_proyecto INTEGER, fecha DATE, fotografia TEXT,superficie_total float, total_cajas float, precio_total INTEGER,id_ceramicas INTEGER, FOREIGN KEY(id_tipo_proyecto) references tipo_proyecto(id_tipo_proyecto))";
            tx.executeSql(tabla_tipo_proyecto);
            tx.executeSql(tabla_ceramicas);
            tx.executeSql(tabla_proyecto);
@@ -276,6 +289,12 @@ function main(){
                  arrayProyecto[3] = item.fotografia;
                  arrayProyecto[4] = item.superficie_total;
                  arrayProyecto[5] = item.total_cajas;*/
+                 if(item.id_ceramicas == 0){
+
+                  xhReq.open("GET", "complementacion/opcion1.html", false);
+                  xhReq.send(null);
+                  document.getElementById("contenidoCuerpo").innerHTML=xhReq.responseText;
+                  $("#btn_ayuda").on("click", funcionesDeAyuda);
                 
                  fotografiaComplementar = item.fotografia;
                  totalCajasComplementar = item.total_cajas;
@@ -286,6 +305,32 @@ function main(){
                  //alert(fotografiaComplementar);
                  superficieTotalComplementar = item.superficie_total;
                  //totalCajasComplementar = Math.round(item.total_cajas);
+                }else{
+
+                  navigator.notification.activityStart("Por favor espere", "Cargando Contenido...");
+                  xhReq.open("GET", "complementacion/opcion1_con_ceramica_guardada.html", false);
+                  xhReq.send(null);
+                  document.getElementById("contenidoCuerpo").innerHTML=xhReq.responseText;
+                  $("#btn_ayuda").on("click", funcionesDeAyuda);
+                  $("#btn_complementar").on("click", funcionComplementar);
+                  
+
+                  fotografiaComplementar = item.fotografia;
+                  totalCajasComplementar = item.total_cajas;
+                  $("#imgLugar").attr("src", fotografiaComplementar);
+                  $("#total_superficie").text(item.superficie_total);
+                  $("#tipo_proyecto_complementar").text(array_tipo_proyecto[item.id_tipo_proyecto]);
+                  $("#cajas_total").text(Math.round(item.total_cajas));
+                  //alert(fotografiaComplementar);
+                  superficieTotalComplementar = item.superficie_total;
+                  idCeramica = item.id_ceramicas;
+                  fotografiaLugar = item.fotografia;
+                  totalCajasParaPrecio = Math.round(item.total_cajas);
+                  verPrecioCeramicaBD();
+
+
+
+                }
 
              }
 
@@ -473,7 +518,7 @@ function main(){
             //alert("guardar proyecto: "+superficieTotal+" totalCajas: "+totalCajas);
             var fecha_actual = new Date();
             var fecha = fecha_actual.getDate()+"-"+(fecha_actual.getMonth()+1)+"-"+fecha_actual.getFullYear();
-            tx.executeSql("INSERT INTO proyecto (id_proyecto, id_tipo_proyecto, fecha, fotografia, superficie_total, total_cajas, precio_total) values (?,?,?,?,?,?,?)",[null,tipo,fecha,imagen,superficieTotal,totalCajas,0]);
+            tx.executeSql("INSERT INTO proyecto (id_proyecto, id_tipo_proyecto, fecha, fotografia, superficie_total, total_cajas, precio_total, id_ceramicas) values (?,?,?,?,?,?,?,?)",[null,tipo,fecha,imagen,superficieTotal,totalCajas,0,0]);
 
 
          }
@@ -555,7 +600,7 @@ function main(){
                           var imagenCeramica = "img/"+item.url;
                       if(i !=0){
 
-                          $("#lista-proyectos").append('<li class="listado-proyecto"><div class="contenedor-ceramica_'+item.id_ceramicas+'"><img src="'+imagenCeramica+'" class="imagen_ceramica_'+item.id_ceramicas+'"/><span class="span-uso_'+item.id_ceramicas+'">Uso:</span> <span class="info_uso_'+item.id_ceramicas+'">'+item.uso+'</span><span class="span-dimension_'+item.id_ceramicas+'">Dimensión:</span> <span class="info_dimension_'+item.id_ceramicas+'">'+item.formato+'</span><span class="span-precio_'+item.id_ceramicas+'">Precio: </span> <span class="info-precio_'+item.id_ceramicas+'">$'+item.precio+'</span><span class="id-listado-ceramica">'+item.id_ceramicas+'</span></div><img class="btn-mas-info_'+item.id_ceramicas+'" src="img/ic_entrar.png"/></li>');
+                          $("#lista-proyectos").append('<li class="listado-proyecto" id="'+item.id_ceramicas+'"><div class="contenedor-ceramica_'+item.id_ceramicas+'"><img src="'+imagenCeramica+'" class="imagen_ceramica_'+item.id_ceramicas+'"/><span class="span-uso_'+item.id_ceramicas+'">Uso:</span> <span class="info_uso_'+item.id_ceramicas+'">'+item.uso+'</span><span class="span-dimension_'+item.id_ceramicas+'">Dimensión:</span> <span class="info_dimension_'+item.id_ceramicas+'">'+item.formato+'</span><span class="span-precio_'+item.id_ceramicas+'">Precio: </span> <span class="info-precio_'+item.id_ceramicas+'">$'+item.precio+'</span><span class="id-listado-ceramica">'+item.id_ceramicas+'</span></div><img class="btn-mas-info_'+item.id_ceramicas+'" src="img/ic_entrar.png"/></li>');
 
                            var contenedorCeramicaCSS = {
                                 "width": "100%",
@@ -690,12 +735,13 @@ function main(){
 
 
                           
-                          $("#lista-proyectos").append('<li class="listado-proyecto"><div class="contenedor-ceramica"><img src="'+imagenCeramica+'" class="imagen_ceramica"/><span class="span-uso">Uso:</span> <span class="info_uso">'+item.uso+'</span><span class="span-dimension">Dimensión:</span> <span class="info_dimension">'+item.formato+'</span><span class="span-precio">Precio: </span> <span class="info-precio">$'+item.precio+'</span><span class="id-listado-ceramica">'+item.id_ceramicas+'</span></div><img class="btn-mas-info" src="img/ic_entrar.png"/></li>');
+                          $("#lista-proyectos").append('<li class="listado-proyecto" id="'+item.id_ceramicas+'"><div class="contenedor-ceramica"><img src="'+imagenCeramica+'" class="imagen_ceramica"/><span class="span-uso">Uso:</span> <span class="info_uso">'+item.uso+'</span><span class="span-dimension">Dimensión:</span> <span class="info_dimension">'+item.formato+'</span><span class="span-precio">Precio: </span> <span class="info-precio">$'+item.precio+'</span><span class="id-listado-ceramica">'+item.id_ceramicas+'</span></div><img class="btn-mas-info" src="img/ic_entrar.png"/></li>');
                        }
 
 
                 }
                 wait(2);
+                $(".listado-proyecto").on("click", accederCeramica);
                 
                 navigator.notification.activityStop();
 
@@ -706,6 +752,157 @@ function main(){
          function consultaListarError(err){
           alert("consultaListarError: "+err.code);
          }
+
+         function verCeramicaBD(){
+
+              var db = window.openDatabase("ConstruApp", "1.0", "DB ConstruApp", 20000);
+
+              db.transaction(queryVerCeramicaDB, errorDB);  
+
+
+         }
+
+
+
+        function queryVerCeramicaDB(tx){
+             var consulta = "SELECT * FROM ceramicas WHERE id_ceramicas ="+idCeramica;
+             tx.executeSql(consulta,[],consultaVerCeramicaSuccess, errorQueryDB);
+
+
+         }
+
+
+
+         function consultaVerCeramicaSuccess(tx,results){
+               
+             for (var i = 0; i < results.rows.length ; i++) {
+
+                 var item = results.rows.item(i);
+
+                 $("#txtRendimiento").text(item.rendimiento_caja+" m2");
+                 $("#txtFormato").text(item.formato+" cm");
+                 $("#txtModelo").text(item.modelo);
+                 $("#txtMarca").text(item.marca);
+                 $("#txtColor").text(item.color);
+                 $("#txtUso").text(item.uso);
+                 $("#txtPrecio").text("$"+item.precio);
+                 $("#txtLugarVenta").text(item.lugar); 
+                 lugar = item.lugar;               
+ 
+
+
+             }
+
+         }
+
+
+        function verPrecioCeramicaBD(){
+
+              var db = window.openDatabase("ConstruApp", "1.0", "DB ConstruApp", 20000);
+
+              db.transaction(queryVerPrecioCeramicaDB, errorDB);  
+
+
+         }
+
+
+
+        function queryVerPrecioCeramicaDB(tx){
+             var consulta = "SELECT * FROM ceramicas WHERE id_ceramicas ="+idCeramica;
+             tx.executeSql(consulta,[],consultaVerPrecioCeramicaSuccess, errorQueryDB);
+
+
+         }
+
+
+
+         function consultaVerPrecioCeramicaSuccess(tx,results){
+               
+             for (var i = 0; i < results.rows.length ; i++) {
+
+                 var item = results.rows.item(i);
+                 var imagenCeramica = "img/"+item.url;
+                 imagenCeramicaEscogida = imagenCeramica;
+                  $("#precio_caja").text("$"+item.precio);
+                  $("#imgCeramicaAgregada").attr("src", imagenCeramica);
+                  var precio = totalCajasParaPrecio * item.precio;
+                  $("#precio_total").text("$"+precio); 
+                  lugar = item.lugar;
+
+
+             }
+             wait(1);
+             navigator.notification.activityStop();
+        }
+
+
+
+
+
+
+     function verCeramicaWallpaperBD(){
+
+          var db = window.openDatabase("ConstruApp", "1.0", "DB ConstruApp", 20000);
+
+           db.transaction(queryVerCeramicaWallpaperDB, errorDB);  
+
+
+         }
+
+
+
+        function queryVerCeramicaWallpaperDB(tx){
+             var consulta = "SELECT * FROM ceramicas WHERE id_ceramicas ="+idCeramica;
+             tx.executeSql(consulta,[],consultaVerCeramicaWallpaperSuccess, errorQueryDB);
+
+
+         }
+
+
+
+         function consultaVerCeramicaWallpaperSuccess(tx,results){
+               
+             for (var i = 0; i < results.rows.length ; i++) {
+
+                 var item = results.rows.item(i);
+                 var imagenCeramica = "img/"+item.url;
+
+                 $("#imgCeramicaWallpaper").attr("src", imagenCeramica);
+
+
+             }
+
+         }
+
+        function guardarCeramicaBD(){
+
+          var db = window.openDatabase("ConstruApp", "1.0", "DB ConstruApp", 20000);
+
+           db.transaction(queryGuardarCeramicaDB, errorDB);  
+
+
+         }
+
+
+
+        function queryGuardarCeramicaDB(tx){
+             var consulta = "update proyecto set id_ceramicas ="+idCeramica+" where id_proyecto ="+idComplementar;
+             
+             tx.executeSql(consulta,[],consultaGuardarCeramicaSuccess, errorQueryDB);
+
+
+         }
+
+
+
+         function consultaGuardarCeramicaSuccess(tx,results){
+               alert("Cerámica Guardada");
+              pantallaPrincipal();
+              verificarProyectos();
+                
+
+         }
+
 
 
 
@@ -775,15 +972,11 @@ function main(){
         var id = $(this).attr('id');
         idComplementar = id;
 
-        xhReq.open("GET", "complementacion/opcion1.html", false);
-        xhReq.send(null);
-        document.getElementById("contenidoCuerpo").innerHTML=xhReq.responseText;
         salirApp = false;
         fondoBlanco();
         //debugger;
         complementarBD();
       
-        $("#btn_ayuda").on("click", funcionesDeAyuda);
         //btn_complementar...
         //wait(10);
 
@@ -818,7 +1011,7 @@ function main(){
      precio = resultado;
      $("#precio_total").text("$"+resultado);
   
-     ActualizarPrecioBD();
+     //ActualizarPrecioBD();
 
 
 
@@ -846,6 +1039,9 @@ function main(){
           xhReq.open("GET", "ayuda/video.html", false);
           xhReq.send(null);
           document.getElementById("contenidoCuerpo").innerHTML=xhReq.responseText;
+
+          $("#ic_right").on("click", flechaIzquierda);
+          $("#ic_left").on("click", flechaIzquierda2)
                
                
           }
@@ -856,6 +1052,20 @@ function main(){
           }
 
     }
+
+
+    function flechaIzquierda2(){
+
+      xhReq.open("GET", "ayuda/ayuda.html", false);
+      xhReq.send(null);
+      document.getElementById("contenidoCuerpo").innerHTML=xhReq.responseText;
+      $("#cajas_total").text(Math.round(totalCajasComplementar));
+      $("#btn_calcular").on("click", calculoPrecio);
+      $("#ic_right").on("click", flechaDerecha);
+      $("#ic_left").on("click", flechaIzquierda)
+    }
+
+
 
 
    function onConfirm(button){
@@ -875,7 +1085,7 @@ function main(){
 
    function flechaIzquierda(){
      
-          navigator.notification.activityStart("Por favor espere", "Cargando Contenido.....");
+          navigator.notification.activityStart("Por favor espere", "Cargando Contenido...");
           xhReq.open("GET", "listado_ceramicas/listado_ceramicas.html", false);
           xhReq.send(null);
           document.getElementById("contenidoCuerpo").innerHTML=xhReq.responseText;
@@ -916,7 +1126,7 @@ while ( (new Date()).getTime() < objetivo );
           superficieTotal = superficie * 1.05;
           excedente = superficie * 0.05;
           totalCajas = superficieTotal / rendimientoCaja;
-           if(!isNaN(totalCajas)){
+           if(!isNaN(totalCajas) && imagen != null){
           //alert("Superficie"+superficie+"superficieTotal"+superficieTotal+"totalCajas"+totalCajas);
           //Reducir decimales
 
@@ -1119,3 +1329,267 @@ function verificarConexion(){
     
 
    }
+
+
+function accederCeramica(){
+
+      xhReq.open("GET", "tabla_ceramica/tabla_ceramica.html", false);
+      xhReq.send(null);
+      document.getElementById("contenidoCuerpo").innerHTML=xhReq.responseText;
+      $("#btnVerCeramica").on('click', verCeramicaWallpaper);
+      $("#btnGuardarCeramica").on('click', guardarCeramica);
+      $("#imgGps").on('click', verMapa);
+
+      idCeramica = $(this).attr('id');
+      verCeramicaBD();
+
+}
+
+
+function verCeramicaWallpaper()
+{
+      xhReq.open("GET", "wallpapers/ceramica.html", false);
+      xhReq.send(null);
+      document.getElementById("contenidoCuerpo").innerHTML=xhReq.responseText;
+      verCeramicaWallpaperBD();
+
+}
+
+function guardarCeramica(){
+  
+    guardarCeramicaBD();
+  
+}
+
+
+function verMapa(){
+      if(lugar == "Sodimac")
+      {
+          xhReq.open("GET", "mapa/mapa_homcenter.html", false);
+          xhReq.send(null);
+          document.getElementById("contenidoCuerpo").innerHTML=xhReq.responseText;
+          navigator.geolocation.getCurrentPosition(onSuccessGPS, onErrorGPS);
+      }else{
+
+          xhReq.open("GET", "mapa/mapa_easy.html", false);
+          xhReq.send(null);
+          document.getElementById("contenidoCuerpo").innerHTML=xhReq.responseText;
+          navigator.geolocation.getCurrentPosition(onSuccessGPS, onErrorGPS);
+
+
+      }
+
+      $("#slcLugarDeVenta").on("change",actualizarMapa);
+
+
+}
+
+
+
+
+function onSuccessGPS(position){
+  
+  inicializarMapa(position.coords.latitude, position.coords.longitude);
+
+}
+
+
+function onErrorGPS(error){
+
+  alert('code: '    + error.code    + '\n' + 'message: ' + error.message + '\n');
+
+
+}
+
+
+function inicializarMapa(latitud, longitud){
+                
+                myLatlng = new google.maps.LatLng(latitud, longitud);
+                directionsService = new google.maps.DirectionsService();
+                directionsDisplay = new google.maps.DirectionsRenderer();
+                var mapOptions = { 
+                    zoom: 12, 
+                    center: myLatlng
+                  };
+
+                  map = new google.maps.Map(document.getElementById('map-canvas'),mapOptions);
+
+                 var marker = new google.maps.Marker({ 
+                    position: myLatlng, 
+                    map: map, 
+                    title: 'Mi punto en el mapa' 
+                }); 
+                 
+               marker.setMap(map);
+               directionsDisplay.setMap(map);
+                var lugar = $("#slcLugarDeVenta").val();
+                var coordenadas = lugar.split(";")
+                calcRoute(coordenadas[0],coordenadas[1]);
+
+}
+
+
+function actualizarMapa(){
+ 
+  var lugar = $("#slcLugarDeVenta").val();
+  var coordenadas = lugar.split(";")
+  calcRoute(coordenadas[0],coordenadas[1]);
+ 
+
+}
+
+
+
+
+
+function calcRoute(lat, longy) {
+  
+  var start = myLatlng;
+
+  var latlong = new google.maps.LatLng(lat, longy);
+  var end = latlong;
+  var request = {
+    origin:start,
+    destination: end,
+    travelMode: google.maps.TravelMode.DRIVING
+  };
+  directionsService.route(request, function(result, status) {
+    if (status == google.maps.DirectionsStatus.OK) {
+      directionsDisplay.setDirections(result);
+      
+    }
+    else{
+      
+    }
+  });
+}
+
+function resizable(){
+
+      activarTouch();
+
+      
+      $("#resizeMe").resizable({handles: 'all'});
+
+      $( "#insideParent" ).draggable({containment: "#resizeMe", start: function(){ $("#resizeMe").css({"border": "3px solid #E0AC00"}) }, stop: function(){$("#resizeMe").css({"border": "3px solid #E7EBDF"})}});
+      $( "#insideParent2" ).draggable({containment: "#resizeMe", start: function(){ $("#resizeMe").css({"border": "3px solid #E0AC00"}) }, stop: function(){$("#resizeMe").css({"border": "3px solid #E7EBDF"})}});
+      $( "#insideParent3" ).draggable({containment: "#resizeMe", start: function(){ $("#resizeMe").css({"border": "3px solid #E0AC00"}) }, stop: function(){$("#resizeMe").css({"border": "3px solid #E7EBDF"})}});
+      $( "#insideParent4" ).draggable({containment: "#resizeMe", start: function(){ $("#resizeMe").css({"border": "3px solid #E0AC00"}) }, stop: function(){$("#resizeMe").css({"border": "3px solid #E7EBDF"})}});
+      $( "#insideParent5" ).draggable({containment: "#resizeMe", start: function(){ $("#resizeMe").css({"border": "3px solid #E0AC00"}) }, stop: function(){$("#resizeMe").css({"border": "3px solid #E7EBDF"})}});
+      $( "#insideParent6" ).draggable({containment: "#resizeMe", start: function(){ $("#resizeMe").css({"border": "3px solid #E0AC00"}) }, stop: function(){$("#resizeMe").css({"border": "3px solid #E7EBDF"})}});
+      $( "#insideParent7" ).draggable({containment: "#resizeMe", start: function(){ $("#resizeMe").css({"border": "3px solid #E0AC00"}) }, stop: function(){$("#resizeMe").css({"border": "3px solid #E7EBDF"})}});
+      $( "#insideParent8" ).draggable({containment: "#resizeMe", start: function(){ $("#resizeMe").css({"border": "3px solid #E0AC00"}) }, stop: function(){$("#resizeMe").css({"border": "3px solid #E7EBDF"})}});
+      $( "#insideParent9" ).draggable({containment: "#resizeMe", start: function(){ $("#resizeMe").css({"border": "3px solid #E0AC00"}) }, stop: function(){$("#resizeMe").css({"border": "3px solid #E7EBDF"})}});
+      $( "#insideParent10" ).draggable({containment: "#resizeMe", start: function(){ $("#resizeMe").css({"border": "3px solid #E0AC00"}) }, stop: function(){$("#resizeMe").css({"border": "3px solid #E7EBDF"})}});
+      $( "#insideParent11" ).draggable({containment: "#resizeMe", start: function(){ $("#resizeMe").css({"border": "3px solid #E0AC00"}) }, stop: function(){$("#resizeMe").css({"border": "3px solid #E7EBDF"})}});
+      $( "#insideParent12" ).draggable({containment: "#resizeMe", start: function(){ $("#resizeMe").css({"border": "3px solid #E0AC00"}) }, stop: function(){$("#resizeMe").css({"border": "3px solid #E7EBDF"})}});
+      $("#resizeMe").draggable();
+      
+
+
+
+
+  
+
+
+
+
+
+
+}
+
+function rotarCeramica(){
+
+   $(".ceramicaDrag").rotate(anguloRotacionCeramica);
+   anguloRotacionCeramica +=90;
+
+  if(anguloRotacionCeramica == 360){
+    anguloRotacionCeramica = 90;
+  }
+
+
+}
+
+
+function funcionComplementar(){
+      xhReq.open("GET", "ver_ceramica_arrastre/drag_ceramica.html", false);
+      xhReq.send(null);
+      document.getElementById("contenidoCuerpo").innerHTML=xhReq.responseText;
+      resizable();
+
+      $("#btnRotar").on("click", rotarCeramica);
+      $("#btnDeshacer").on('click', funcionDeshacer);
+      $(".ceramicaDrag").attr('src', imagenCeramicaEscogida);
+      $("#fotografia").attr("src", fotografiaLugar);
+      //Cargar foto y ceramica
+      
+
+
+
+
+}
+
+function funcionDeshacer(){
+   funcionComplementar();
+    
+}
+
+
+
+
+function activarTouch(){
+
+     /iPad|iPhone|Android/.test( navigator.userAgent ) && (function( $ ) {
+
+var proto =  $.ui.mouse.prototype,
+_mouseInit = proto._mouseInit;
+
+$.extend( proto, {
+    _mouseInit: function() {
+        this.element
+        .bind( "touchstart." + this.widgetName, $.proxy( this, "_touchStart" ) );
+        _mouseInit.apply( this, arguments );
+    },
+
+    _touchStart: function( event ) {
+        /* if ( event.originalEvent.targetTouches.length != 1 ) {
+            return false;
+        } */
+
+        this.element
+        .bind( "touchmove." + this.widgetName, $.proxy( this, "_touchMove" ) )
+        .bind( "touchend." + this.widgetName, $.proxy( this, "_touchEnd" ) );
+
+        this._modifyEvent( event );
+
+        $( document ).trigger($.Event("mouseup")); //reset mouseHandled flag in ui.mouse
+        this._mouseDown( event );
+
+        //return false;           
+    },
+
+    _touchMove: function( event ) {
+        this._modifyEvent( event );
+        this._mouseMove( event );   
+    },
+
+    _touchEnd: function( event ) {
+        this.element
+        .unbind( "touchmove." + this.widgetName )
+        .unbind( "touchend." + this.widgetName );
+        this._mouseUp( event ); 
+    },
+
+    _modifyEvent: function( event ) {
+        event.which = 1;
+        var target = event.originalEvent.targetTouches[0];
+        event.pageX = target.clientX;
+        event.pageY = target.clientY;
+    }
+
+});
+
+})( jQuery );
+
+
+}

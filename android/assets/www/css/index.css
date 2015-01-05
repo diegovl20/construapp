@@ -228,7 +228,7 @@ hr {border: 0; height: 12px; box-shadow: inset 0 12px 12px -12px orange; margin-
     letter-spacing: 3px;
 }
 
-#formulario button, #btn_guardar, #btn_calcular, #btnVerCeramica, #btnGuardarCeramica, #btnDeshacer, #btnRotar{
+#formulario button, #btn_guardar, #btn_calcular, #btnVerCeramica, #btnGuardarCeramica, #btnDeshacer, #btnRotar, #btn_ayudaPintura, #btn_guardarPintura, #btnAtras, #btnVerImagenColores{
 
     width: 95%;
     margin-left: 7px;
@@ -305,7 +305,6 @@ img#imgLugar{
 
 
 #formulario input::-webkit-input-placeholder {
-  background: #FFF;
   color: #737373;
   font-size: 12px;
   letter-spacing: 1px;
@@ -1031,7 +1030,7 @@ margin-bottom: -2%;
 box-shadow: inset 0 11px 12px -14px black;
 }
 
-#insideParent,#insideParent2,#insideParent3,#insideParent4,#insideParent5,#insideParent6,#insideParent7,#insideParent8,#insideParent9,#insideParent10,#insideParent11,#insideParent12{
+#insideParent,#insideParent2,#insideParent3,#insideParent4,#insideParent5,#insideParent6,#insideParent7,#insideParent8,#insideParent9,#insideParent10,#insideParent11,#insideParent12,#insideParent13,#insideParent14,#insideParent15,#insideParent16,#insideParent17,#insideParent18,#insideParent19,#insideParent20{
 
     width: auto;
     height: auto;
@@ -1070,4 +1069,177 @@ margin-left: 75px;
 position: absolute;
 font-size: 11px;
 width: 70%;
+}
+
+
+.input:focus {
+  background: #ffc;
+}
+
+
+#imagenMedicionescorrectas{
+  width: 100%;
+
+}
+
+#imagenMedicionescorrectas img{
+    width: 100%;
+height: 160px;
+
+}
+
+#textoAyudaPinturas{
+
+width: 100%;
+overflow-wrap: break-word;
+font-family: 'Contra';
+font-size: 12px;
+text-align: justify;
+
+
+}
+
+.ic_right_resultado{
+
+width: 30px;
+height: 30px;
+display: block;
+margin-bottom: -34px;
+}
+
+.aplicar_margin{
+    margin-left: 8% !important;
+
+}
+
+.imgLugarRetoques {
+margin-top: 15px !important;
+margin-left: 8px !important;
+height: 175px !important;
+box-shadow: 3px 3px 2px rgb(126, 119, 112);
+}
+
+#recomendacion {
+width: 95%;
+overflow-wrap: break-word;
+font-family: 'Contra';
+font-size: 11px;
+margin-top: 8px;
+margin-left: 9px;
+text-align: justify;
+}
+
+
+#toolbar{
+    width: 85%;
+    height: 30px;
+    padding: 5px;
+    position: fixed;
+    top:100px;
+    background-color: #DDAE2C;
+    color: white;
+    box-sizing: border-box;
+    font-family: 'Contra';
+    user-select:none;
+}
+
+.radcontrol{
+width: 65px;
+height: 16px;
+background-color: black;
+display: inline-block;
+text-align: center;
+padding: 5px;
+}
+
+#colores{
+    width: 100%;
+    height: 90px;
+    overflow: scroll;
+}
+
+.color{
+    border-radius: 15px;
+    width: 25px;
+    height: 25px;
+    display: inline-block;
+    box-shadow: inset 0px 1px 0px rgba(255,255,255,0.5), 0px 2px 2px rgba(0,0,0,0.5);
+    background-color: blue;
+}
+
+.color.active{
+    border:2px solid black;
+
+}
+
+#nombreColor{
+    font-size: 11px;
+    font-family: 'Contra';
+    margin-left: 5px;
+}
+
+#codigoColor, #distribuidorPintura{
+    font-size: 11px;
+    font-family: 'Contra';
+    margin-left: 5px;
+}
+
+#info-colores{
+    font-family: 'Contra';
+    font-size: 11px;
+
+}
+
+#info-colores span#colorCenter{
+    text-align: center;
+    margin-left: 130px;
+    font-size: 13px;
+}
+
+div#rad {
+text-align: center;
+margin-top: -2px;
+}
+
+#canvas,#lienzo{
+    width: 250px;
+    height: 220px;
+    display: block;
+    margin-top: 5px;
+    margin-left: 5px;
+}
+
+#canvas{
+    box-shadow: 2px 2px 2px black;
+    height: 200px !important;
+}
+
+#imgFotoLugar{
+
+background-size: 270px 300px;
+width: 270px;
+height: 300px;
+}
+
+#color{
+
+    width: 270px;
+    height: 300px;
+    background-color: rgba(227, 255, 224, 0.5);
+    position: absolute;
+    top: 73px;
+
+}
+
+#btnAtras{
+    
+}
+
+#btnVerImagenColores{
+width: 70px;
+height: 40px;
+margin-top: -43px;
+padding: 1px;
+margin-left: 192px;
+position: absolute;
 }

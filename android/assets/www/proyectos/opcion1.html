@@ -1,15 +1,70 @@
             <div id="contenedor">
                    
-                   <div id="simple">
-                       <h1>Superficie Simple</h1>
-                       <div id="formulario">
-                              <input type="text" id="txtMedida1" placeholder="Ingrese medida en m2" />
-                              <input type="text" id="txtMedida2" placeholder="Ingrese medida en m2" />
-                              <input type="text" id="txtMedida3" placeholder="Ingrese Rendimiento De Caja"/>
-                              <img src="img/ic_camara.png" id="ic_camara">
-                              <p>Tomar Fotografía</p>
-                              <img id="imgLugar" >
-                              <button id="btn_guardar">Guardar</button>
+                   <div id="simple" class="simpleClass">
+                       <h1 class="nombreProyecto">Nombre Proyecto</h1>
+                       <hr class="opcion4"/>
+                       <input type="text" id="txtNombreProyecto" placeholder="Ingrese un nombre al proyecto" />
+                       <img src="img/ic_lapiz.png" class="lapiz_ic lapizDos">
+                       <h1 class="lugar">Tipo de superficie</h1>
+                       <hr class="opcion1"/>
+                       <select id="slcLugarDeSuperficie">
+                               <option value="bano">Baño</option>
+                               <option value="dormitorio">Dormitorio</option>
+                               <option value="patio">Patio</option>
+                               <option value="living">Living</option>
+                               <option value="cocina">Cocina</option>
+                               <option value="comedor">Comedor</option>
+                              </select>
+ 
+
+                        <h1 class="inclusion"> Qué desea incluir </h1>
+                        <hr class="opcion2"/>
+                        <div id="formulario">
+
+                        <label id="label1">Pintura</label>
+                          <div class="onoffswitch">
+                            <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" checked value="pintura">
+                            <label class="onoffswitch-label" for="myonoffswitch" id="check1">
+                              <span class="onoffswitch-inner">
+                              <span class="onoffswitch-active"><span class="onoffswitch-switch">SI</span></span>
+                              <span class="onoffswitch-inactive"><span class="onoffswitch-switch">NO</span></span>
+                              </span>
+                            </label>
+                           </div>
+                        <label id="label2">Cerámica</label>
+                                                    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch2" checked value="ceramica">
+                            <label class="onoffswitch-label" for="myonoffswitch2" id="check2">
+                              <span class="onoffswitch-inner">
+                              <span class="onoffswitch-active"><span class="onoffswitch-switch">SI</span></span>
+                              <span class="onoffswitch-inactive"><span class="onoffswitch-switch">NO</span></span>
+                              </span>
+                            </label>
+                           
+                        <label id="label3">Ladrillo</label>
+                                                    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch3" checked value="ladrillo">
+                            <label class="onoffswitch-label" for="myonoffswitch3" id="check3">
+                              <span class="onoffswitch-inner">
+                              <span class="onoffswitch-active"><span class="onoffswitch-switch">SI</span></span>
+                              <span class="onoffswitch-inactive"><span class="onoffswitch-switch">NO</span></span>
+                              </span>
+                            </label>
+                                                    <label id="label4">Alfombra</label>
+                                                    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch4" checked value="alformbra">
+                            <label class="onoffswitch-label" for="myonoffswitch4" id="check4">
+                              <span class="onoffswitch-inner">
+                              <span class="onoffswitch-active"><span class="onoffswitch-switch">SI</span></span>
+                              <span class="onoffswitch-inactive"><span class="onoffswitch-switch">NO</span></span>
+                              </span>
+                            </label>
+                            <hr class="opcion3"/>
+                           
+
+
+                              <button id="btn_guardar">Continuar</button>
+                              <img src="img/ic_continuar2.png"/ id="imgContinuar">
+                              </div>
+                           </div>
+
                        </div>
                    </div>
                    

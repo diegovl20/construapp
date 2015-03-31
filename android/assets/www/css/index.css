@@ -90,7 +90,7 @@ hr {border: 0; height: 12px; box-shadow: inset 0 12px 12px -12px orange; margin-
 
 /*Inicio estilo del cuerpo*/
 #cuerpo{
-    background:#fff;
+    background:#A9C0D0;
     position:absolute;
     width: 100%;
     height:100%;
@@ -109,7 +109,8 @@ hr {border: 0; height: 12px; box-shadow: inset 0 12px 12px -12px orange; margin-
 }
 
 #contenidoCuerpo{
-    margin:10px
+    /*margin:10px;
+    background-color: #9CBED5;*/
 }
 
 #lista-vacia{
@@ -142,8 +143,8 @@ hr {border: 0; height: 12px; box-shadow: inset 0 12px 12px -12px orange; margin-
 
 #contenedor{
    width: 100%;
-    margin: 0;
-    background: white;
+    /*margin: 0;*/
+    /*background: white;*/
     height: 400px;
 
 }
@@ -154,6 +155,50 @@ hr {border: 0; height: 12px; box-shadow: inset 0 12px 12px -12px orange; margin-
     text-align: center;
     font-family: 'Contra';
 }
+#simple .simpleClass{
+
+}
+
+ h1.lugar{
+   text-align: left !important;
+}
+
+h1#opcion1Cont{
+    text-align: left !important;
+
+}
+
+h1.inclusion{
+
+     text-align: left !important;
+       margin-top: 90px;
+
+}
+
+h1.nombreProyecto{
+    text-align: left !important;
+}
+h1.tituloProyecto{
+    text-align: left !important;
+}
+
+h1.tituloResultadoCeramica{
+   text-align: left !important;
+}
+
+h1.tituloResultadoPintura{
+  text-align: left !important;
+
+}
+
+
+#sueloOpcion1{
+    width: 340px;
+  margin-top: 20px;
+    height: 240px;
+      border-radius: 20px 0 20px;
+    box-shadow: 2px 2px 10px;
+}
 
 
 #formularioCalculoDinero p{
@@ -161,17 +206,19 @@ hr {border: 0; height: 12px; box-shadow: inset 0 12px 12px -12px orange; margin-
     font-family: 'Contra';
 }
 
-
+#cajasTextos{
+    margin-top: 40px;
+}
 
 
 
 #cuadroResultados{
-    font-family: 'Contra';
-    width: 100%;
-    padding: 5px;
-    margin-left: -1.9%;
-    background: #f0f0f0;
-    border-radius: 8px 0 8px 0;
+  font-family: 'Contra';
+  /* width: 100%; */
+  padding: 5px;
+  /* margin-left: -1.9%; */
+  /* background: #A19090; */
+  border-radius: 8px 0 8px 0;
 
 }
 
@@ -185,15 +232,19 @@ hr {border: 0; height: 12px; box-shadow: inset 0 12px 12px -12px orange; margin-
     margin-bottom: 4%;
 }
 
-#divCalculoDinero, #divVideoYoutube, #contenedor-tabla, #contenedor-imagen-ceramica, #simple, #divDragDrop{
+#divCalculoDinero, #divVideoYoutube, #contenedor-tabla, #contenedor-imagen-ceramica, #simple, #divDragDrop, #simple2Resultados{
 
     font-family: 'Contra';
-    width: 90%;
+    width: 95%;
     border: 1px solid black;
     padding: 5px;
-    margin-left: 10px;
-    background: #f0f0f0;
+    margin-left: 4px;
+    margin-top: 6px;
+    background: rgba(109, 144, 161, 0.78);
     border-radius: 8px 0 8px 0;
+
+}
+#simple2Resultados{
 
 }
 
@@ -202,17 +253,26 @@ hr {border: 0; height: 12px; box-shadow: inset 0 12px 12px -12px orange; margin-
 
 
 
-
-#formulario input, #formularioCalculoDinero input{
+/*#formulario input, */
+#formulario input, #formulario2 input, #formularioCalculoDinero input, #simple input{
 
     display: block;
     border: 2px solid #000;
     height: 30px;
     padding: 6px;
     margin: 2px;
-    width: 250px;
+    width: 320px;
 }
 
+#formulario input{
+
+    width: 20px !important
+}
+#txtNombreProyecto{
+height: 17px !important;
+  margin-left: 4px !important;
+  margin-top: 25px !important;
+}
 
 
 #formulario img{
@@ -220,7 +280,7 @@ hr {border: 0; height: 12px; box-shadow: inset 0 12px 12px -12px orange; margin-
     display: inline;
 }
 
-#formulario p{
+#formulario p, #formulario2 p{
     
     font-family: 'Contra';
     margin-top: -40px;
@@ -240,6 +300,46 @@ hr {border: 0; height: 12px; box-shadow: inset 0 12px 12px -12px orange; margin-
     padding: 5px;
     letter-spacing: 3px;
     border: none;
+}
+
+#formulario button#btn_guardar, #btn_guardar_proyecto, #btn_decorar, #btn_calculo_material, #btn_presupuesto, #btn_lugar_de_compra, #btn_aceptar, #btn_atras{
+  width: 45%;
+  margin-left: 80px;
+  margin-top: 25px !important;
+  margin-bottom: 3px;
+  font-family: 'Contra';
+  background: rgb(21, 59, 77);
+  color: white;
+  height: 55px;
+  padding: 5px;
+  letter-spacing: 1px;
+  font-size: 20px;
+  border: none;
+  text-align: left;
+  border-radius: 1px 1px 1px;
+
+}
+
+#btn_guardar_proyecto{
+    margin-top: 10px !important;
+  height: 58px;
+  width: 72%;
+  letter-spacing: 3px;
+  margin-bottom: 0px;
+  margin-left: 40px;
+
+}
+
+#btn_decorar, #btn_presupuesto, #btn_lugar_de_compra, #btn_calculo_material, #btn_atras, #btn_aceptar{
+
+  margin-top: 10px !important;
+  height: 44px;
+  width: 72%;
+  /* letter-spacing: 3px; */
+  font-size: 17px;
+  margin-bottom: 0px;
+  margin-left: 40px;
+  text-align: center;
 }
 
 
@@ -266,6 +366,64 @@ img#imgLugar{
     /*margin-right: -10px;*/
     margin: 0% auto;
   
+
+}
+
+.arribaImg{
+    display: inline-block;
+   width: 160px;
+  height: 98px;
+
+}
+
+.abajoImg{
+    display: inline-block;
+   width: 160px;
+  height: 98px;
+
+}
+
+#ticket1, #ticket2{
+      display: inline-block;
+  width: 30px;
+  position: absolute;
+  background: rgb(21, 119, 97);
+  border-radius: 13px 13px 13px 13px;
+  margin-left: -95px;
+  margin-top: 110px;
+  visibility: hidden;
+
+}
+
+#ticket3, #ticket4{
+      display: inline-block;
+  width: 30px;
+  position: absolute;
+  background: rgb(21, 119, 97);
+  border-radius: 13px 13px 13px 13px;
+  margin-left: -95px;
+  margin-top: 110px;
+  visibility: hidden;
+
+}
+
+#imagenes{
+    margin-top: 30px;
+
+}
+
+.living{
+
+}
+
+.living2{
+
+}
+
+.living3{
+
+}
+.living4{
 
 }
 
@@ -1055,7 +1213,7 @@ margin-top: 23px;
     margin-left: 160px;
 }
 
-#btnDeshacer, #btnRotar{
+#btnDeshacer, #btnRotar{javascript:menu('menu');
 
     margin-top: -0.2px;
     height: 40px;
@@ -1069,6 +1227,20 @@ margin-left: 75px;
 position: absolute;
 font-size: 11px;
 width: 70%;
+}
+
+#slcLugarDeSuperficie{
+
+  font-family: 'Contra';
+  border: 2px solid #FBC636;
+  top: 165px;
+  margin-left: 5px;
+  position: absolute;
+  font-size: 13px;
+  width: 92%;
+  height: 35px;
+    background-color: white;
+
 }
 
 
@@ -1242,4 +1414,541 @@ margin-top: -43px;
 padding: 1px;
 margin-left: 192px;
 position: absolute;
+}
+
+.lapiz_ic{
+
+    position: absolute;
+  width: 20px !important;
+  margin-left: 315px;
+  margin-top: -37px;
+}
+
+.lapizDos{
+      margin-top: -30px !important;
+}
+
+
+.opcion1{
+        margin-top: -10px;
+  box-shadow: inset 0 5px 6px 5px #FFFFFF !important;
+  height: 2px;
+}
+
+.opcion2{
+        margin-top: -15px;
+  box-shadow: inset 0 5px 6px 5px #FFFFFF !important;
+  height: 2px;
+}
+
+.opcion3{
+
+  margin-top: 8px;
+  box-shadow: inset 0 5px 6px 5px #FFFFFF !important;
+  height: 2px;
+
+}
+
+.opcion4{
+  margin-top: -10px;
+  box-shadow: inset 0 5px 6px 5px #FFFFFF !important;
+  height: 2px;
+
+}
+
+.hrTituloProyecto{
+            margin-top: -10px;
+  box-shadow: inset 0 5px 6px 5px #FFFFFF !important;
+  height: 2px;
+
+}
+
+#brTituloResultadoCeramica{
+
+          margin-top: -15px;
+  box-shadow: inset 0 5px 6px 5px #FFFFFF !important;
+  height: 2px;
+
+}
+
+#brTituloResultadoPintura{
+  margin-top: -13px;
+  box-shadow: inset 0 5px 6px 5px #FFFFFF !important;
+  height: 2px;
+
+}
+
+
+#formulario{
+    margin-top: 20px;
+}
+
+#formulario label{
+
+}
+#imgContinuar, #imgContinuar2{
+  width: 29px !important;
+  margin-left: -38px;
+  margin-top: 39px;
+  position: absolute;
+
+}
+
+#imgContinuar2{
+    margin-top: 25px;
+  margin-left: 250px;
+}
+
+#label1{
+      position: absolute;
+  font-size: 15px;
+  font-weight: bold;
+  margin-top: 38px;
+
+}
+
+#label2{
+      position: absolute;
+  font-size: 15px;
+  font-weight: bold;
+  margin-top: 18px;
+    
+}
+
+#label3{
+    position: absolute;
+  font-size: 15px;
+  font-weight: bold;
+  margin-top: 19px;
+    
+}
+
+#label4{
+
+    position: absolute;
+  font-size: 15px;
+  font-weight: bold;
+  margin-top: 19px;
+    
+}
+#check1{
+
+}
+#check2{
+      position: relative;
+  width: 100px;
+  margin-top: -20px;
+  margin-left: 240px;
+    
+}
+#check3{
+      position: relative;
+  width: 100px;
+  margin-top: -20px;
+  margin-left: 240px;
+}
+#check4{
+position: relative;
+  width: 100px;
+  margin-top: -20px;
+  margin-left: 240px;
+}
+
+
+#cabecera_decorar{
+    width: 100%;
+    background-color: #197990;
+  height: 50px;
+}
+
+}
+
+#izquierda_decorar, #derecha_decorar{
+  width: 40px;
+
+}
+
+#izquierda_decorar{
+    margin-left: 10px;
+
+}
+
+#derecha_decorar{
+    margin-left: 68%;
+
+}
+
+#imagen_decorar{
+    width: 100%;
+  /* border: 2px solid; */
+  height: 340px;
+  background-color: #963C3C;
+
+}
+
+#miniMenu_decorar{
+  width: 100%;
+  height: 67px;
+  background-color: #272424;
+
+}
+
+#menu_decorar{
+  width: 100%;
+  height: 120px;
+  background-color: black;
+   overflow-y: hidden;
+  overflow-x: auto;
+
+}
+.imagenHerramienta{
+  width: 100%;
+  height: auto;
+  display: inline;
+  margin-top: 100px;
+  overflow: scroll;
+  /* border: 1px solid white; */
+
+}
+
+.imagenHerramienta img{
+   width: 3.5%;
+  height: 113%;
+  margin-top: 0.9%;
+  margin-left: 0.5%;
+  /*border-bottom: 6px solid #197D9B;*/
+}
+#scrollDecorar{
+width: 500%;
+  /* overflow-x: auto; */
+  height: 50px;
+}
+
+#imagenDecorar{
+    width: 100%;
+  /* border: 2px solid; */
+  height: 95%;
+  /* background-color: #f0f0f0; */
+
+}
+
+.tipoHerramienta{
+  list-style: none;
+  display: inline-block;
+  margin-top: 26px;
+  vertical-align: top;
+  margin-right: 20%;
+  font-size: 17px;
+  color: white;
+  background-color: #197990;
+  width: 6.2%;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 1px 1px 3px #FFFFFF;
+  font-weight: bold;
+
+}
+
+#herramientaCeramica{
+  margin-left: 24px;
+
+}
+
+#herramientaPintura{
+
+}
+
+#herramientaLadrillo{
+
+}
+
+#herramientaAlfombra{
+    margin-right: 0;
+
+}
+
+#mini-menu{
+  position: absolute; */
+  list-style: none;
+  width: 100%;
+  /* margin-top: -100px; */
+  /* top: -30px; */
+  margin-left: 100px;
+}
+
+#resultadoCeramicas,#resultadoPinturas{
+  width: 100%;
+}
+#resultadoCeramicas{
+
+}
+
+#anchoCeramica{
+    width: 40%;
+
+}
+
+#anchoCeramicaresultado{
+    margin-left: 13% !important;
+
+}
+
+#largoCeramica{
+    width: 40%;
+
+}
+
+#largoCeramicaresultado{
+    margin-left: 13% !important;
+
+}
+
+#rendimientoCeramica{
+    width: 40%;
+
+}
+
+#rendimientoCeramicaresultado{
+  margin-left: 13% !important;
+
+}
+
+#cajasCeramica{
+    width: 40%;
+
+}
+
+#cajasCeramicaresultado{
+  margin-left: 13% !important;
+
+}
+
+#fragueCeramica{
+    width: 40%;
+
+}
+
+#fragueCeramicaresultado{
+  margin-left: 13% !important;
+
+}
+
+#PegamentoCeramica{
+    width: 50%;
+
+
+}
+
+#pegamentoCeramicaresultado{
+
+}
+
+#anchoPintura{
+    width: 40%;
+
+}
+
+#largoPintura{
+    width: 40%;
+
+}
+
+#largoPinturaresultado{
+    margin-left: 13% !important;
+
+}
+
+#largoPintura, #largoPinturaresultado{
+  margin-left: 3%;
+  display: inline-block;
+
+}
+
+#RendimientoPintura{
+    width: 40%;
+}
+
+#RendimientoPintura, #RendimientoPinturaresultado{
+  margin-left: 3%;
+  display: inline-block;
+
+
+}
+
+#RendimientoPinturaresultado{
+    margin-left: 13% !important;
+}
+
+#anchoPinturaresultado{
+  margin-left: 13% !important;
+
+}
+
+#txtRendimientoPinturaResultado{
+    width: 45% !important;
+  height: 10% !important;
+  margin-top: 9% !important;
+  margin-left: 3% !important;
+
+}
+
+#totalPintura{
+
+}
+
+#totalPinturaresultado{
+
+}
+
+#totalPintura, #totalPinturaresultado{
+  display: inline-block;
+  margin-top: 8%;
+  margin-left: 3%;
+  margin-bottom: 5%;
+
+}
+
+#anchoPintura, #anchoPinturaresultado{
+  margin-top: 7%;
+  margin-left: 3%;
+  display: inline-block;
+
+}
+
+#PegamentoCeramica, #pegamentoCeramicaresultado{
+      display: inline-block;
+  margin-left: 3%;
+
+}
+
+#fragueCeramica, #fragueCeramicaresultado{
+      display: inline-block;
+  margin-left: 3%;
+
+}
+
+#cajasCeramica, #cajasCeramicaresultado{
+    display: inline-block;
+  margin-left: 3%;
+  margin-top: 9%;
+}
+
+#rendimientoCeramica, #rendimientoCeramicaresultado{
+    display: inline-block;
+  margin-left: 3%;
+
+}
+
+#largoCeramica, #largoCeramicaresultado{
+    display: inline-block;
+  margin-left: 3%;
+
+}
+
+#anchoCeramica, #anchoCeramicaresultado{
+    display: inline-block;
+  margin-left: 3%;
+  margin-top: 7%;
+
+}
+
+#simple #resultadoCeramicas img{
+  position: absolute;
+  width: 15%;
+  margin-left: 12%;
+  margin-top: -9%;
+
+}
+
+#simple2Resultados #resultadoPinturas img{
+  position: absolute;
+  width: 15%;
+  margin-left: 13%;
+  margin-top: -5%;
+  border-radius: 35px;
+
+}
+
+#brResultadoCeramica{
+  margin-top: 1%;
+  box-shadow: inset 0 5px 6px 5px #FFFFFF !important;
+  height: 2px;
+  width: 65%;
+  margin-left: 2%;
+
+}
+
+#brResultadoCeramica, #brResultadoPintura{
+
+}
+
+#brResultadoPintura{
+  margin-top: 1%;
+  box-shadow: inset 0 5px 6px 5px #FFFFFF !important;
+  height: 2px;
+  width: 65%;
+  margin-left: 2%;
+
+}
+
+
+
+
+.onoffswitch {
+    position: relative; width: 100px;
+    margin-left: 240px;
+    margin-top: -35px;
+    -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
+}
+.onoffswitch-checkbox {
+    display: none;
+}
+.onoffswitch-label {
+    display: block; overflow: hidden; cursor: pointer;
+    border: 0px solid #999999; border-radius: 0px;
+}
+.onoffswitch-inner {
+    display: block; width: 200%; margin-left: -100%;
+    -moz-transition: margin 0.3s ease-in 0s; -webkit-transition: margin 0.3s ease-in 0s;
+    -o-transition: margin 0.3s ease-in 0s; transition: margin 0.3s ease-in 0s;
+}
+.onoffswitch-inner > span {
+    display: block; float: left; position: relative; width: 50%; height: 30px; padding: 0; line-height: 30px;
+    font-size: 14px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;
+    -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;
+}
+.onoffswitch-inner .onoffswitch-active {
+    padding-left: 15px;
+    background-color: #C2C2C2; color: #FFFFFF;
+}
+.onoffswitch-inner .onoffswitch-inactive {
+    padding-right: 15px;
+    background-color: #C2C2C2; color: #FFFFFF;
+    text-align: right;
+}
+.onoffswitch-switch {
+    display: block; width: 50px; margin: 0px; text-align: center; 
+    border: 0px solid #999999;border-radius: 0px; 
+    position: absolute; top: 0; bottom: 0;
+}
+.onoffswitch-active .onoffswitch-switch {
+    background: #27A1CA; left: 0;
+}
+.onoffswitch-inactive .onoffswitch-switch {
+    background: #A1A1A1; right: 0;
+}
+.onoffswitch-active .onoffswitch-switch:before {
+    content: " "; position: absolute; top: 0; left: 50px; 
+    border-style: solid; border-color: #27A1CA transparent transparent #27A1CA; border-width: 15px 10px;
+}
+.onoffswitch-inactive .onoffswitch-switch:before {
+    content: " "; position: absolute; top: 0; right: 50px; 
+    border-style: solid; border-color: transparent #A1A1A1 #A1A1A1 transparent; border-width: 15px 10px;
+}
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
+    margin-left: 0;
+}
+
+#myonoffswitch, #myonoffswitch2, #myonoffswitch3, #myonoffswitch4{
+    visibility: hidden;
 }

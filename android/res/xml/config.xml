@@ -44,4 +44,5 @@
     <feature name="NetworkStatus">
         <param name="android-package" value="org.apache.cordova.networkinformation.NetworkManager" />
     </feature>
+    <feature name="ToastPlugin"> <param name="android-package" value="com.company.plugins.ToastPlugin" /> </feature>
 </widget>

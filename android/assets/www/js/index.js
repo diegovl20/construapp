@@ -4,6 +4,12 @@ var ceramica = false;
 var ladrillo = false;
 var pintura = false;
 var alfombra = false;
+var ceramica_bool = false;
+var pintura_bool = false;
+var alfombra_bool = false;
+var ladrillo_bool = false;
+var idCeramicaClickeada;
+var colorCirculoClickeado;
 var tipo_proyecto;
 var tipo_superficie;
 var nombreProyecto;
@@ -12,6 +18,7 @@ var pictureSource,destinationType;
 var imagen = null;
 var imagenCeramicaEscogida;
 var key = "estado";
+var imagenAMenu = "undefined";
 var storage;
 var tipo;
 var array_tipo_proyecto = new Array("nada","baño","dormitorio","patio","living", "cocina", "comedor");
@@ -139,14 +146,16 @@ function main(){
 
            var tabla_tipo_proyecto = "CREATE TABLE IF NOT EXISTS tipo_proyecto( id_tipo_proyecto INTEGER PRIMARY KEY, nombre TEXT)";
            var tabla_ceramicas = "CREATE TABLE IF NOT EXISTS ceramicas( id_ceramicas INTEGER PRIMARY KEY AUTOINCREMENT, url TEXT, rendimiento_caja FLOAT, modelo TEXT, marca TEXT, color TEXT, uso TEXT, formato TEXT, precio INTEGER, lugar TEXT)";
-           var tabla_proyecto = "CREATE TABLE IF NOT EXISTS proyecto( id_proyecto INTEGER PRIMARY KEY AUTOINCREMENT, id_tipo_proyecto INTEGER, fecha DATE, fotografia TEXT, largo FLOAT, ancho FLOAT, superficie_total FLOAT, total_cajas FLOAT, precio_total INTEGER,id_ceramicas INTEGER, id_pinturas INTEGER, total_litros INTEGER, id_ladrillos INTEGER, total_ladrillos INTEGER, pintura_bool BOOLEAN, ladrillo_bool BOOLEAN, alfombra_bool BOOLEAN, ceramica_bool BOOLEAN, nombre_proyecto TEXT, tipo_proyecto TEXT, FOREIGN KEY(id_tipo_proyecto) references tipo_proyecto(id_tipo_proyecto))";
+           var tabla_proyecto = "CREATE TABLE IF NOT EXISTS proyecto( id_proyecto INTEGER PRIMARY KEY AUTOINCREMENT, id_tipo_proyecto INTEGER, fecha DATE, fotografia TEXT, largo FLOAT, ancho FLOAT, superficie_total FLOAT, total_cajas FLOAT, precio_total INTEGER,id_ceramicas INTEGER, id_pinturas INTEGER, total_litros INTEGER, id_ladrillos INTEGER, total_ladrillos INTEGER, pintura_bool BOOLEAN, ladrillo_bool BOOLEAN, alfombra_bool BOOLEAN, ceramica_bool BOOLEAN, nombre_proyecto TEXT, tipo_proyecto TEXT, precio_frague INTEGER, precio_pegamento INTEGER, FOREIGN KEY(id_tipo_proyecto) references tipo_proyecto(id_tipo_proyecto))";
+           //var tabla_pinturas = "CREATE TABLE IF NOT EXISTS pintura (id_pintura INTEGER PRIMARY KEY AUTOINCREMENT, nombre_color TEXT, codigo TEXT, rgba_color TEXT)";
            tx.executeSql(tabla_tipo_proyecto);
            tx.executeSql(tabla_ceramicas);
            tx.executeSql(tabla_proyecto);
+           //tx.executeSql(tabla_pinturas);
            //tratar de usar localstorage
            var l = storage[key];
            if(typeof l === 'undefined'){
-
+              
               var execute = "INSERT INTO tipo_proyecto VALUES(1, 'baño')";
               tx.executeSql(execute);
               var execute = "INSERT INTO tipo_proyecto VALUES(2, 'dormitorio')";
@@ -161,59 +170,148 @@ function main(){
               tx.executeSql(execute);
               /*ingresar ceramicas*/
 
-              var execute = "INSERT INTO ceramicas VALUES(null, 'ceramica/1.jpg', 1.53,'Cima Gris', 'Lamosa','Gris','Pisos y Muros','33x33',3810,'Sodimac');"
+              var execute = "INSERT INTO ceramicas VALUES(null, 'img/ceramica/1.jpg', 1.53,'Cima Gris', 'Lamosa','Gris','Pisos y Muros','33x33',3810,'Sodimac');"
               tx.executeSql(execute);
 
-              var execute = "INSERT INTO ceramicas VALUES(null, 'ceramica/2.jpg', 0.72,'Arcilla', 'Alberdi','Café Rojizo','Pisos y Muros','30x30',3953,'Sodimac');"
+              var execute = "INSERT INTO ceramicas VALUES(null, 'img/ceramica/2.jpg', 0.72,'Arcilla', 'Alberdi','Café Rojizo','Pisos y Muros','30x30',3953,'Sodimac');"
               tx.executeSql(execute);
 
-              var execute = "INSERT INTO ceramicas VALUES(null, 'ceramica/3.jpg', 1.52,'Caribe', 'Lamosa','Gris','Muros','20x30',4241,'Sodimac');"
+              var execute = "INSERT INTO ceramicas VALUES(null, 'img/ceramica/3.jpg', 1.52,'Caribe', 'Lamosa','Gris','Muros','20x30',4241,'Sodimac');"
               tx.executeSql(execute);
 
-              var execute = "INSERT INTO ceramicas VALUES(null, 'ceramica/4.jpg', 1.52,'Caribe', 'Lamosa','Beige','Muros','20x30',4241,'Sodimac');"
+              var execute = "INSERT INTO ceramicas VALUES(null, 'img/ceramica/4.jpg', 1.52,'Caribe', 'Lamosa','Beige','Muros','20x30',4241,'Sodimac');"
               tx.executeSql(execute);
 
-              var execute = "INSERT INTO ceramicas VALUES(null, 'ceramica/5.jpg', 1.50,'Engobe', 'Kaztelo','Blanco','Muros','20x20',4485,'Sodimac');"
+              var execute = "INSERT INTO ceramicas VALUES(null, 'img/ceramica/5.jpg', 1.50,'Engobe', 'Kaztelo','Blanco','Muros','20x20',4485,'Sodimac');"
               tx.executeSql(execute);
 
-              var execute = "INSERT INTO ceramicas VALUES(null, 'ceramica/6.jpg', 1.95,'Vulcano', 'Celima','Gris','Pisos','30x30',5246,'Sodimac');"
+              var execute = "INSERT INTO ceramicas VALUES(null, 'img/ceramica/6.jpg', 1.95,'Vulcano', 'Celima','Gris','Pisos','30x30',5246,'Sodimac');"
               tx.executeSql(execute);
 
-              var execute = "INSERT INTO ceramicas VALUES(null, 'ceramica/7.jpg', 1.53,'Cima', 'Lamosa','Beige','Pisos y Muros','33x33',5340,'Sodimac');"
+              var execute = "INSERT INTO ceramicas VALUES(null, 'img/ceramica/7.jpg', 1.53,'Cima', 'Lamosa','Beige','Pisos y Muros','33x33',5340,'Sodimac');"
               tx.executeSql(execute);
 
-              var execute = "INSERT INTO ceramicas VALUES(null, 'ceramica/8.jpg', 1.28,'Woodriver', 'Lamosa','Gris','Pisos y Muros','40x40',5747,'Sodimac');"
+              var execute = "INSERT INTO ceramicas VALUES(null, 'img/ceramica/8.jpg', 1.28,'Woodriver', 'Lamosa','Gris','Pisos y Muros','40x40',5747,'Sodimac');"
               tx.executeSql(execute);
 
-              var execute = "INSERT INTO ceramicas VALUES(null, 'ceramica/9.jpg', 1.95,'Catahua', 'Celima','Café','Pisos','30x30',5831,'Sodimac');"
+              var execute = "INSERT INTO ceramicas VALUES(null, 'img/ceramica/9.jpg', 1.95,'Catahua', 'Celima','Café','Pisos','30x30',5831,'Sodimac');"
               tx.executeSql(execute);
 
-              var execute = "INSERT INTO ceramicas VALUES(null, 'ceramica/10.jpg', 1.53,'Catalán', 'Celima','Café','Pisos','30x30',5831,'Sodimac');"
+              var execute = "INSERT INTO ceramicas VALUES(null, 'img/ceramica/10.jpg', 1.53,'Catalán', 'Celima','Café','Pisos','30x30',5831,'Sodimac');"
               tx.executeSql(execute);
 
-              var execute = "INSERT INTO ceramicas VALUES(null, 'ceramica/11.jpg', 2.00,'Toledo', 'Moliza','Café','Pisos','40x40',5980,'Sodimac');"
+              var execute = "INSERT INTO ceramicas VALUES(null, 'img/ceramica/11.jpg', 2.00,'Toledo', 'Moliza','Café','Pisos','40x40',5980,'Sodimac');"
               tx.executeSql(execute);
 
-              var execute = "INSERT INTO ceramicas VALUES(null, 'ceramica/12.jpg', 1.50,'Enix Marfil', 'Cordillera','Beige','Muros','20x33',5985,'Sodimac');"
+              var execute = "INSERT INTO ceramicas VALUES(null, 'img/ceramica/12.jpg', 1.50,'Enix Marfil', 'Cordillera','Beige','Muros','20x33',5985,'Sodimac');"
               tx.executeSql(execute);
 
-              var execute = "INSERT INTO ceramicas VALUES(null, 'ceramica/13.jpg', 2.00,'Roca', 'Roca','Beige','Pisos','30x30',5980,'Easy');"
+              var execute = "INSERT INTO ceramicas VALUES(null, 'img/ceramica/13.jpg', 2.00,'Roca', 'Roca','Beige','Pisos','30x30',5980,'Easy');"
               tx.executeSql(execute);
 
-              var execute = "INSERT INTO ceramicas VALUES(null, 'ceramica/14.jpg', 2.33,'Nativa', 'Nativa','Café','Pisos','36x36',8365,'Easy');"
+              var execute = "INSERT INTO ceramicas VALUES(null, 'img/ceramica/14.jpg', 2.33,'Nativa', 'Nativa','Café','Pisos','36x36',8365,'Easy');"
               tx.executeSql(execute);
 
-              var execute = "INSERT INTO ceramicas VALUES(null, 'ceramica/15.jpg', 2.00,'Evora HD', 'Evora HD','Variado','Pisos','45x45',11980,'Easy');"
+              var execute = "INSERT INTO ceramicas VALUES(null, 'img/ceramica/15.jpg', 2.00,'Evora HD', 'Evora HD','Variado','Pisos','45x45',11980,'Easy');"
               tx.executeSql(execute);
 
-              var execute = "INSERT INTO ceramicas VALUES(null, 'ceramica/16.jpg', 1.50,'Alhambra', 'Alhambra','Verde','Pisos','33x20',8685,'Easy');"
+              var execute = "INSERT INTO ceramicas VALUES(null, 'img/ceramica/16.jpg', 1.50,'Alhambra', 'Alhambra','Verde','Pisos','33x20',8685,'Easy');"
               tx.executeSql(execute);
 
-              var execute = "INSERT INTO ceramicas VALUES(null, 'ceramica/17.jpg', 0.96,'Piedra Pizarra', 'Piedra Pizarra','Gris','Pisos','40x40',9590,'Easy');"
+              var execute = "INSERT INTO ceramicas VALUES(null, 'img/ceramica/17.jpg', 0.96,'Piedra Pizarra', 'Piedra Pizarra','Gris','Pisos','40x40',9590,'Easy');"
               tx.executeSql(execute);
 
-              var execute = "INSERT INTO ceramicas VALUES(null, 'ceramica/18.jpg', 1.99,'Cemento', 'Cemento','Gris Plata','Pisos','40x40',6945,'Easy');"
+              var execute = "INSERT INTO ceramicas VALUES(null, 'img/ceramica/18.jpg', 1.99,'Cemento', 'Cemento','Gris Plata','Pisos','40x40',6945,'Easy');"
               tx.executeSql(execute);
+              /*ingresar pinturas*/ 
+
+              /*var execute = "INSERT INTO pintura VALUES(null, 'Purple Passion', '7006W', 'rgba(128,98,146,1)')";
+              tx.executeSql(execute);
+
+              var execute = "INSERT INTO pintura VALUES(null, 'Blue Cool', '7090W', 'rgba(215,238,243,1)')";
+              tx.executeSql(execute);
+
+              var execute = "INSERT INTO pintura VALUES(null, 'Ondine Blue', '7091W', 'rgba(201,231,240,1)')";
+              tx.executeSql(execute);
+
+              var execute = "INSERT INTO pintura VALUES(null, 'Inpiration Blue', '7092W', 'rgba(174,221,238,1)')";
+              tx.executeSql(execute);
+
+              var execute = "INSERT INTO pintura VALUES(null, 'Baby Blue Eyes', '7093M', 'rgba(136,205,228,1)')";
+              tx.executeSql(execute);
+
+              var execute = "INSERT INTO pintura VALUES(null, 'Blue Stencil', '7094M', 'rgba(98,192,222,1)')";
+              tx.executeSql(execute);
+
+              var execute = "INSERT INTO pintura VALUES(null, 'Granada Blue', '7095D', 'rgba(0,161,197,1)')";
+              tx.executeSql(execute);
+
+              var execute = "INSERT INTO pintura VALUES(null, 'Deep Marine', '7096A', 'rgba(0,136,174,1)')";
+              tx.executeSql(execute);
+
+              var execute = "INSERT INTO pintura VALUES(null, 'Tiffany Glass', '7190W', 'rgba(237,244,211,1)')";
+              tx.executeSql(execute);
+
+              var execute = "INSERT INTO pintura VALUES(null, 'Rain Reflection', '7191W', 'rgba(240,239,192,1)')";
+              tx.executeSql(execute);  
+
+              var execute = "INSERT INTO pintura VALUES(null, 'Tangy Green', '7192W', 'rgba(230,232,176,1)')";
+              tx.executeSql(execute);
+
+              var execute = "INSERT INTO pintura VALUES(null, 'Green Moth', '7193W', 'rgba(223,226,156,1)')";
+              tx.executeSql(execute);
+
+              var execute = "INSERT INTO pintura VALUES(null, 'Spring Grass', '7194D', 'rgba(212,216,129,1)')";
+              tx.executeSql(execute);
+
+              var execute = "INSERT INTO pintura VALUES(null, 'Picnic Green', '7195AW', 'rgba(191,196,93,1)')";
+              tx.executeSql(execute);
+
+              var execute = "INSERT INTO pintura VALUES(null, 'Bistro Green', '7196N', 'rgba(170,179,82,1)')";
+              tx.executeSql(execute);
+
+              var execute = "INSERT INTO pintura VALUES(null, 'Serenity', '7250W', 'rgba(251,246,225,1)')";
+              tx.executeSql(execute);
+
+              var execute = "INSERT INTO pintura VALUES(null, 'Lemon Meringue', '7251W', 'rgba(255,241,191,1)')";
+              tx.executeSql(execute);
+
+              var execute = "INSERT INTO pintura VALUES(null, 'Sundew', '7252W', 'rgba(255,240,175,1)')";
+              tx.executeSql(execute);
+
+              var execute = "INSERT INTO pintura VALUES(null, 'Golden Corn', '7253M', 'rgba(255,231,143,1)')";
+              tx.executeSql(execute);
+
+              var execute = "INSERT INTO pintura VALUES(null, 'Black-eyed-susan', '7254D', 'rgba(255,218,93,1)')";
+              tx.executeSql(execute);
+
+              var execute = "INSERT INTO pintura VALUES(null, 'High Sun', '7255A', 'rgba(255,211,64,1)')";
+              tx.executeSql(execute);
+
+              var execute = "INSERT INTO pintura VALUES(null, 'Coronation Gold', '7256W', 'rgba(255,194,0,1)')";
+              tx.executeSql(execute);
+
+              var execute = "INSERT INTO pintura VALUES(null, 'Rose Morn', '7460W', 'rgba(242,232,235,1)')";
+              tx.executeSql(execute);
+
+              var execute = "INSERT INTO pintura VALUES(null, 'Island Dawn', '7461W', 'rgba(238,221,235,1)')";
+              tx.executeSql(execute);
+
+              var execute = "INSERT INTO pintura VALUES(null, 'Fresh Bud', '7462W', 'rgba(231,202,227,1)')";
+              tx.executeSql(execute);
+
+              var execute = "INSERT INTO pintura VALUES(null, 'Laurel Blossom', '7463M', 'rgba(211,163,203,1)')";
+              tx.executeSql(execute);
+
+              var execute = "INSERT INTO pintura VALUES(null, 'Violet Cluster', '7464D', 'rgba(200,142,187,1)')";
+              tx.executeSql(execute);*/
+
+
+
+
+
+
+            
 
 
 
@@ -333,11 +431,67 @@ function main(){
                 
                                  if(item.id_ceramicas == 0){ // si no tiene un ceramica asignada
 
-                                  if (tipo_proyecto == "living"){
-
                                   xhReq.open("GET", "complementacion/accederProyecto.html", false);
                                   xhReq.send(null);
                                   document.getElementById("contenidoCuerpo").innerHTML=xhReq.responseText;
+
+                                  if (tipo_proyecto == "living"){
+
+
+                                  }
+
+                                  if (tipo_proyecto == "bano"){
+                                   //xhReq.open("GET", "complementacion/accederProyectoBano.html", false);
+                                   //xhReq.send(null);
+                                   //document.getElementById("contenidoCuerpo").innerHTML=xhReq.responseText;
+
+                                   $(".imagen").attr("src", "img/bano1.jpg");
+                                   $(".imagen2").attr("src", "img/bano2.jpg");
+                                   $(".imagen3").attr("src", "img/bano3.jpg");
+                                   $(".imagen4").attr("src", "img/bano4.jpg");
+
+                                   $(".imagen").attr("data-tipo", "bano");
+
+
+
+                                  }
+
+                                  if(tipo_proyecto == "dormitorio"){
+                                    //xhReq.open("GET", "complementacion/accederProyectoDormitorio.html", false);
+                                    //xhReq.send(null);
+                                    //document.getElementById("contenidoCuerpo").innerHTML=xhReq.responseText;
+                                   $(".imagen").attr("src", "img/dormitorio1.jpg");
+                                   $(".imagen2").attr("src", "img/dormitorio2.jpg");
+                                   $(".imagen3").attr("src", "img/dormitorio3.jpg");
+                                   $(".imagen4").attr("src", "img/dormitorio4.jpg");
+
+                                   $(".imagen").attr("data-tipo", "dormitorio");
+                                  }
+
+                                  if(tipo_proyecto == "patio"){
+                                   //xhReq.open("GET", "complementacion/accederProyectoPatio.html", false);
+                                   //xhReq.send(null);
+                                   //document.getElementById("contenidoCuerpo").innerHTML=xhReq.responseText;
+                                   $(".imagen").attr("src", "img/patio1.jpg");
+                                   $(".imagen2").attr("src", "img/patio2.jpg");
+                                   $(".imagen3").attr("src", "img/patio3.jpg");
+                                   $(".imagen4").attr("src", "img/patio4.jpg");
+
+                                   $(".imagen").attr("data-tipo", "patio");
+                                  }
+
+                                  if(tipo_proyecto == "cocina"){
+                                   //xhReq.open("GET", "complementacion/accederProyectoCocina.html", false);
+                                   //xhReq.send(null);
+                                   //document.getElementById("contenidoCuerpo").innerHTML=xhReq.responseText;
+
+                                   $(".imagen").attr("src", "img/cocina1.jpg");
+                                   $(".imagen2").attr("src", "img/cocina2.jpg");
+                                   $(".imagen3").attr("src", "img/cocina3.jpg");
+                                   $(".imagen4").attr("src", "img/cocina4.jpg");
+
+                                   $(".imagen").attr("data-tipo", "cocina");
+
                                   }
 
                                   $("#btn_ayuda").on("click", funcionesDeAyuda);
@@ -352,6 +506,7 @@ function main(){
                                  superficieTotalComplementar = item.superficie_total;
                                  $("#btn_decorar").on("click", elegirImagenDecorar);
                                  $("#btn_calculo_material").on("click", calculosHerramientas);
+                                 $("#btn_presupuesto").on("click", presupuestoMaterial);
                                  //totalCajasComplementar = Math.round(item.total_cajas);
                                 }else{
 
@@ -479,7 +634,7 @@ function main(){
                            
 
 
-                          $("#contenidoCuerpo").css("background", "#A9C0D0");
+                          //$("#contenidoCuerpo").css("background", "#A9C0D0");
                           //alert("entro al for");
                           var item = results.rows.item(i);
 
@@ -488,7 +643,7 @@ function main(){
 
                            if(i!=0){
                               
-                                 $("#lista-proyectos").append('<li class="listado-proyecto" id="'+item.id_proyecto+'"><div id="'+array_colores[item.id_tipo_proyecto]+'_'+item.id_proyecto+'"></div><div class="informacion_'+item.id_proyecto+'"><span class="span-tipo_'+item.id_proyecto+'">'+array_tipo_proyecto[item.id_tipo_proyecto]+'</span><span class="fecha-proyecto_'+item.id_proyecto+'">'+item.fecha+'</span><span class="id_proyecto'+item.id_proyecto+'"></span></div></li>');
+                                 $("#lista-proyectos").append('<li class="listado-proyecto" data-tipo="'+item.tipo_proyecto+'" id="'+item.id_proyecto+'"><div id="'+array_colores[item.id_tipo_proyecto]+'_'+item.id_proyecto+'"></div><div class="informacion_'+item.id_proyecto+'"><span class="span-tipo_'+item.id_proyecto+'">'+array_tipo_proyecto[item.id_tipo_proyecto]+'</span><span class="fecha-proyecto_'+item.id_proyecto+'">'+item.fecha+'</span><span class="id_proyecto'+item.id_proyecto+'"></span></div></li>');
                                
 
                                  //Obtener margin-top original
@@ -607,7 +762,7 @@ function main(){
                            }
                            else{
 
-                             $("#lista-proyectos").append('<li class="listado-proyecto" id="'+item.id_proyecto+'"><div id="'+array_colores[item.id_tipo_proyecto]+'"></div><div class="informacion"><span class="span-tipo">'+array_tipo_proyecto[item.id_tipo_proyecto]+'</span><span class="fecha-proyecto" style="color: '+array_codigo_colores[item.id_tipo_proyecto]+'">'+item.fecha+'</span><span class="id_proyecto">'+item.id_proyecto+'</span></div></li>');
+                             $("#lista-proyectos").append('<li class="listado-proyecto" data-tipo="'+item.tipo_proyecto+'" id="'+item.id_proyecto+'"><div id="'+array_colores[item.id_tipo_proyecto]+'"></div><div class="informacion"><span class="span-tipo">'+array_tipo_proyecto[item.id_tipo_proyecto]+'</span><span class="fecha-proyecto" style="color: '+array_codigo_colores[item.id_tipo_proyecto]+'">'+item.fecha+'</span><span class="id_proyecto">'+item.id_proyecto+'</span></div></li>');
 
                            }
                           //alert("id proyecto: "+item.id_proyecto+" tipo proyecto: "+item.id_tipo_proyecto+" foto: "+item.fotografia);
@@ -641,7 +796,7 @@ function main(){
             var fecha_actual = new Date();
             var fecha = fecha_actual.getDate()+"-"+(fecha_actual.getMonth()+1)+"-"+fecha_actual.getFullYear();
             //tx.executeSql("INSERT INTO proyecto (id_proyecto, id_tipo_proyecto, fecha, superficie_total, total_cajas, precio_total, id_ceramicas) values (?,?,?,?,?,?,?,?)",[null,tipo,fecha,superficieTotal,totalCajas,0,0]);
-            tx.executeSql("INSERT INTO proyecto (id_proyecto, id_tipo_proyecto, fecha, fotografia, largo, ancho, superficie_total, total_cajas, precio_total, id_ceramicas, id_pinturas, total_litros, id_ladrillos, total_ladrillos, pintura_bool, ladrillo_bool, alfombra_bool, ceramica_bool, nombre_proyecto, tipo_proyecto) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",[null,tipo,fecha,"#NA", largo,ancho,0,0,0,0,0,0,0,0,pintura, ladrillo, alfombra, ceramica, nombreProyecto, tipo_superficie]);
+            tx.executeSql("INSERT INTO proyecto (id_proyecto, id_tipo_proyecto, fecha, fotografia, largo, ancho, superficie_total, total_cajas, precio_total, id_ceramicas, id_pinturas, total_litros, id_ladrillos, total_ladrillos, pintura_bool, ladrillo_bool, alfombra_bool, ceramica_bool, nombre_proyecto, tipo_proyecto, precio_frague, precio_pegamento) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",[null,tipo,fecha,"#NA", largo,ancho,0,0,0,0,0,0,0,0,pintura, ladrillo, alfombra, ceramica, nombreProyecto, tipo_superficie,0,0]);
             //var tabla_proyecto = "CREATE TABLE ( id_proyecto INTEGER PRIMARY KEY AUTOINCREMENT, id_tipo_proyecto INTEGER, fecha DATE, fotografia TEXT, largo float, ancho float, superficie_total float, total_cajas float, precio_total INTEGER,id_ceramicas INTEGER, id_pinturas INTEGER, total_litros INTEGER, id_ladrillos INTEGER, total_ladrillos INTEGER, pintura_bool BOOLEAN, ladrillo_bool BOOLEAN, alfombra_bool BOOLEAN, ceramica_bool BOOLEAN, FOREIGN KEY(id_tipo_proyecto) references tipo_proyecto(id_tipo_proyecto))";
 
 
@@ -670,7 +825,7 @@ function main(){
 
          function obtenerNombreProyectoDB(tx){
           
-           var consulta = "SELECT nombre_proyecto FROM proyecto WHERE id_proyecto ="+idComplementar;
+           var consulta = "SELECT nombre_proyecto, tipo_proyecto FROM proyecto WHERE id_proyecto ="+idComplementar;
            tx.executeSql(consulta, [], consultaObtenerNombreProyecto, consultaError);
 
          }
@@ -761,6 +916,7 @@ function main(){
 
                       var item = results.rows.item(i);
                       nombreProyecto = item.nombre_proyecto;
+                      tipo_proyecto = item.tipo_proyecto;
                       $(".tituloProyecto").text(primeraLetraMayuscula(nombreProyecto));
                     }
 
@@ -774,7 +930,7 @@ function main(){
             // programar aquí 
             
 
-                 $("#contenidoCuerpo").css("background", "#FBC636");
+                 //$("#contenidoCuerpo").css("background", "#FBC636");
                   var topp = 110;
                   for (var i = 0; i < results.rows.length ; i++) {
                         
@@ -1019,6 +1175,154 @@ function main(){
         }
 
 
+        function verificarTiposDeSuperficie(){
+             var db = window.openDatabase("ConstruApp", "1.0", "DB ConstruApp", 20000);
+
+              db.transaction(queryVerrificarTipoDeSuperficie, errorDB);  
+
+        }
+
+        function queryVerrificarTipoDeSuperficie(tx){
+
+             var consulta = "SELECT pintura_bool, ladrillo_bool, alfombra_bool, ceramica_bool FROM proyecto WHERE id_proyecto ="+idComplementar;
+             //pintura_bool BOOLEAN, ladrillo_bool BOOLEAN, alfombra_bool BOOLEAN, ceramica_bool BOOLEAN
+             tx.executeSql(consulta,[],consultaVerificarTipoSuperficieSuccess, errorQueryDB);
+
+        }
+
+        function consultaVerificarTipoSuperficieSuccess(tx, results){
+           var minimenu = false;
+
+            for (var i = 0; i < results.rows.length ; i++) {
+
+                 var item = results.rows.item(i);
+                 ceramica_bool = item.ceramica_bool;
+                 ladrillo_bool = item.ladrillo_bool;
+                 alfombra_bool = item.alfombra_bool;
+                 pintura_bool = item.pintura_bool;
+
+             }
+
+                     
+                  if(ceramica_bool == "true"){
+                        if (minimenu == false){
+
+                        $("#scrollDecorarCeramica").css("display" , "block");
+                        minimenu = true;
+                        }
+
+                        $("#herramientaCeramica").on("click", herramientaCeramicaClick);
+
+                  }
+
+                  else{
+
+                        $("#herramientaCeramica").css("background-color", "#8B0000");
+                  }
+
+
+                  if(alfombra_bool == "true"){
+
+                        if (minimenu == false){
+                            //$("#scrollDecorarCeramica").css("display" , "block");
+                            minimenu = true;
+                        }
+
+                  }
+
+                  else{
+                        $("#herramientaAlfombra").css("background-color", "#8B0000");
+                  }
+
+                  if(pintura_bool == "true"){
+
+                        if (minimenu == false){
+                            $("#scrollColores").css("display" , "block");
+                            minimenu = true;
+                        }
+
+                        $("#herramientaPintura").on("click", herramientaColoresClick);
+
+                  }
+
+                  else{
+                        $("#herramientaPintura").css("background-color", "#8B0000");
+                  }
+
+                  if(ladrillo_bool == "true"){
+
+                        if (minimenu == false){
+                            //$("#scrollDecorarCeramica").css("display" , "block");
+                            minimenu = true;
+                        }
+
+                  }else{
+
+                        $("#herramientaLadrillo").css("background-color", "#8B0000");
+                  }
+
+                  //Si hay ceramicas que las cargue
+                  if(ceramica_bool == "true"){
+                    cargarCeramicasBD();
+                  }
+
+        }
+
+
+        function cargarCeramicasBD(){
+             var db = window.openDatabase("ConstruApp", "1.0", "DB ConstruApp", 20000);
+
+              db.transaction(queryCargarCeramicas, errorDB);  
+              
+
+        }
+
+        function queryCargarCeramicas(tx){
+
+            var consulta = "SELECT * FROM ceramicas";
+             //pintura_bool BOOLEAN, ladrillo_bool BOOLEAN, alfombra_bool BOOLEAN, ceramica_bool BOOLEAN
+             tx.executeSql(consulta,[],consultaCargarCeramicasSuccess, errorQueryDB);
+
+        }
+
+        function consultaCargarCeramicasSuccess(tx, results){
+
+              for (var i = 0; i < results.rows.length ; i++) {
+
+                 var item = results.rows.item(i);
+                 
+                 $("#scrollDecorarCeramica").append('<div class="imagenHerramienta" id="'+item.id_ceramicas+'"> <img src="'+item.url+'"/> </div>');
+                  //ceramicas( id_ceramicas INTEGER PRIMARY KEY AUTOINCREMENT, url TEXT, rendimiento_caja FLOAT, modelo TEXT, marca TEXT, color TEXT, uso TEXT, formato TEXT, precio INTEGER, lugar TEXT)";
+
+
+
+
+             }
+             $(".imagenHerramienta img").on("click", subrayarImagen);
+
+        }
+
+        function herramientaCeramicaClick(){
+           $("#herramientaCeramica").css("border", "3px solid rgb(161, 39, 39)");
+           $("#herramientaAlfombra").css("border", "none");
+           $("#herramientaLadrillo").css("border" , "none");
+           $("#herramientaPintura").css("border", "none");
+
+           $("#scrollColores").css("display" , "none");
+           $("#scrollDecorarCeramica").css("display" , "block");
+
+        }
+
+        function herramientaColoresClick(){
+           $("#herramientaPintura").css("border", "3px solid rgb(161, 39, 39)");
+           $("#herramientaCeramica").css("border", "none");
+           $("#herramientaLadrillo").css("border" , "none");
+           $("#herramientaAlfombra").css("border", "none");
+
+           $("#scrollDecorarCeramica").css("display" , "none");
+           $("#scrollColores").css("display" , "block");
+
+        }
 
 
 
@@ -1151,10 +1455,13 @@ function main(){
 
    function accederProyecto()
    {
+       tipo_proyecto = "";
 
         var id = $(this).attr('id');
+        tipo_proyecto = $(this).attr("data-tipo");
+
         //'+array_codigo_colores[item.id_tipo_proyecto]+'">'+item.fecha+'</span><span class="id_proyecto">'+item.id_proyecto+'</span></div></li>');
-        tipo_proyecto = $(".informacion .span-tipo").text();
+        //tipo_proyecto = $("this .informacion .span-tipo").text();
         idComplementar = id;
 
         salirApp = false;
@@ -1162,6 +1469,9 @@ function main(){
         //debugger;
         complementarBD();
         obtenerNombreProyecto();
+         // y el tipo de proyecto
+         // ir al listado de if para escoger que imagenes poner
+        
                                   //nombreProyecto = primeraLetraMayuscula(nombreProyecto);
                                 
                                   
@@ -1551,7 +1861,7 @@ function menu(opcion){
           tipo_superficie = $("#slcLugarDeSuperficie").val();
           tipo = $("#slcLugarDeSuperficie")[0].selectedIndex;
           tipo = tipo + 1;
-          alert(array_tipo_proyecto[0]);
+          alert(tipo_superficie);
           
           var n = $( "input:checked" ).length;
           nombreProyecto = $("#txtNombreProyecto").val();
@@ -1642,7 +1952,7 @@ function pantallaPrincipal()
 function fondoBlanco()
 {
 
-  $("#contenidoCuerpo").css("background", "#A9C0D0");
+  //$("#contenidoCuerpo").css("background", "#A9C0D0");
 
 
 }
@@ -1919,6 +2229,74 @@ function elegirImagenDecorar(){
                         
       };
 
+      //Poner imagen al <a>
+       if(tipo_proyecto == "patio"){
+
+              $("#Aimg1").attr("href", "img/patio1.jpg");
+              $("#Aimg2").attr("href", "img/patio2.jpg");
+              $("#Aimg3").attr("href", "img/patio3.jpg");
+              $("#Aimg4").attr("href", "img/patio4.jpg");
+
+              $("#imagen1").attr("src", "img/patio1.jpg");
+              $("#imagen2").attr("src", "img/patio2.jpg");
+              $("#imagen3").attr("src", "img/patio3.jpg");
+              $("#imagen4").attr("src", "img/patio4.jpg");
+
+
+              //$("#Aimg5").attr("data-tipo", "patio");
+        }
+        if(tipo_proyecto == "bano"){
+
+              $("#Aimg1").attr("href", "img/bano1.jpg");
+              $("#Aimg2").attr("href", "img/bano2.jpg");
+              $("#Aimg3").attr("href", "img/bano3.jpg");
+              $("#Aimg4").attr("href", "img/bano4.jpg");
+
+              $("#imagen1").attr("src", "img/bano1.jpg");
+              $("#imagen2").attr("src", "img/bano2.jpg");
+              $("#imagen3").attr("src", "img/bano3.jpg");
+              $("#imagen4").attr("src", "img/bano4.jpg");
+
+
+              //$("#Aimg5").attr("data-tipo", "patio");
+        }
+
+        if(tipo_proyecto == "dormitorio"){
+
+              $("#Aimg1").attr("href", "img/dormitorio1.jpg");
+              $("#Aimg2").attr("href", "img/dormitorio2.jpg");
+              $("#Aimg3").attr("href", "img/dormitorio3.jpg");
+              $("#Aimg4").attr("href", "img/dormitorio4.jpg");
+
+              $("#imagen1").attr("src", "img/dormitorio1.jpg");
+              $("#imagen2").attr("src", "img/dormitorio2.jpg");
+              $("#imagen3").attr("src", "img/dormitorio3.jpg");
+              $("#imagen4").attr("src", "img/dormitorio4.jpg");
+
+
+              //$("#Aimg5").attr("data-tipo", "patio");
+        }
+
+        if(tipo_proyecto == "cocina"){
+
+              $("#Aimg1").attr("href", "img/cocina1.jpg");
+              $("#Aimg2").attr("href", "img/cocina2.jpg");
+              $("#Aimg3").attr("href", "img/cocina3.jpg");
+              $("#Aimg4").attr("href", "img/cocina4.jpg");
+
+              $("#imagen1").attr("src", "img/cocina1.jpg");
+              $("#imagen2").attr("src", "img/cocina2.jpg");
+              $("#imagen3").attr("src", "img/cocina3.jpg");
+              $("#imagen4").attr("src", "img/cocina4.jpg");
+
+
+              //$("#Aimg5").attr("data-tipo", "patio");
+        }                                
+
+
+
+
+
       $("#imagen1").css(estiloImg);
       $("#imagen2").css(estiloImg);
       $("#imagen3").css(estiloImg);
@@ -1938,6 +2316,7 @@ $("#ticket2").css("visibility", "hidden");
 $("#ticket3").css("visibility", "hidden");
 $("#ticket4").css("visibility", "hidden");
  $("#ticket1").css("visibility", "visible");
+ imagenAMenu = "1"
 
 }
 
@@ -1945,7 +2324,8 @@ function ponerticket2(){
  $("#ticket1").css("visibility", "hidden");
 $("#ticket3").css("visibility", "hidden");
 $("#ticket4").css("visibility", "hidden");
- $("#ticket2").css("visibility", "visible")
+ $("#ticket2").css("visibility", "visible");
+ imagenAMenu = "2"
 
 }
 
@@ -1955,7 +2335,8 @@ function ponerticket3(){
 $("#ticket1").css("visibility", "hidden");
 $("#ticket4").css("visibility", "hidden");
     
- $("#ticket3").css("visibility", "visible")
+ $("#ticket3").css("visibility", "visible");
+ imagenAMenu = "3"
 
 }
 
@@ -1964,24 +2345,49 @@ function ponerticket4(){
 $("#ticket3").css("visibility", "hidden");
 $("#ticket1").css("visibility", "hidden");
     
- $("#ticket4").css("visibility", "visible")
+ $("#ticket4").css("visibility", "visible");
+ imagenAMenu = "4"
 
 }
 
 function mostrarMenuDecorar(){
 
-          xhReq.open("GET", "decorar/menu_decorar.html", false);
+  if (imagenAMenu != "undefined"){
+
+   var hrefImagen = "img/"+tipo_proyecto + imagenAMenu+".jpg";
+
+
+      xhReq.open("GET", "decorar/menu_decorar.html", false);
       xhReq.send(null);
       document.getElementById("body").innerHTML=xhReq.responseText;
+        verificarTiposDeSuperficie();
+        alert(ceramica_bool);
+      /*ver los tipos de proyectos*/
+      
 
-      $(".imagenHerramienta img").on("click", subrayarImagen);
+      $("#imagenDecorar").attr("src", hrefImagen);
+      $(".color").on("click", subrayarCirculoColor);
+      
+  }
+  else{
+    shortToast("Debes Seleccionar Una Imagén");
+    alert("Debes seleccionar una imagen");
+
+  }
 
 }
 
 function subrayarImagen(){
+  
   $(".imagenHerramienta img").css("border-bottom", "none");
   $(this).css("border-bottom", "6px solid #197D9B");
 
+}
+
+function subrayarCirculoColor(){
+
+  $("#scrollColores .color").css("border", "none");
+  $(this).css("border", "3px solid white");
 }
 
 function calculosHerramientas(){
@@ -2107,6 +2513,15 @@ function rellenarImagenColor(){
 function primeraLetraMayuscula(s) { 
   return s[0].toUpperCase() + s.slice(1);
    }
+
+
+function presupuestoMaterial(){
+
+        xhReq.open("GET", "presupuesto/presupuestos.html", false);
+      xhReq.send(null);
+      document.getElementById("contenidoCuerpo").innerHTML=xhReq.responseText;
+
+}
 
 
 

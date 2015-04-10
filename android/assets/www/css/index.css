@@ -332,7 +332,7 @@ h1.complementaProyecto{
   background-color: rgb(240, 240, 240);
   padding: 1%;
   text-align: left;
-  margin-left: -50%;
+  margin-left: 8%;
   border-radius: 3%;
     z-index: 999;
 
@@ -354,6 +354,18 @@ h1.complementaProyecto{
   font-weight: bold;
   color: #776B6B;
   z-index: 1;
+
+}
+
+#miniMenuHerramientas{
+
+}
+
+#miniMenuHerramientas img{
+  width: 10%;
+  position: absolute;
+  margin-top: -14%;
+  margin-left: 85%;
 
 }
 
@@ -1104,18 +1116,18 @@ span.info-precio{
 
 /*Tabla Detalles Cerámicas*/
 #tablaFichaT {
-height: auto;
-padding-left: 0px;
-padding-right: 18px;
-padding-top: 18px;
-width: 292px;
+  height: auto;
+  padding-left: 0px;
+  padding-right: 5px;
+  padding-top: 18px;
+  width: 100%;
+  margin-top: -1%;
 }
 
 .tituloFT {
 border-bottom: 1px solid #CCC;
-color: #666;
-font-size: 11px;
-padding: 6px 0 6px 8px;
+color: #FFF;
+font-size: 19px;x 8px;
 font-weight: bold;
 }
 
@@ -1130,7 +1142,7 @@ background-color: #fff;
 .contFT {
 border-bottom: 1px solid #CCC;
 color: #666;
-font-size: 10px;
+font-size: 12px;
 padding: 6px 0 6px 8px;
 }
 
@@ -1898,7 +1910,7 @@ width: 500%;
   width: 100%;
 }
 
-#anchoCeramica, #precioCeramica{
+#anchoCeramica, #precioCeramica, #superficieTotalCeramica{
     width: 40%;
 
 }
@@ -1923,7 +1935,7 @@ width: 500%;
 
 }
 
-#rendimientoCeramicaresultado, #precioPegamentoresultado{
+#rendimientoCeramicaresultado, #precioPegamentoresultado, #superficieTotalCeramicaResultado{
   margin-left: 13% !important;
 
 }
@@ -1968,7 +1980,7 @@ width: 500%;
 
 }
 
-#largoPinturaresultado{
+#largoPinturaresultado, #superficieTotalPinturaResultado{
     margin-left: 13% !important;
 
 }
@@ -1979,8 +1991,18 @@ width: 500%;
 
 }
 
+#superficieTotalPintura, #superficieTotalPinturaResultado{
+  margin-left: 3%;
+  display: inline-block;
+
+}
+
 #RendimientoPintura{
     width: 40%;
+}
+
+#superficieTotalPintura{
+  width: 40%;
 }
 
 #RendimientoPintura, #RendimientoPinturaresultado{
@@ -2056,6 +2078,12 @@ width: 500%;
 
 #largoCeramica, #largoCeramicaresultado{
     display: inline-block;
+  margin-left: 3%;
+
+}
+
+#superficieTotalCeramica, #superficieTotalCeramicaResultado{
+  display: inline-block;
   margin-left: 3%;
 
 }
@@ -2160,14 +2188,14 @@ width: 500%;
   width: 6% !important;
   position: absolute;
   margin-top: -12%;
-  margin-left: 24%;
+  margin-left: 28%;
 
 }
 
 .labelEditar{
 position: absolute;
   margin-top: -10%;
-  margin-left: 13%;
+  margin-left: 6%;
   color: rgb(6, 6, 118);
   font-weight: bold;
 
@@ -2200,7 +2228,7 @@ position: absolute;
   width: 6% !important;
   position: absolute;
   margin-left: 14%;
-  margin-top: 24.5%;
+  margin-top: 28.5%;
 
 
 }
@@ -2209,14 +2237,14 @@ position: absolute;
   width: 5% !important;
   position: absolute;
   margin-top: -12%;
-  margin-left: 14%;
+  margin-left: 15%;
   height: 6%;
 
 }
 
 .containerDetalles{
   width: 25%;
-  margin-left: 51%;
+  margin-left: 43%;
 }
 
 

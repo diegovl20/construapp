@@ -2,33 +2,46 @@
                    
                    <div id="simple">
                     <h1 class="calculoHerramientas">Cálculos De Herramientas</h1>
+                    <div id="miniMenuHerramientas">
+                      <img src="img/ic_minimenu.png" id="imgMiniMenu"/>
+
+                    </div>
+
+                      <div id="divFlotante" class="editarAnchoLargo flotante" style="display: none;">
+                                <div id="editarAncho" class="editarAnchoGeneral">Editar Ancho</div>
+                                <div id="editarLargo" class="editarLargoGeneral">Editar Largo</div>
+                      </div>
                      <div class="container1">
                        <div id="resultadoCeramicas">
                            <h1 class="tituloResultadoCeramica">Cerámica</h1>
                            <div class="containerEditar">
-                              <label class="labelEditar">Editar</label>
+                              <label class="labelEditar" id="labelEditarCeramica">Rendimiento</label>
                               <img src="img/ic_lapiz.png">
-                              <div id="divFlotante" style="display: none;">
-                                <div id="msgRendimiento">Ingresar Rendimiento Caja</div>
-                                <div id="editarAncho">Editar Ancho</div>
-                                <div id="editarLargo">Editar Largo</div>
-                              </div>
+                              
+
                            </div>
+                              <div id="divFlotante" class="flotanteCeramicas flotante" style="display: none;">
+                                <div id="msgRendimiento" class="msgRendimientoCeramica">Ingresar Rendimiento Caja</div>
+                                <!--<div id="editarAncho" class="editarAnchoCeramica">Editar Ancho</div>
+                                <div id="editarLargo" class="editarLargoCeramica">Editar Largo</div>-->
+                              </div>
 
                            <div class="containerDetalles">
-                              <label class="labelDetalles">Detalles</label>
+                              <label class="labelDetalles" id="labelDetallesCeramica">Detalles</label>
                               <img src="img/img_detalles.png">
                            </div>
 
                            <div class="containerGuardar">
                               <label class="labelGuardar">Guardar</label>
-                              <img src="img/img_guardar.png">
+                              <img src="img/img_guardar.png" id="imgGuardarDatos">
                            </div>
+
 
                            <hr id="brTituloResultadoCeramica"/>
 
                            <label id="anchoCeramica">Ancho superficie:</label> <label id="anchoCeramicaresultado"></label><br/>
                            <label id="largoCeramica">Largo superficie:</label> <label id="largoCeramicaresultado"></label><br/>
+                           <label id="superficieTotalCeramica">Superficie total:</label> <label id="superficieTotalCeramicaResultado"></label>
                            <label id="rendimientoCeramica">Rendimiento:</label> <label id="rendimientoCeramicaresultado"></label>
                            <!--<img src="img/ceramica/1.jpg"/>-->
                       </div>
@@ -51,8 +64,14 @@
 
                                <h1 class="tituloResultadoPintura">Pintura</h1>
                               <div class="containerEditar">
-                                 <label class="labelEditar">Editar</label>
+                                 <label class="labelEditar" id="labelEditarPintura">Rendimiento</label>
                                  <img src="img/ic_lapiz.png">
+
+                              </div>
+                              <div id="divFlotante" class="flotantePinturas flotante" style="top: 31%;display: none;">
+                                <div id="msgRendimiento" class="msgRendimientoPintura">Ingresar Rendimiento Pintura</div>
+                                <<!--div id="editarAncho" class="editarAnchoPintura">Editar Ancho</div>
+                                <div id="editarLargo" class="editarLargoPintura">Editar Largo</div>-->
                               </div>
                             <div class="containerDetalles">
                               <label class="labelDetalles">Detalles</label>
@@ -61,13 +80,14 @@
 
                            <div class="containerGuardar">
                               <label class="labelGuardar">Guardar</label>
-                              <img src="img/img_guardar.png">
+                              <img src="img/img_guardar.png" id="imgGuardarDatosPinturas">
                            </div>
                                <hr id="brTituloResultadoPintura"/>
 
                                <label id="anchoPintura">Ancho superficie:</label> <label id="anchoPinturaresultado"> 40m2</label><br/>
                                <label id="largoPintura">Largo superficie:</label> <label id="largoPinturaresultado"> 40m2</label><br/>
-                               <label id="RendimientoPintura">Rendimiento:</label> <label id="RendimientoPinturaresultado"> 40m2</label>
+                               <label id="superficieTotalPintura">Superficie total:</label> <label id="superficieTotalPinturaResultado">34 m2</label>
+                               <label id="RendimientoPintura">Rendimiento:</label> <label id="RendimientoPinturaresultado">0</label>
 
                                <!--<img src="img/ceramica/2.jpg"/>-->
                              
@@ -77,7 +97,7 @@
                                <hr id="brResultadoPintura"/>
 
                               <div class="container2">
-                                   <label id="totalPintura">Total Pintura:</label><label id="totalPinturaresultado"> 40m2</label>
+                                   <label id="totalPintura">Total Pintura:</label><label id="totalPinturaresultado">0</label>
 
                               </div>
                             </div>

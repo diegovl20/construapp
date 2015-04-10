@@ -8,6 +8,8 @@ var ceramica_bool = false;
 var pintura_bool = false; 
 var alfombra_bool = false;
 var ladrillo_bool = false;
+var OpcionesMenu = false;
+var contador= 0;
 var ancho_py, largo_py;
 var imagenALaBD = "jiji";
 var idCeramicaClickeada = 0;
@@ -77,54 +79,24 @@ function onDeviceReady() {
 
   function onBackKeyDown(){
 
+    alert(opcionesMenu);
+
        if(salirApp){
         navigator.app.exitApp();
        }
        else if(quitarCapa){
-         $("#divFlotante").hide("slow");
+         $(".flotante").hide("slow");
          $("#mask").css("display", "none");
             
        }
+       //else if(OpcionesMenu){
+        //complementarBD();
+       //}
        else{
             pantallaPrincipal();
         verificarProyectos();
       }
   }
-
-
-  function onPrompt(results) {
-    alert("You selected button number " + results.buttonIndex + " and entered " + results.input1);
-}
-
-// Show a custom prompt dialog
-//
-function showPrompt() {
-    navigator.notification.prompt(
-        'Please enter your name',  // message
-        onPrompt,                  // callback to invoke
-        'Registration',            // title
-        ['Ok','Exit'],             // buttonLabels
-        'Jane Doe'                 // defaultText
-    );
-}
-
-        function alertDismissed() {
-            // do something
-        }
-
-    // Show a custom alertDismissed
-    //
-    function showAlert() {
-        navigator.notification.alert(
-            'Click en editar para ingresar el rendimiento de las herramientas faltantes.',  // message
-            alertDismissed,         // callback
-            'Game Over',            // title
-            'OK'                  // buttonName
-        );
-    }
-
-
-
 
 
 function main(){
@@ -175,7 +147,6 @@ function main(){
     //Crear la base de datos
     var db = window.openDatabase("ConstruApp", "1.0", "DB ConstruApp", 200000);
     db.transaction(populateDB, errorDB, succesDB);
-    showAlert();
     //destinationType=navigator.camera.DestinationType;
     //pictureSource = navigator.camera.PictureSourceType;
     
@@ -206,7 +177,7 @@ function menuOpciones(){
 
            var tabla_tipo_proyecto = "CREATE TABLE IF NOT EXISTS tipo_proyecto( id_tipo_proyecto INTEGER PRIMARY KEY, nombre TEXT)";
            var tabla_ceramicas = "CREATE TABLE IF NOT EXISTS ceramicas( id_ceramicas INTEGER PRIMARY KEY AUTOINCREMENT, url TEXT, rendimiento_caja FLOAT, modelo TEXT, marca TEXT, color TEXT, uso TEXT, formato TEXT, precio INTEGER, lugar TEXT)";
-           var tabla_proyecto = "CREATE TABLE IF NOT EXISTS proyecto( id_proyecto INTEGER PRIMARY KEY AUTOINCREMENT, id_tipo_proyecto INTEGER, fecha DATE, fotografia TEXT, largo FLOAT, ancho FLOAT, superficie_total FLOAT, total_cajas FLOAT, precio_total INTEGER,id_ceramicas INTEGER, id_pinturas INTEGER, id_alfombras, total_litros INTEGER, id_ladrillos INTEGER, total_ladrillos INTEGER, pintura_bool BOOLEAN, ladrillo_bool BOOLEAN, alfombra_bool BOOLEAN, ceramica_bool BOOLEAN, nombre_proyecto TEXT, tipo_proyecto TEXT, precio_frague INTEGER, precio_pegamento INTEGER, FOREIGN KEY(id_tipo_proyecto) references tipo_proyecto(id_tipo_proyecto))";
+           var tabla_proyecto = "CREATE TABLE IF NOT EXISTS proyecto( id_proyecto INTEGER PRIMARY KEY AUTOINCREMENT, id_tipo_proyecto INTEGER, fecha DATE, fotografia TEXT, largo FLOAT, ancho FLOAT, superficie_total FLOAT, total_cajas FLOAT, precio_total INTEGER,id_ceramicas INTEGER, id_pinturas INTEGER, id_alfombras, total_litros INTEGER, id_ladrillos INTEGER, total_ladrillos INTEGER, pintura_bool BOOLEAN, ladrillo_bool BOOLEAN, alfombra_bool BOOLEAN, ceramica_bool BOOLEAN, nombre_proyecto TEXT, tipo_proyecto TEXT, precio_frague INTEGER, precio_pegamento INTEGER, total_frague INTEGER, total_pegamento INTEGER, rendimiento_caja FLOAT, rendimiento_pintura FLOAT, FOREIGN KEY(id_tipo_proyecto) references tipo_proyecto(id_tipo_proyecto))";
            var tabla_pinturas = "CREATE TABLE IF NOT EXISTS pintura (id_pintura INTEGER PRIMARY KEY AUTOINCREMENT, nombre_color TEXT, codigo TEXT, rgba_color TEXT)";
            tx.executeSql(tabla_tipo_proyecto);
            tx.executeSql(tabla_ceramicas);
@@ -583,6 +554,21 @@ function menuOpciones(){
 
          }
 
+         function ActualizarDatosCeramicaDB(){
+              var db = window.openDatabase("ConstruApp", "1.0", "DB ConstruApp", 20000);
+              
+              db.transaction(queryActualizarDatosCeramicaDB, errorQueryDB);
+
+         }
+
+         function ActualizarDatosPinturasDB(){
+
+              var db = window.openDatabase("ConstruApp", "1.0", "DB ConstruApp", 20000);
+              
+              db.transaction(queryActualizarDatosPinturasDB, errorQueryDB);
+
+         }
+
 
 
          function queryDB(tx)
@@ -637,7 +623,7 @@ function menuOpciones(){
          }
 
          function queryObtenerIdHerramientasClickeadas(tx){
-          var consulta = "SELECT id_ceramicas, id_pinturas, id_alfombras, id_ladrillos, ancho, largo FROM proyecto WHERE id_proyecto ="+idComplementar;
+          var consulta = "SELECT id_ceramicas, id_pinturas, id_alfombras, id_ladrillos, ancho, largo, rendimiento_pintura FROM proyecto WHERE id_proyecto ="+idComplementar;
           tx.executeSql(consulta,[],SuccesQueryObtenerIdHerramientasClickeadas, consultaComplementarError);
 
          }
@@ -655,6 +641,7 @@ function menuOpciones(){
                for (var i = 0; i < results.rows.length ; i++) {
 
                  var item = results.rows.item(i);
+                 var rendimiento_pintura = item.rendimiento_pintura;
 
                  idCeramicaClickeada = item.id_ceramicas;
                  idColorCirculoClickeado = item.id_pinturas;
@@ -664,6 +651,25 @@ function menuOpciones(){
                  largo_py = item.largo
                }
                realizarCalculoCeramicasDB();
+
+               if(idCeramicaClickeada  == 0){
+                  //No mostrar el cuadro de ceramicas
+               }
+
+               if(idColorCirculoClickeado  == 0){
+                  //no mostrar el cuadro de pinturas
+                  
+               }else{
+                  calculoLitrosPintura(rendimiento_pintura, ancho_py, largo_py);
+               }
+
+               if(idLadrilloClickeado == 0){
+                  //no mostrar el cuadro de ladrillo
+               }
+
+               if(idAlfombraClickeada == 0){
+                  //no mostrar el cuadro de alfombra
+               }
 
 
 
@@ -681,7 +687,7 @@ function menuOpciones(){
                }
 
 
-               RealizarCalculosCeramicas(rendimiento, precio, ancho_py, largo_py);
+               RealizarCalculosCeramicas(rendimiento, ancho_py, largo_py);
 
          }
 
@@ -701,6 +707,8 @@ function menuOpciones(){
              for (var i = 0; i < results.rows.length ; i++) {
 
                  var item = results.rows.item(i);
+                 OpcionesMenu = true;
+
                   //fecha DATE, fotografia TEXT,superficie_total float, total_cajas float, FOREIGN KEY(id_tipo_proyecto) references tipo_proyecto(id_tipo_proyecto))";
                  //var proyecto = new Array(item.id_proyecto, item.id_tipo_proyecto, item.fecha, item.fotografia, item.superficie_total, item.total_cajas );
                  /*arrayProyecto[0] = item.id_proyecto;
@@ -718,6 +726,7 @@ function menuOpciones(){
                                   //document.getElementById("contenidoCuerpo").innerHTML=xhReq.responseText;
                                   //$("#btn_ayuda").on("click", funcionesDeAyuda);
                                   //$("#btn_complementar").on("click", funcionComplementar);
+
                                   clickFlechaDerechaDecorar("lista");
                                   
 
@@ -736,6 +745,7 @@ function menuOpciones(){
 
 
                                 }else{
+                                  
 
                                   //
                                   xhReq.open("GET", "complementacion/accederProyecto.html", false);
@@ -812,8 +822,16 @@ function menuOpciones(){
                                  //alert(fotografiaComplementar);
                                  superficieTotalComplementar = item.superficie_total;
                                  $("#btn_decorar2").on("click", elegirImagenDecorar);
-                                 $("#btn_calculo_material2").on("click", calculosHerramientas);
-                                 $("#btn_presupuesto2").on("click", presupuestoMaterial);
+                                 //$("#btn_calculo_material2").on("click", calculosHerramientas);
+                                  $("#btn_calculo_material2").on("click", function(){
+                                    shortToast("Debes decorar la imagén primero.");
+
+                                  });
+                                 //$("#btn_presupuesto2").on("click", presupuestoMaterial);
+                                 $("#btn_presupuesto2").on("click", function(){
+                                  shortToast("Debes decorar la imagén primero.");
+
+                                 });
                                  //totalCajasComplementar = Math.round(item.total_cajas);
 
 
@@ -930,7 +948,7 @@ function menuOpciones(){
                               
                                  //$("#lista").append('<li class="detalles-lista" data-tipo="'+item.tipo_proyecto+'" id="'+item.id_proyecto+'"><h2> '+item.nombre_proyecto+'</h2> <br/><p>Click para ver los detalles.</p> <br/> <p>"'+item.fecha+'"</p></li>');
                                  //sin lista, solo div
-                                 $("#lista").append('<div class="item" id="'+item.id_proyecto+'"><div id="titulo-proyecto">'+item.nombre_proyecto+'</div><div id="descripcion-proyecto">Click para ver más detalles</div><div id="fecha-proyecto">'+item.fecha+'</div><div id="imagen-proyecto"><img src="img/img_lista.png"/></div><div id="eliminar-proyecto"> <img src="img/img_eliminar.png"></div></div>');
+                                 $("#lista").append('<div class="item" id="'+item.id_proyecto+'" data-tipo="'+item.tipo_proyecto+'"><div id="titulo-proyecto">'+item.nombre_proyecto+'</div><div id="descripcion-proyecto">Click para ver más detalles</div><div id="fecha-proyecto">'+item.fecha+'</div><div id="imagen-proyecto"><img src="img/img_lista.png"/></div><div id="eliminar-proyecto"> <img src="img/img_eliminar.png"></div></div>');
 
                                  //Obtener margin-top original
                                  /*var margin = $(".fecha-proyecto").css("margin-top");
@@ -1063,6 +1081,7 @@ function menuOpciones(){
 
                       }
                       $(".item").on("click", accederProyecto);
+                      OpcionesMenu = false;
 
                }
 
@@ -1082,7 +1101,7 @@ function menuOpciones(){
             var fecha_actual = new Date();
             var fecha = fecha_actual.getDate()+"-"+(fecha_actual.getMonth()+1)+"-"+fecha_actual.getFullYear();
             //tx.executeSql("INSERT INTO proyecto (id_proyecto, id_tipo_proyecto, fecha, superficie_total, total_cajas, precio_total, id_ceramicas) values (?,?,?,?,?,?,?,?)",[null,tipo,fecha,superficieTotal,totalCajas,0,0]);
-            tx.executeSql("INSERT INTO proyecto (id_proyecto, id_tipo_proyecto, fecha, fotografia, largo, ancho, superficie_total, total_cajas, precio_total, id_ceramicas, id_pinturas, id_alfombras, total_litros, id_ladrillos, total_ladrillos, pintura_bool, ladrillo_bool, alfombra_bool, ceramica_bool, nombre_proyecto, tipo_proyecto, precio_frague, precio_pegamento) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",[null,tipo,fecha,"#NA", largo,ancho,0,0,0,0,0,0,0,0,0,pintura, ladrillo, alfombra, ceramica, nombreProyecto, tipo_superficie,0,0]);
+            tx.executeSql("INSERT INTO proyecto (id_proyecto, id_tipo_proyecto, fecha, fotografia, largo, ancho, superficie_total, total_cajas, precio_total, id_ceramicas, id_pinturas, id_alfombras, total_litros, id_ladrillos, total_ladrillos, pintura_bool, ladrillo_bool, alfombra_bool, ceramica_bool, nombre_proyecto, tipo_proyecto, precio_frague, precio_pegamento, total_frague, total_pegamento, rendimiento_caja, rendimiento_pintura) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",[null,tipo,fecha,"#NA", largo,ancho,0,0,0,0,0,0,0,0,0,pintura, ladrillo, alfombra, ceramica, nombreProyecto, tipo_superficie,0,0,0,0,0,0]);
             //var tabla_proyecto = "CREATE TABLE ( id_proyecto INTEGER PRIMARY KEY AUTOINCREMENT, id_tipo_proyecto INTEGER, fecha DATE, fotografia TEXT, largo float, ancho float, superficie_total float, total_cajas float, precio_total INTEGER,id_ceramicas INTEGER, id_pinturas INTEGER, total_litros INTEGER, id_ladrillos INTEGER, total_ladrillos INTEGER, pintura_bool BOOLEAN, ladrillo_bool BOOLEAN, alfombra_bool BOOLEAN, ceramica_bool BOOLEAN, FOREIGN KEY(id_tipo_proyecto) references tipo_proyecto(id_tipo_proyecto))";
 
 
@@ -1155,6 +1174,102 @@ function menuOpciones(){
              var consulta = "update proyecto set precio_total ="+precio+" where id_proyecto ="+idComplementar;
              tx.executeSql(consulta,[],consultaSuccesActualizarPrecioDB, errorQueryDB);
 
+
+        }
+
+
+        function queryActualizarDatosCeramicaDB(tx){
+          var largo_db = $("#largoCeramicaresultado").text();
+          var largo_db_ok = largo_db.split(" ");
+          largo_db = largo_db_ok[0]; 
+          largo_db = parseFloat(largo_db);
+
+
+          var ancho_db = $("#anchoCeramicaresultado").text();
+          var ancho_db_ok = ancho_db.split(" ");
+          ancho_db = ancho_db_ok[0];
+          ancho_db = parseFloat(ancho_db);
+
+          var superficie_db = $("#superficieTotalCeramicaResultado").text();
+          var superficie_db_ok = superficie_db.split(" ");
+          superficie_db = superficie_db_ok[0];
+          superficie_db = parseFloat(superficie_db);
+
+          var frague_db = $("#fragueCeramicaresultado").text();
+          var frague_db_ok = frague_db.split(" ");
+          frague_db = frague_db_ok[0];
+          frague_db = parseInt(frague_db);
+
+          var pegamento_db = $("#pegamentoCeramicaresultado").text();
+          var pegamento_db_ok = pegamento_db.split(" ");
+          pegamento_db = pegamento_db_ok[0];
+          pegamento_db = parseInt(pegamento_db);
+
+          var cajas_db = $("#cajasCeramicaresultado").text();
+          var cajas_db_ok = cajas_db.split(" ");
+          cajas_db = cajas_db_ok[0];
+          cajas_db = parseFloat(cajas_db);
+
+          var rendimiento_db = $("#rendimientoCeramicaresultado").text()
+          var rendimiento_db_ok = rendimiento_db.split(" ");
+          rendimiento_db = rendimiento_db_ok[0];
+          rendimiento_db = parseFloat(rendimiento_db);
+
+
+          var consulta = "update proyecto set largo = "+largo_db+", ancho = "+ancho_db+", superficie_total = "+superficie_db+", total_frague = "+frague_db+", total_pegamento = "+pegamento_db+", total_cajas = "+cajas_db+", rendimiento_caja = "+rendimiento_db+" where id_proyecto ="+idComplementar;
+          tx.executeSql(consulta,[],consultaSuccessActualizarDatosCeramicaDB, errorQueryDB);
+          //largo, ancho, superficie_total
+
+        }
+
+
+        function queryActualizarDatosPinturasDB(tx){
+
+          var largo_db = $("#largoPinturaresultado").text();
+          var largo_db_ok = largo_db.split(" ");
+          largo_db = largo_db_ok[0]; 
+          largo_db = parseFloat(largo_db);
+          
+
+
+          var ancho_db = $("#anchoPinturaresultado").text();
+          var ancho_db_ok = ancho_db.split(" ");
+          ancho_db = ancho_db_ok[0];
+          ancho_db = parseFloat(ancho_db);
+
+        
+
+          var superficie_db = $("#superficieTotalPinturaResultado").text();
+          var superficie_db_ok = superficie_db.split(" ");
+          superficie_db = superficie_db_ok[0];
+          superficie_db = parseFloat(superficie_db);
+          
+
+          var rendimiento_db = $("#RendimientoPinturaresultado").text();
+          var rendimiento_db_ok = rendimiento_db.split(" ");
+          rendimiento_db = rendimiento_db_ok[0];
+          rendimiento_db = parseFloat(rendimiento_db);
+          
+
+          var totalPintura_db = $("#totalPinturaresultado").text();
+          var totalPintura_db_ok = totalPintura_db.split(" ");
+          totalPintura_db = totalPintura_db_ok[0];
+          totalPintura_db = parseInt(totalPintura_db);
+          
+
+
+          var consulta = "update proyecto set largo = "+largo_db+", ancho = "+ancho_db+", superficie_total = "+superficie_db+", rendimiento_pintura = "+rendimiento_db+", total_litros = "+totalPintura_db+" where id_proyecto ="+idComplementar;
+          
+          tx.executeSql(consulta,[],consultaSuccessActualizarDatosPinturaDB, errorQueryDB);
+
+        }
+
+        function consultaSuccessActualizarDatosCeramicaDB(){
+          shortToast("Guardado Correctamente");
+        }
+
+        function consultaSuccessActualizarDatosPinturaDB(){
+          shortToast("Guardado Correctamente");
 
         }
 
@@ -1394,7 +1509,7 @@ function menuOpciones(){
 
 
         function queryVerCeramicaDB(tx){
-             var consulta = "SELECT * FROM ceramicas WHERE id_ceramicas ="+idCeramica;
+             var consulta = "SELECT * FROM ceramicas WHERE id_ceramicas ="+idCeramicaClickeada;
              tx.executeSql(consulta,[],consultaVerCeramicaSuccess, errorQueryDB);
 
 
@@ -1984,73 +2099,6 @@ function menuOpciones(){
 objetivo = (new Date()).getTime() + 1000 * Math.abs(nsegundos);
 while ( (new Date()).getTime() < objetivo );
 }
-
- function calculoLitrosPintura(){
-       //capturamos los datos del usuario
-     var medida1 = $("#txtMedida1").val();
-     var medida2 = $("#txtMedida2").val();
-     var rendimientoTarro = $("#txtMedida3").val();
-
-
-     var superficieTotal;
-     var totalLitros;
-
-     try{
-
-     superficieTotal = medida1 * medida2;
-     totalLitros = superficieTotal / rendimientoTarro;
-
-     if(!isNaN(totalLitros) && imagen != null){
-
-      superficieTotal = Math.round(superficieTotal * 100) / 100;
-      totalLitros = Math.round(totalLitros * 100) / 100;
-
-      xhReq.open("GET", "resultados/opcion4.html", false);
-      xhReq.send(null);
-      document.getElementById("contenidoCuerpo").innerHTML=xhReq.responseText;
-      $(".guardar_proyecto").on("click", function(){
-               
-
-           guardarProyectoPintura(superficieTotal, totalLitros);
-               
-               
-
-           });
-
-      $("#total_superficie").text(superficieTotal+"m2");
-      $("#litros_total").text(totalLitros+"lt");
-      $(".litros_total").text(totalLitros+"lt");
-
-      var smallImage = document.getElementById('imgLugar');
-      smallImage.style.display = 'block';
-      smallImage.src = imagen;
-
-
-
-
-     }else{
-        
-            if(imagen == null){
-                        
-                  alert("Debe tomar una fotografía del lugar");
-             }else{
-
-                  alert("Ingrese números correctos");
-             }
-
-
-     }
-     
-
-
-     }catch(e){
-
-      alert("Catch: "+e);
-     }
-
-
- }   
-
 
   function guardarProyectoOriginal(){
 
@@ -2775,7 +2823,7 @@ function subrayarCirculoColor(){
 function clickFlechaDerechaDecorar(origen){
 
    if (origen == "lista"){
-             alert("lista");
+             
 
             xhReq.open("GET", "esqueleto.html", false);
             xhReq.send(null);
@@ -2822,6 +2870,9 @@ function clickFlechaDerechaDecorar(origen){
             //$("h1.complementaProyecto").css("top", "88%");
             $("#imgEscogidaAnt").attr("src", imagenALaBD);
             $(".tituloProyecto").text(primeraLetraMayuscula(nombreProyecto));
+            $("#btn_decorar3").on("click", elegirImagenDecorar);
+            $("#btn_calculo_material3").on("click", calculosHerramientas);
+            $("#btn_presupuesto3").on("click", presupuestoMaterial);
             //$(".tituloProyecto").css("margin-top", "14%");
 
 
@@ -2863,24 +2914,57 @@ function calculosHerramientas(){
       //alertaRendimientos();
       showAlert();
       obtenerIdHerramientasClickeadasDB();
+      //ya estan disponibles el id de las herramientas clickeadas
 
 
 
+     $("#imgMiniMenu").on("click", function(){
 
+      $(".editarAnchoLargo").css("display", "block");
+      $('#mask').fadeIn(500);
+        //$("#mask").css("opacity", "0.6");      
+      $('#mask').fadeTo("fast", 1);
+      $(".editarAnchoGeneral").on("click", editarAnchoGeneral);
+      $(".editarLargoGeneral").on("click", editarLargoGeneral);
 
-    $(".labelEditar").on("click", function(){
+     });
+    /*Ceramicas*/    
+    $("#labelEditarCeramica").on("click", function(){
         
-        $("#divFlotante").css("display", "block");
+        $(".flotanteCeramicas").css("display", "block");
         //transition effect      
         $('#mask').fadeIn(500);
         //$("#mask").css("opacity", "0.6");      
         $('#mask').fadeTo("fast", 1);
-
-        $("#msgRendimiento").on("click", ingresarRendimientoCeramica);
+        
+        $(".msgRendimientoCeramica").on("click", ingresarRendimientoCeramica);
+        //$(".editarAnchoCeramica").on("click", modificarAnchoCeramica);
+        //$(".editarLargoCeramica").on("click", modificarLargoCeramica);
         quitarCapa = true;
      
 
     });
+
+
+    $("#imgGuardarDatos").on("click", ActualizarDatosCeramicaDB);
+    $("#imgGuardarDatosPinturas").on("click", ActualizarDatosPinturasDB);
+    $("#labelDetallesCeramica").on("click", detallesCeramica);
+
+    /*Pinturas*/
+
+    $("#labelEditarPintura").on("click", function(){
+
+      $(".flotantePinturas").css("display", "block");
+        //transition effect      
+        $('#mask').fadeIn(500);
+        //$("#mask").css("opacity", "0.6");      
+        $('#mask').fadeTo("fast", 1);
+        quitarCapa = true;
+        $(".msgRendimientoPintura").on("click", ingresarRendimientoPintura);
+
+    });
+
+
 
 
 
@@ -2888,9 +2972,11 @@ function calculosHerramientas(){
 
 function ingresarRendimientoCeramica(){
    
-   $("#divFlotante").hide("slow");
+   $(".flotanteCeramicas").hide("slow");
    $("#mask").css("display", "none");
+   resetarEventos();
    promptRendimientoCajaCeramica();
+
 
 
 
@@ -2898,15 +2984,58 @@ function ingresarRendimientoCeramica(){
 
 }
 
+function ingresarRendimientoPintura(){
 
-function RealizarCalculosCeramicas(rendimiento, precio, ancho, largo){
+   $(".flotantePinturas").hide("slow");
+   $("#mask").css("display", "none");
+   resetarEventos();
+   promptRendimientoPintura();
+
+}
+
+function editarAnchoGeneral(){
+   $(".editarAnchoLargo").hide("slow");
+   $("#mask").css("display", "none");
+   resetarEventos();
+   promptEditarAnchoGeneral();
+
+}
+
+function editarLargoGeneral(){
+   $(".editarAnchoLargo").hide("slow");
+   $("#mask").css("display", "none");
+   resetarEventos();
+   promptEditarLargoGeneral();
+
+}
+
+function modificarAnchoCeramica(){
+    $(".flotanteCeramicas").hide("slow");
+   $("#mask").css("display", "none");
+   resetarEventos();
+   promptAnchoCajaCeramica();
+
+}
+
+function modificarLargoCeramica(){
+
+   $(".flotanteCeramicas").hide("slow");
+   $("#mask").css("display", "none");
+   resetarEventos();
+   promptLargoCajaCeramica();
+
+}
+
+
+function RealizarCalculosCeramicas(rendimiento, ancho, largo){
 
        //capturamos los datos del usuario
      var superficie = ancho * largo;
      var superficieTotal = superficie * 1.05;
+     $("#superficieTotalCeramicaResultado").text(Math.round(superficieTotal)+ " m2");
      $("#anchoCeramicaresultado").text(ancho+" m2");
      $("#largoCeramicaresultado").text(largo+" m2");
-     $("#rendimientoCeramicaresultado").text(rendimiento);
+     $("#rendimientoCeramicaresultado").text(rendimiento+ " m2");
 
      var totalCajas = Math.round(superficieTotal / rendimiento);
      //totalCajas = Math.round(totalCajas * 100) / 100;
@@ -2916,40 +3045,384 @@ function RealizarCalculosCeramicas(rendimiento, precio, ancho, largo){
      var pegamento = Math.round(superficieTotal * 3);
      $("#pegamentoCeramicaresultado").text(pegamento+ " kg");
 
-
-     //var rendimientoCaja = $("#txtMedida3").val();
-
-     //variables locales
-
-     //var superficie;
-     //var superficieTotal;
-     //var totalCajas;
-     //var excedente;
-         
-          //superficie = medida1 * medida2;
-          //superficieTotal = superficie * 1.05;
-          //excedente = superficie * 0.05;
-          //totalCajas = superficieTotal / rendimientoCaja;
-           
-          //alert("Superficie"+superficie+"superficieTotal"+superficieTotal+"totalCajas"+totalCajas);
-          //Reducir decimales
-
-           
-           //superficie = Math.round(superficie * 100) / 100;
-           //superficieTotal = Math.round(superficieTotal * 100) / 100;
-           //excedente = Math.round(excedente * 100) / 100;
-           //totalCajas = Math.round(totalCajas * 100) / 100;
-      
-
-
-
-
 }
+
+
+ function calculoLitrosPintura(rendimiento, ancho, largo){
+       //capturamos los datos del usuario
+
+
+
+
+     var superficie = ancho * largo;
+     var superficieTotal = Math.round(superficie * 1.05);
+     var totalLitros = Math.round(superficieTotal / rendimiento);
+
+     $("#anchoPinturaresultado").text(ancho+" m2");
+     $("#largoPinturaresultado").text(largo+" m2");
+     $("#superficieTotalPinturaResultado").text(superficieTotal+" m2");
+     if(!rendimiento == 0){
+      $("#RendimientoPinturaresultado").text(rendimiento+" m2");
+      $("#totalPinturaresultado").text(totalLitros+" lt");
+     }
+
+
+ }   
 
 function promptRendimientoCajaCeramica(){
 
+       navigator.notification.prompt(
+        'Ingrese rendimiento de caja ',  // message
+        onPrompt,                  // callback to invoke
+        'Rendimiento Caja',            // title
+        ['Ok','Cancel'],             // buttonLabels
+        ''                 // defaultText
+    );
+   
 
 }
+
+function promptEditarAnchoGeneral(){
+
+         navigator.notification.prompt(
+        'Ingrese ancho superficie ',  // message
+        onPromptAnchoGeneral,                  // callback to invoke
+        'Ancho Superficie m2',            // title
+        ['Ok','Cancel'],             // buttonLabels
+        ''                 // defaultText
+    );
+
+}
+
+function promptEditarLargoGeneral(){
+    navigator.notification.prompt(
+        'Ingrese ancho superficie ',  // message
+        onPromptLargoGeneral,                  // callback to invoke
+        'Ancho Superficie m2',            // title
+        ['Ok','Cancel'],             // buttonLabels
+        ''                 // defaultText
+    );
+
+}
+
+
+function promptRendimientoPintura(){
+       navigator.notification.prompt(
+        'Ingrese rendimiento de pintura ',  // message
+        onPromptPintura,                  // callback to invoke
+        'Rendimiento Pintura',            // title
+        ['Ok','Cancel'],             // buttonLabels
+        ''                 // defaultText
+    );
+
+
+}
+
+function promptAnchoCajaCeramica(){
+
+       navigator.notification.prompt(
+        'Ingrese ancho superficie ',  // message
+        onPromptAncho,                  // callback to invoke
+        'Ancho Superficie m2',            // title
+        ['Ok','Cancel'],             // buttonLabels
+        ''                 // defaultText
+    );
+   
+
+}
+
+function promptLargoCajaCeramica(){
+
+       navigator.notification.prompt(
+        'Ingrese largo superficie ',  // message
+        onPromptLargo,                  // callback to invoke
+        'Largo Superficie m2',            // title
+        ['Ok','Cancel'],             // buttonLabels
+        ''                 // defaultText
+    );
+
+}
+
+  function onPrompt(results) {
+    //alert("You selected button number " + results.buttonIndex + " and entered " + results.input1);
+    
+    //1 hizo click en ok
+    
+
+    if(results.buttonIndex == 1){
+
+          
+        if(!results.input1 == ""  && !isNaN(results.input1)){
+
+          var widthh = $("#anchoCeramicaresultado").text();
+          widthh = parseFloat(widthh);
+
+          var heightt = $("#largoCeramicaresultado").text();
+          heightt = parseFloat(heightt);
+
+
+          
+          RealizarCalculosCeramicas(parseFloat(results.input1), widthh, heightt);
+          return true;
+           
+
+
+
+        }
+        else{
+           //alert("short");
+          shortToast("Ingrese números correctos");
+          return false;
+        }
+               
+    }else{
+
+      return false;
+
+    }
+}
+
+function onPromptAnchoGeneral(results){
+   if(results.buttonIndex == 1){
+     if(!results.input1 == ""  && !isNaN(results.input1)){
+       
+         if(idCeramicaClickeada != 0){
+          //var widthh = $("#anchoCeramicaresultado").text();
+          //widthh = parseFloat(widthh);
+          var ren = $("#rendimientoCeramicaresultado").text();
+          ren = parseFloat(ren);
+
+          var heightt = $("#largoCeramicaresultado").text();
+          heightt = parseFloat(heightt);
+
+         }
+         else if(idColorCirculoClickeado != 0){
+
+          //var widthh = $("#anchoPinturaresultado").text();
+          //widthh = parseFloat(widthh);
+          var ren = $("#rendimientoPinturaresultado").text();
+          ren = parseFloat(ren);
+
+          var heightt = $("#largoPinturaresultado").text();
+          heightt = parseFloat(heightt);
+
+         }
+         else if(idLadrilloClickeado !=0){
+
+         }
+         else if(idAlfombraClickeada !=0){
+
+         }
+
+
+         if(idCeramicaClickeada != 0){
+
+          RealizarCalculosCeramicas(ren, results.input1, heightt);
+
+         }
+
+         if(idColorCirculoClickeado !=0){
+          calculoLitrosPintura(ren, results.input1, heightt);
+
+         }
+         if(idLadrilloClickeado !=0){
+
+         }
+         if(idAlfombraClickeada !=0){
+
+         }
+
+     }else{
+      shortToast("Ingrese números correctos");
+     }
+
+   }else{
+    return false;
+   }
+
+}
+
+function onPromptLargoGeneral(results){
+   if(results.buttonIndex == 1){
+     if(!results.input1 == ""  && !isNaN(results.input1)){
+       
+         if(idCeramicaClickeada != 0){
+          var widthh = $("#anchoCeramicaresultado").text();
+          widthh = parseFloat(widthh);
+          var ren = $("#rendimientoCeramicaresultado").text();
+          ren = parseFloat(ren);
+
+          //var heightt = $("#largoCeramicaresultado").text();
+          //heightt = parseFloat(heightt);
+
+         }
+         else if(idColorCirculoClickeado != 0){
+
+          var widthh = $("#anchoPinturaresultado").text();
+          widthh = parseFloat(widthh);
+          var ren = $("#rendimientoPinturaresultado").text();
+          ren = parseFloat(ren);
+
+          //var heightt = $("#largoPinturaresultado").text();
+          //heightt = parseFloat(heightt);
+
+         }
+         else if(idLadrilloClickeado !=0){
+
+         }
+         else if(idAlfombraClickeada !=0){
+
+         }
+
+
+         if(idCeramicaClickeada != 0){
+
+          RealizarCalculosCeramicas(ren, widthh, results.input1);
+
+         }
+
+         if(idColorCirculoClickeado !=0){
+          calculoLitrosPintura(ren, widthh, results.input1);
+
+         }
+         if(idLadrilloClickeado !=0){
+
+         }
+         if(idAlfombraClickeada !=0){
+
+         }
+
+     }else{
+      shortToast("Ingrese números correctos");
+     }
+
+   }else{
+    return false;
+   }
+
+}
+
+
+function onPromptPintura(results){
+      if(results.buttonIndex == 1){
+
+        if(!results.input1 == ""  && !isNaN(results.input1)){
+          var widthh = $("#anchoPinturaresultado").text();
+          widthh = parseFloat(widthh);
+
+          var heightt = $("#largoPinturaresultado").text();
+          heightt = parseFloat(heightt);
+          calculoLitrosPintura(results.input1, widthh, heightt);
+          return true;
+
+
+            
+
+        }else{
+          shortToast("Ingrese números correctos");
+          return false;
+        }
+
+      }else{
+        return false;
+      }
+
+
+}
+
+
+function onPromptAncho(results){
+
+      if(results.buttonIndex == 1){
+
+          
+        if(!results.input1 == ""  && !isNaN(results.input1)){
+
+          var ren = $("#rendimientoCeramicaresultado").text();
+          ren = parseFloat(ren);
+
+          var heightt = $("#largoCeramicaresultado").text();
+          heightt = parseFloat(heightt);
+
+          RealizarCalculosCeramicas(ren, parseFloat(results.input1), heightt);
+          return true;
+           
+
+
+
+        }
+        else{
+           //alert("short");
+          shortToast("Ingrese números correctos");
+          return false;
+        }
+               
+    }else{
+
+      return false;
+
+    }
+
+}
+
+
+function onPromptLargo(results){
+
+        if(results.buttonIndex == 1){
+
+          
+        if(!results.input1 == ""  && !isNaN(results.input1)){
+
+          var ren = $("#rendimientoCeramicaresultado").text();
+          ren = parseFloat(ren);
+
+          var widthh = $("#anchoCeramicaresultado").text();
+          widthh = parseFloat(widthh);
+
+          RealizarCalculosCeramicas(ren, widthh, parseFloat(results.input1));
+          return true;
+           
+
+
+
+        }
+        else{
+           //alert("short");
+          shortToast("Ingrese números correctos");
+          return false;
+        }
+               
+    }else{
+
+      return false;
+
+    }
+
+}
+
+
+        function alertDismissed() {
+            // do something
+        }
+
+    // Show a custom alertDismissed
+    //
+    function showAlert() {
+        navigator.notification.alert(
+            'Ingresa el rendimiento de las herramientas faltantes.',  // message
+            alertDismissed,         // callback
+            'Importante',            // title
+            'OK'                  // buttonName
+        );
+    }
+
+    function detallesCeramica(){
+      xhReq.open("GET", "tabla_ceramica/tabla_ceramica.html", false);
+      xhReq.send(null);
+      document.getElementById("contenidoCuerpo").innerHTML=xhReq.responseText;
+      verCeramicaBD();
+
+    }
 
 /*var putPoint = function(evento){
 //e.clientX
@@ -3072,6 +3545,17 @@ function presupuestoMaterial(){
         xhReq.open("GET", "presupuesto/presupuestos.html", false);
       xhReq.send(null);
       document.getElementById("contenidoCuerpo").innerHTML=xhReq.responseText;
+
+}
+
+function resetarEventos(){
+   $(".editarAnchoCeramica").unbind("click", modificarAnchoCeramica);
+   $(".msgRendimientoCeramica").unbind("click", ingresarRendimientoCeramica);
+   $(".editarLargoCeramica").unbind("click", modificarLargoCeramica);
+   $(".msgRendimientoPintura").unbind("click", ingresarRendimientoPintura);
+   $(".editarAnchoGeneral").unbind("click", editarAnchoGeneral);
+   $(".editarLargoGeneral").unbind("click", editarLargoGeneral);
+   //$("#imgGuardarDatos").unbind("click", ActualizarDatosCeramicaDB);
 
 }
 

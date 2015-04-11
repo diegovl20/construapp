@@ -948,7 +948,7 @@ function menuOpciones(){
                               
                                  //$("#lista").append('<li class="detalles-lista" data-tipo="'+item.tipo_proyecto+'" id="'+item.id_proyecto+'"><h2> '+item.nombre_proyecto+'</h2> <br/><p>Click para ver los detalles.</p> <br/> <p>"'+item.fecha+'"</p></li>');
                                  //sin lista, solo div
-                                 $("#lista").append('<div class="item" id="'+item.id_proyecto+'" data-tipo="'+item.tipo_proyecto+'"><div id="titulo-proyecto">'+item.nombre_proyecto+'</div><div id="descripcion-proyecto">Click para ver más detalles</div><div id="fecha-proyecto">'+item.fecha+'</div><div id="imagen-proyecto"><img src="img/img_lista.png"/></div><div id="eliminar-proyecto"> <img src="img/img_eliminar.png"></div></div>');
+                                 $("#lista").append('<div class="item" id="'+item.id_proyecto+'" data-tipo="'+item.tipo_proyecto+'"><div id="titulo-proyecto">'+item.nombre_proyecto+'</div><div id="descripcion-proyecto">Click para ver más detalles</div><div id="fecha-proyecto">'+item.fecha+'</div><div id="imagen-proyecto"><img src="img/ic_entrar.png"/></div><div id="eliminar-proyecto"> <img src="img/img_eliminar.png"></div></div>');
 
                                  //Obtener margin-top original
                                  /*var margin = $(".fecha-proyecto").css("margin-top");

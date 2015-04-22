@@ -4,6 +4,7 @@ var ceramica = false;
 var ladrillo = false;
 var pintura = false;
 var alfombra = false;
+var toolstip = false;
 var ceramica_bool = false;
 var pintura_bool = false; 
 var alfombra_bool = false;
@@ -15,7 +16,7 @@ var imagenALaBD = "jiji";
 var idCeramicaClickeada = 0;
 var idColorCirculoClickeado = 0;
 var idAlfombraClickeada = 0;
-var idLadrilloClickeado = 0
+var idLadrilloClickeado = 0;
 var tipo_proyecto;
 var tipo_superficie;
 var nombreProyecto;
@@ -176,13 +177,15 @@ function menuOpciones(){
          {
 
            var tabla_tipo_proyecto = "CREATE TABLE IF NOT EXISTS tipo_proyecto( id_tipo_proyecto INTEGER PRIMARY KEY, nombre TEXT)";
-           var tabla_ceramicas = "CREATE TABLE IF NOT EXISTS ceramicas( id_ceramicas INTEGER PRIMARY KEY AUTOINCREMENT, url TEXT, rendimiento_caja FLOAT, modelo TEXT, marca TEXT, color TEXT, uso TEXT, formato TEXT, precio INTEGER, lugar TEXT)";
-           var tabla_proyecto = "CREATE TABLE IF NOT EXISTS proyecto( id_proyecto INTEGER PRIMARY KEY AUTOINCREMENT, id_tipo_proyecto INTEGER, fecha DATE, fotografia TEXT, largo FLOAT, ancho FLOAT, superficie_total FLOAT, total_cajas FLOAT, precio_total INTEGER,id_ceramicas INTEGER, id_pinturas INTEGER, id_alfombras, total_litros INTEGER, id_ladrillos INTEGER, total_ladrillos INTEGER, pintura_bool BOOLEAN, ladrillo_bool BOOLEAN, alfombra_bool BOOLEAN, ceramica_bool BOOLEAN, nombre_proyecto TEXT, tipo_proyecto TEXT, precio_frague INTEGER, precio_pegamento INTEGER, total_frague INTEGER, total_pegamento INTEGER, rendimiento_caja FLOAT, rendimiento_pintura FLOAT, FOREIGN KEY(id_tipo_proyecto) references tipo_proyecto(id_tipo_proyecto))";
+           var tabla_ceramicas = "CREATE TABLE IF NOT EXISTS ceramicas( id_ceramicas INTEGER PRIMARY KEY AUTOINCREMENT, url TEXT, rendimiento_caja FLOAT, modelo TEXT, marca TEXT, color TEXT, uso TEXT, formato TEXT, precio INTEGER, lugar TEXT)";                                                                                                                                                                                                                                                                                                                                                                                                                                         //anchoLadrillo, largoLadrillo, espesor, ladrillosEnUnM2, total_ladrillos                             
+           var tabla_proyecto = "CREATE TABLE IF NOT EXISTS proyecto( id_proyecto INTEGER PRIMARY KEY AUTOINCREMENT, id_tipo_proyecto INTEGER, fecha DATE, fotografia TEXT, largo FLOAT, ancho FLOAT, superficie_total FLOAT, total_cajas FLOAT, precio_total INTEGER,id_ceramicas INTEGER, id_pinturas INTEGER, id_alfombras, total_litros INTEGER, id_ladrillos INTEGER, total_ladrillos INTEGER, pintura_bool BOOLEAN, ladrillo_bool BOOLEAN, alfombra_bool BOOLEAN, ceramica_bool BOOLEAN, nombre_proyecto TEXT, tipo_proyecto TEXT, precio_frague INTEGER, precio_pegamento INTEGER, total_frague INTEGER, total_pegamento INTEGER, rendimiento_caja FLOAT, rendimiento_pintura FLOAT, anchoLadrillo FLOAT, largoLadrillo FLOAT, espesorLadrillo FLOAT, ladrillosEnUnM2 INTEGER, FOREIGN KEY(id_tipo_proyecto) references tipo_proyecto(id_tipo_proyecto))";
            var tabla_pinturas = "CREATE TABLE IF NOT EXISTS pintura (id_pintura INTEGER PRIMARY KEY AUTOINCREMENT, nombre_color TEXT, codigo TEXT, rgba_color TEXT)";
+           var tabla_ladrillos = "CREATE TABLE IF NOT EXISTS ladrillo(id_ladrillos INTEGER PRIMARY KEY, imagen TEXT, modelo TEXT, observacion TEXT, caracteristica TEXT, precio INTEGER, lugar TEXT, color TEXT)";
            tx.executeSql(tabla_tipo_proyecto);
            tx.executeSql(tabla_ceramicas);
            tx.executeSql(tabla_proyecto);
            tx.executeSql(tabla_pinturas);
+           tx.executeSql(tabla_ladrillos);
            //tratar de usar localstorage
            var l = storage[key];
            if(typeof l === 'undefined'){
@@ -200,6 +203,7 @@ function menuOpciones(){
               var execute = "INSERT INTO tipo_proyecto VALUES(6, 'comedor')";
               tx.executeSql(execute);
               /*ingresar ceramicas*/
+
 
               var execute = "INSERT INTO ceramicas VALUES(null, 'img/ceramica/1.jpg', 1.53,'Cima Gris', 'Lamosa','Gris','Pisos y Muros','33x33',3810,'Sodimac');"
               tx.executeSql(execute);
@@ -484,6 +488,14 @@ function menuOpciones(){
               var execute = "INSERT INTO pintura VALUES(null, 'Purple Sequel', '7005W', 'rgba(156,127,177,1)')";
               tx.executeSql(execute);
 
+              /*Ladrillos*/
+
+              var execute = "INSERT INTO ladrillo VALUES(1, 'img/fiscal.jpg', 'Fiscal', 'Debe instalarse muy mojados', 'Gran resistencia', 134, 'Sodimac', 'Arcilla')";
+              tx.executeSql(execute);
+              var execute = "INSERT INTO ladrillo VALUES(2, 'img/princesa.jpg', 'Princesa', '#NA', '#NA', 300, 'Sodimac', 'Arcilla')";
+              tx.executeSql(execute);
+              var execute = "INSERT INTO ladrillo VALUES(3, 'img/lunge.jpg', 'Lunge', 'Para instalar se debe usar Mortero Refractario', 'Refracta el calor sin quebrarse', 5490, 'Sodimac', 'Arcilla')";
+              tx.executeSql(execute);
 
 
 
@@ -505,6 +517,23 @@ function menuOpciones(){
            //tx.executeSql(execute2);
 
 
+         }
+
+         function obtenerModeloLadrillo(id){
+
+              if(id == 1){
+                 return "Fiscal";
+
+              }
+              else if(id ==2){
+                return "Princesa";
+
+              }
+              else if(id == 3){
+
+                return "Lunge";
+
+              }
          }
          
 
@@ -569,6 +598,13 @@ function menuOpciones(){
 
          }
 
+         function ActualizarDatosLadrillosDB(){
+          //queryActualizarDatosLadrillosDB
+              var db = window.openDatabase("ConstruApp", "1.0", "DB ConstruApp", 20000);
+              
+              db.transaction(queryActualizarDatosLadrillosDB, errorQueryDB);
+         }
+
 
 
          function queryDB(tx)
@@ -623,7 +659,7 @@ function menuOpciones(){
          }
 
          function queryObtenerIdHerramientasClickeadas(tx){
-          var consulta = "SELECT id_ceramicas, id_pinturas, id_alfombras, id_ladrillos, ancho, largo, rendimiento_pintura FROM proyecto WHERE id_proyecto ="+idComplementar;
+          var consulta = "SELECT id_ceramicas, id_pinturas, id_alfombras, id_ladrillos, ancho, largo, rendimiento_pintura, anchoLadrillo, largoLadrillo, espesorLadrillo, total_ladrillos, ladrillosEnUnM2 FROM proyecto WHERE id_proyecto ="+idComplementar;
           tx.executeSql(consulta,[],SuccesQueryObtenerIdHerramientasClickeadas, consultaComplementarError);
 
          }
@@ -642,13 +678,18 @@ function menuOpciones(){
 
                  var item = results.rows.item(i);
                  var rendimiento_pintura = item.rendimiento_pintura;
+                 var anchoLadrillo = item.anchoLadrillo;
+                 var largoLadrillo = item.largoLadrillo;
+                 var espesor = item.espesorLadrillo;
+                 var totalLadrillos = item.total_ladrillos;
+                 var ladrillosEnUnM2 = item.ladrillosEnUnM2
 
                  idCeramicaClickeada = item.id_ceramicas;
                  idColorCirculoClickeado = item.id_pinturas;
                  idLadrilloClickeado = item.id_ladrillos;
                  idAlfombraClickeada = item.id_alfombras;
                  ancho_py = item.ancho;
-                 largo_py = item.largo
+                 largo_py = item.largo;
                }
                realizarCalculoCeramicasDB();
 
@@ -665,6 +706,21 @@ function menuOpciones(){
 
                if(idLadrilloClickeado == 0){
                   //no mostrar el cuadro de ladrillo
+               }
+               else{
+                $("#largoLadrilloresultado").text(largo_py+ " m2");
+                $("#anchoLadrilloresultado").text(ancho_py+" m2");
+                $("#superficieTotalLadrilloResultado").text(Math.round(largo_py * ancho_py)+ " m2");
+                anchoLadrillo = parseFloat(anchoLadrillo);
+                largoLadrillo = parseFloat(largoLadrillo);
+
+                if(anchoLadrillo != 0 || largoLadrillo != 0){
+                realizarCalculosLadrillos(anchoLadrillo,largoLadrillo,espesor);//ancho, largo, espesor
+                }
+
+                var title = obtenerModeloLadrillo(idLadrilloClickeado);
+                $(".tituloResultadoLadrillo").text("Ladrillo "+title);
+
                }
 
                if(idAlfombraClickeada == 0){
@@ -1100,8 +1156,8 @@ function menuOpciones(){
             
             var fecha_actual = new Date();
             var fecha = fecha_actual.getDate()+"-"+(fecha_actual.getMonth()+1)+"-"+fecha_actual.getFullYear();
-            //tx.executeSql("INSERT INTO proyecto (id_proyecto, id_tipo_proyecto, fecha, superficie_total, total_cajas, precio_total, id_ceramicas) values (?,?,?,?,?,?,?,?)",[null,tipo,fecha,superficieTotal,totalCajas,0,0]);
-            tx.executeSql("INSERT INTO proyecto (id_proyecto, id_tipo_proyecto, fecha, fotografia, largo, ancho, superficie_total, total_cajas, precio_total, id_ceramicas, id_pinturas, id_alfombras, total_litros, id_ladrillos, total_ladrillos, pintura_bool, ladrillo_bool, alfombra_bool, ceramica_bool, nombre_proyecto, tipo_proyecto, precio_frague, precio_pegamento, total_frague, total_pegamento, rendimiento_caja, rendimiento_pintura) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",[null,tipo,fecha,"#NA", largo,ancho,0,0,0,0,0,0,0,0,0,pintura, ladrillo, alfombra, ceramica, nombreProyecto, tipo_superficie,0,0,0,0,0,0]);
+            //tx.executeSql("INSERT INTO proyecto (id_proyecto, id_tipo_proyecto, fecha, superficie_total, total_cajas, precio_total, id_ceramicas) values (?,?,?,?,?,?,?,?)",[null,tipo,fecha,superficieTotal,totalCajas,0,0]);                                                                                                                                                                                                                   anchoLadrillo FLOAT, largoLadrillo FLOAT, espesorLadrillo FLOAT
+            tx.executeSql("INSERT INTO proyecto (id_proyecto, id_tipo_proyecto, fecha, fotografia, largo, ancho, superficie_total, total_cajas, precio_total, id_ceramicas, id_pinturas, id_alfombras, total_litros, id_ladrillos, total_ladrillos, pintura_bool, ladrillo_bool, alfombra_bool, ceramica_bool, nombre_proyecto, tipo_proyecto, precio_frague, precio_pegamento, total_frague, total_pegamento, rendimiento_caja, rendimiento_pintura, anchoLadrillo, largoLadrillo, espesorLadrillo, ladrillosEnUnM2) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",[null,tipo,fecha,"#NA", largo,ancho,0,0,0,0,0,0,0,0,0,pintura, ladrillo, alfombra, ceramica, nombreProyecto, tipo_superficie,0,0,0,0,0,0,0,0,0,0]);
             //var tabla_proyecto = "CREATE TABLE ( id_proyecto INTEGER PRIMARY KEY AUTOINCREMENT, id_tipo_proyecto INTEGER, fecha DATE, fotografia TEXT, largo float, ancho float, superficie_total float, total_cajas float, precio_total INTEGER,id_ceramicas INTEGER, id_pinturas INTEGER, total_litros INTEGER, id_ladrillos INTEGER, total_ladrillos INTEGER, pintura_bool BOOLEAN, ladrillo_bool BOOLEAN, alfombra_bool BOOLEAN, ceramica_bool BOOLEAN, FOREIGN KEY(id_tipo_proyecto) references tipo_proyecto(id_tipo_proyecto))";
 
 
@@ -1264,11 +1320,73 @@ function menuOpciones(){
 
         }
 
+
+      function queryActualizarDatosLadrillosDB(tx){
+
+          var largo_db = $("#largoLadrilloresultado").text();
+          var largo_db_ok = largo_db.split(" ");
+          largo_db = largo_db_ok[0]; 
+          largo_db = parseFloat(largo_db);
+          
+
+
+          var ancho_db = $("#anchoLadrilloresultado").text();
+          var ancho_db_ok = ancho_db.split(" ");
+          ancho_db = ancho_db_ok[0];
+          ancho_db = parseFloat(ancho_db);
+
+        
+
+          var superficie_db = $("#superficieTotalLadrilloResultado").text();
+          var superficie_db_ok = superficie_db.split(" ");
+          superficie_db = superficie_db_ok[0];
+          superficie_db = parseFloat(superficie_db);
+          
+
+          var anchoLadrillo_db = $("#anchoLadrilloLadrilloResultado").text();
+          var anchoLadrillo_db_ok = anchoLadrillo_db.split(" ");
+          anchoLadrillo_db = anchoLadrillo_db_ok[0];
+          anchoLadrillo_db = parseFloat(anchoLadrillo_db);
+          
+
+          var largoLadrillo_db = $("#largoLadrilloLadrilloResultado").text();
+          var largoLadrillo_db_ok = largoLadrillo_db.split(" ");
+          largoLadrillo_db = largoLadrillo_db_ok[0];
+          largoLadrillo_db = parseInt(largoLadrillo_db);
+
+          var espesor_db = $("#espesorLadrilloResultado").text();
+          var espesor_db_ok = espesor_db.split(" ");
+          espesor_db = espesor_db_ok[0];
+          espesor_db = parseInt(espesor_db);
+
+          var ladrillosEnUnM2_db = $("#ladrilloEn1M2Resultado").text();
+          var ladrillosEnUnM2_db_ok = ladrillosEnUnM2_db.split(" ");
+          ladrillosEnUnM2_db = ladrillosEnUnM2_db_ok[0];
+          ladrillosEnUnM2_db = parseInt(ladrillosEnUnM2_db);
+
+          var totalLadrillos_db = $("#totalLadrilloResultado").text();
+          var totalLadrillos_db_ok = totalLadrillos_db.split(" ");
+          totalLadrillos_db = totalLadrillos_db_ok[0];
+          totalLadrillos_db = parseInt(totalLadrillos_db);
+          
+
+                                                                                                                                //anchoLadrillo, largoLadrillo, espesor, ladrillosEnUnM2, total_ladrillos                                     
+          var consulta = "update proyecto set largo = "+largo_db+", ancho = "+ancho_db+", superficie_total = "+superficie_db+", anchoLadrillo = "+anchoLadrillo_db+", largoLadrillo = "+largoLadrillo_db+", espesorLadrillo = "+espesor_db+", ladrillosEnUnM2 = "+ladrillosEnUnM2_db+", total_ladrillos = "+totalLadrillos_db+" where id_proyecto ="+idComplementar;
+          
+          tx.executeSql(consulta,[],consultaSuccessActualizarDatosLadrillosDB, errorQueryDB);
+
+        }
+
         function consultaSuccessActualizarDatosCeramicaDB(){
           shortToast("Guardado Correctamente");
         }
 
         function consultaSuccessActualizarDatosPinturaDB(){
+          shortToast("Guardado Correctamente");
+
+        }
+
+        function consultaSuccessActualizarDatosLadrillosDB(){
           shortToast("Guardado Correctamente");
 
         }
@@ -1625,7 +1743,7 @@ function menuOpciones(){
 
                      
                   if(ceramica_bool == "true"){
-                        if (minimenu == false){
+                        if (minimenu == false){//Para que solo se active un solo scroll, el primero en true
 
                         $("#scrollDecorarCeramica").css("display" , "block");
                         minimenu = true;
@@ -1643,8 +1761,9 @@ function menuOpciones(){
 
                   if(alfombra_bool == "true"){
 
+
                         if (minimenu == false){
-                            //$("#scrollDecorarCeramica").css("display" , "block");
+                            //$("#scrollLadrillos").css("display" , "block");
                             minimenu = true;
                         }
 
@@ -1672,9 +1791,11 @@ function menuOpciones(){
                   if(ladrillo_bool == "true"){
 
                         if (minimenu == false){
-                            //$("#scrollDecorarCeramica").css("display" , "block");
+                            $("#scrollLadrillos").css("display" , "block");
                             minimenu = true;
                         }
+
+                        $("#herramientaLadrillo").on("click", herramientaLadrillosClick);
 
                   }else{
 
@@ -1688,6 +1809,11 @@ function menuOpciones(){
 
                   if(pintura_bool == "true"){
                     cargarPinturasBD();
+
+                  }
+
+                  if(ladrillo_bool == "true"){
+                    cargarLadrillos();
 
                   }
 
@@ -1728,6 +1854,8 @@ function menuOpciones(){
         }
 
 
+
+
         function cargarPinturasBD(){
           var db = window.openDatabase("ConstruApp", "1.0", "DB ConstruApp", 20000);
 
@@ -1759,6 +1887,53 @@ function menuOpciones(){
              $(".color").on("click", subrayarCirculoColor);
         }
 
+        function cargarLadrillos(){
+          var db = window.openDatabase("ConstruApp", "1.0", "DB ConstruApp", 20000);
+
+          db.transaction(queryCargarLadrillos, errorDB);
+
+        }
+
+        function queryCargarLadrillos(tx){
+              var consulta = "SELECT * FROM ladrillo";
+             //pintura_bool BOOLEAN, ladrillo_bool BOOLEAN, alfombra_bool BOOLEAN, ceramica_bool BOOLEAN
+             tx.executeSql(consulta,[],consultaCargarLadrilloSuccess, errorQueryDB);
+
+
+        }
+
+        function consultaCargarLadrilloSuccess(tx,results){
+
+            for (var i = 0; i < results.rows.length ; i++) {
+
+                 var item = results.rows.item(i);
+                 
+                 $("#scrollLadrillos").append('<div class="ladrillo"> <span id="'+item.id_ladrillos+'" data-tipo="'+item.modelo+'" data-url="'+item.imagen+'"> Ladrillo '+item.modelo+'</span></div>');
+
+
+
+
+             }
+
+             $(".ladrillo span").on("click", clickNombreLadrillo);
+
+
+
+        }
+
+
+
+        function clickNombreLadrillo(){
+
+          $(".ladrillo span").removeClass("cuadroLadrillo");
+          $(this).addClass("cuadroLadrillo");
+          var ladri = $(this).attr("data-url");
+          $("#imagenDecorar").attr("src", ladri);
+          idLadrilloClickeado = $(this).attr("id");
+          alert(idLadrilloClickeado);
+
+        }
+
         function herramientaCeramicaClick(){
            $("#herramientaCeramica").css("border", "3px solid rgb(161, 39, 39)");
            $("#herramientaAlfombra").css("border", "none");
@@ -1766,7 +1941,9 @@ function menuOpciones(){
            $("#herramientaPintura").css("border", "none");
 
            $("#scrollColores").css("display" , "none");
+           $("#scrollLadrillos").css("display", "none");
            $("#scrollDecorarCeramica").css("display" , "block");
+           $("#imagenDecorar").attr("src", imagenALaBD);
 
         }
 
@@ -1777,7 +1954,24 @@ function menuOpciones(){
            $("#herramientaAlfombra").css("border", "none");
 
            $("#scrollDecorarCeramica").css("display" , "none");
+           $("#scrollLadrillos").css("display", "none");
            $("#scrollColores").css("display" , "block");
+           $("#imagenDecorar").attr("src", imagenALaBD);
+
+        }
+
+
+        function herramientaLadrillosClick(){
+
+           $("#herramientaLadrillo").css("border", "3px solid rgb(161, 39, 39)");
+           $("#herramientaCeramica").css("border", "none");
+           $("#herramientaPintura").css("border" , "none");
+           $("#herramientaAlfombra").css("border", "none");
+
+           $("#scrollDecorarCeramica").css("display" , "none");
+           $("#scrollColores").css("display" , "none");
+           $("#scrollLadrillos").css("display", "block");
+           $("#imagenDecorar").attr("src", imagenALaBD);
 
         }
 
@@ -2948,6 +3142,7 @@ function calculosHerramientas(){
 
     $("#imgGuardarDatos").on("click", ActualizarDatosCeramicaDB);
     $("#imgGuardarDatosPinturas").on("click", ActualizarDatosPinturasDB);
+    $("#imgGuardarDatosLadrillos").on("click", ActualizarDatosLadrillosDB);
     $("#labelDetallesCeramica").on("click", detallesCeramica);
 
     /*Pinturas*/
@@ -2964,9 +3159,50 @@ function calculosHerramientas(){
 
     });
 
+    $("#labelEditarMedidasLadrillo").on("click", function(){
+
+       $(".flotanteLadrillos").css("display", "block");
+       $('#mask').fadeIn(500);
+        //$("#mask").css("opacity", "0.6");      
+       $('#mask').fadeTo("fast", 1);
+        quitarCapa = true;
+       $(".msgAnchoLadrillo").on("click", ingresarAnchoLadrillo);
+       $(".msgLargoLadrillo").on("click", ingresarLargoLadrillo);
+       $(".msgEspesor").on("click", ingresarEspesorLadrillo);
+
+
+    });
 
 
 
+
+
+}
+
+function ingresarAnchoLadrillo(){
+
+   $(".flotanteLadrillos").hide("slow");
+   $("#mask").css("display", "none");
+   resetarEventos();
+   promptAnchoLadrillo();
+
+}
+
+function ingresarLargoLadrillo(){
+
+   $(".flotanteLadrillos").hide("slow");
+   $("#mask").css("display", "none");
+   resetarEventos();
+   promptLargoLadrillo();
+
+}
+
+function ingresarEspesorLadrillo(){
+
+   $(".flotanteLadrillos").hide("slow");
+   $("#mask").css("display", "none");
+   resetarEventos();
+   promptEspesorLadrillo();
 
 }
 
@@ -3047,6 +3283,70 @@ function RealizarCalculosCeramicas(rendimiento, ancho, largo){
 
 }
 
+function realizarCalculosLadrillos(anchoLadrillo, largoLadrillo, espesor){
+
+  var anchoSuperficie = $("#anchoLadrilloresultado").text();
+  var largoSuperficie = $("#largoLadrilloresultado").text();
+
+
+  if(anchoSuperficie != "0m2" && largoSuperficie != "0m2"){
+
+     //(anchoM + espesorcm) * (largoM + espesorCM)
+
+      var anchoMasEspesor = (anchoLadrillo/100) + (espesor/100);
+      //alert("ancho mas espesor: "+ anchoMasEspesor);
+      var largoMasEspesor = (largoLadrillo / 100) + (espesor/100);
+      //alert("Largo mas espesor: "+largoMasEspesor )
+
+      var ladrillosEnUnMetroCuadrado = 1 / (anchoMasEspesor * largoMasEspesor);
+      ladrillosEnUnMetroCuadrado = Math.round(ladrillosEnUnMetroCuadrado);
+      $("#ladrilloEn1M2Resultado").text(ladrillosEnUnMetroCuadrado+" ladrillos")
+      //alert("ladrillosEnUnMetroCuadrado: "+ladrillosEnUnMetroCuadrado);
+      /*1 -----------------------> ladrillosEnUnMetroCuadrado
+        superficieTotal----------> x*/
+        var anchoSuperficie_ok = anchoSuperficie.split(" ");
+        anchoSuperficie = anchoSuperficie_ok[0];
+        anchoSuperficie = parseFloat(anchoSuperficie);
+
+        var largoSuperficie_ok = largoSuperficie.split(" ");
+        largoSuperficie = largoSuperficie_ok[0];
+        largoSuperficie = parseFloat(largoSuperficie);
+
+      var superficieTotal  = Math.round(anchoSuperficie * largoSuperficie);
+      var ladrillosTotal = superficieTotal * ladrillosEnUnMetroCuadrado;
+      $("#superficieTotalLadrilloResultado").text(superficieTotal+ " m2");
+      $("#anchoLadrilloLadrilloResultado").text(anchoLadrillo+ " cm");
+      $("#largoLadrilloLadrilloResultado").text(largoLadrillo+ " cm");
+      $("#espesorLadrilloResultado").text(espesor+" cm");
+      
+      $("#totalLadrilloResultado").text(ladrillosTotal+ " ladrillos");
+      $("#toolstipLadrillos").css("visibility", "hidden");
+
+
+
+
+  }else{
+
+      if(anchoLadrillo == 0 && largoLadrillo == 0 && espesor == 0){ //Viene de la base de datos
+
+        $("#anchoLadrilloresultado").text(ancho_py+" m2");
+        
+        $("#largoLadrilloresultado").text(largo_py+" m2");
+        
+        var superficieLadrillos = Math.round(ancho_py * largo_py);
+        $("#superficieTotalLadrilloResultado").text(superficieLadrillos+" m2");
+
+      }
+      else{
+
+      }
+
+    //tooltips
+  }
+
+
+}
+
 
  function calculoLitrosPintura(rendimiento, ancho, largo){
        //capturamos los datos del usuario
@@ -3067,7 +3367,43 @@ function RealizarCalculosCeramicas(rendimiento, ancho, largo){
      }
 
 
- }   
+ }
+
+ function promptAnchoLadrillo(){
+
+       navigator.notification.prompt(
+        'Ingrese ancho de ladrillo en cm ',  // message
+        onPromptAnchoLadrillo,                  // callback to invoke
+        'Ancho Ladrillo',            // title
+        ['Ok','Cancel'],             // buttonLabels
+        ''                 // defaultText
+    );
+
+ }
+
+function promptLargoLadrillo(){
+
+       navigator.notification.prompt(
+        'Ingrese largo de ladrillo en cm ',  // message
+        onPromptLargoLadrillo,                  // callback to invoke
+        'Largo Ladrillo',            // title
+        ['Ok','Cancel'],             // buttonLabels
+        ''                 // defaultText
+    );
+
+ }
+
+function promptEspesorLadrillo(){
+
+       navigator.notification.prompt(
+        'Ingrese espesor de ladrillo en cm ',  // message
+        onPromptEspesorLadrillo,                  // callback to invoke
+        'Espesor Ladrillo',            // title
+        ['Ok','Cancel'],             // buttonLabels
+        ''                 // defaultText
+    );
+
+ }  
 
 function promptRendimientoCajaCeramica(){
 
@@ -3096,7 +3432,7 @@ function promptEditarAnchoGeneral(){
 
 function promptEditarLargoGeneral(){
     navigator.notification.prompt(
-        'Ingrese ancho superficie ',  // message
+        'Ingrese largo superficie ',  // message
         onPromptLargoGeneral,                  // callback to invoke
         'Ancho Superficie m2',            // title
         ['Ok','Cancel'],             // buttonLabels
@@ -3195,27 +3531,56 @@ function onPromptAnchoGeneral(results){
           var heightt = $("#largoCeramicaresultado").text();
           heightt = parseFloat(heightt);
 
+          RealizarCalculosCeramicas(ren, results.input1, heightt);
+
          }
-         else if(idColorCirculoClickeado != 0){
+         if(idColorCirculoClickeado != 0){
 
           //var widthh = $("#anchoPinturaresultado").text();
           //widthh = parseFloat(widthh);
-          var ren = $("#rendimientoPinturaresultado").text();
-          ren = parseFloat(ren);
+          var ren2 = $("#rendimientoPinturaresultado").text();
+          ren2 = parseFloat(ren2);
 
-          var heightt = $("#largoPinturaresultado").text();
-          heightt = parseFloat(heightt);
+          var heightt2 = $("#largoPinturaresultado").text();
+          heightt2 = parseFloat(heightt2);
 
-         }
-         else if(idLadrilloClickeado !=0){
-
-         }
-         else if(idAlfombraClickeada !=0){
+          calculoLitrosPintura(ren2, results.input1, heightt2);
 
          }
+         if(idLadrilloClickeado !=0){
+
+           var anchoLadrillo = $("#anchoLadrilloLadrilloResultado").text();
+           //var anchoLadrillo_ok = anchoLadrillo.split(" ");
+           //anchoLadrillo = anchoLadrillo_ok[0];
+           anchoLadrillo = parseFloat(anchoLadrillo);
+
+           var largoLadrillo = $("#largoLadrilloLadrilloResultado").text();
+           largoLadrillo = parseFloat(largoLadrillo);
+
+           var espesor = $("#espesorLadrilloResultado").text();
+           espesor = parseFloat(espesor);
+           $("#anchoLadrilloresultado").text(results.input1+" m2");
+
+           if(anchoLadrillo != 0 && largoLadrillo != 0){
+
+             realizarCalculosLadrillos(anchoLadrillo, largoLadrillo, espesor);
+           }
+           else{
+            ponerSuperficieTotalLadrillos();
 
 
-         if(idCeramicaClickeada != 0){
+
+           }
+
+
+
+         }
+         if(idAlfombraClickeada !=0){
+
+         }
+
+
+         /*if(idCeramicaClickeada != 0){
 
           RealizarCalculosCeramicas(ren, results.input1, heightt);
 
@@ -3230,7 +3595,7 @@ function onPromptAnchoGeneral(results){
          }
          if(idAlfombraClickeada !=0){
 
-         }
+         }*/
 
      }else{
       shortToast("Ingrese números correctos");
@@ -3252,29 +3617,51 @@ function onPromptLargoGeneral(results){
           var ren = $("#rendimientoCeramicaresultado").text();
           ren = parseFloat(ren);
 
+          RealizarCalculosCeramicas(ren, widthh, results.input1);
+
           //var heightt = $("#largoCeramicaresultado").text();
           //heightt = parseFloat(heightt);
 
          }
-         else if(idColorCirculoClickeado != 0){
+         if(idColorCirculoClickeado != 0){
 
-          var widthh = $("#anchoPinturaresultado").text();
-          widthh = parseFloat(widthh);
-          var ren = $("#rendimientoPinturaresultado").text();
-          ren = parseFloat(ren);
+          var widthh2 = $("#anchoPinturaresultado").text();
+          widthh2 = parseFloat(widthh2);
+          var ren2 = $("#rendimientoPinturaresultado").text();
+          ren2 = parseFloat(ren2);
+
+          calculoLitrosPintura(ren2, widthh2, results.input1);
 
           //var heightt = $("#largoPinturaresultado").text();
           //heightt = parseFloat(heightt);
 
          }
-         else if(idLadrilloClickeado !=0){
+         if(idLadrilloClickeado !=0){
+           var anchoLadrillo = $("#anchoLadrilloLadrilloResultado").text();
+           //var anchoLadrillo_ok = anchoLadrillo.split(" ");
+           //anchoLadrillo = anchoLadrillo_ok[0];
+           anchoLadrillo = parseFloat(anchoLadrillo);
+
+           var largoLadrillo = $("#largoLadrilloLadrilloResultado").text();
+           largoLadrillo = parseFloat(largoLadrillo);
+
+           var espesor = $("#espesorLadrilloResultado").text();
+           espesor = parseFloat(espesor);
+           $("#largoLadrilloresultado").text(results.input1+" m2");
+           if(anchoLadrillo != 0 && largoLadrillo != 0){
+
+             realizarCalculosLadrillos(anchoLadrillo, largoLadrillo, espesor);
+           }
+           else{
+            ponerSuperficieTotalLadrillos();
+           }
+         }
+         if(idAlfombraClickeada !=0){
 
          }
-         else if(idAlfombraClickeada !=0){
-
-         }
 
 
+         /*
          if(idCeramicaClickeada != 0){
 
           RealizarCalculosCeramicas(ren, widthh, results.input1);
@@ -3290,7 +3677,7 @@ function onPromptLargoGeneral(results){
          }
          if(idAlfombraClickeada !=0){
 
-         }
+         }*/
 
      }else{
       shortToast("Ingrese números correctos");
@@ -3327,6 +3714,242 @@ function onPromptPintura(results){
         return false;
       }
 
+
+}
+
+function onPromptAnchoLadrillo(results){
+       //toolstip
+      if(results.buttonIndex == 1){
+
+          
+        if(!results.input1 == ""  && !isNaN(results.input1)){
+
+          //var ren = $("#rendimientoCeramicaresultado").text();
+          //ren = parseFloat(ren);
+
+          //var heightt = $("#largoCeramicaresultado").text();
+          //heightt = parseFloat(heightt);
+
+          //RealizarCalculosCeramicas(ren, parseFloat(results.input1), heightt);
+
+          if(verificarValoresFaltantesLadrillos()){
+                //var anchoLadrillo = $("#anchoLadrilloLadrilloResultado").text();
+                //anchoLadrillo = parseFloat(anchoLadrillo);
+
+                var largoLadrillo = $("#largoLadrilloLadrilloResultado").text();
+                var largoLadrillo_ok = largoLadrillo.split(" ");
+                largoLadrillo = largoLadrillo_ok[0];
+                largoLadrillo = parseFloat(largoLadrillo);
+
+                var espesor = $("#espesorLadrilloResultado").text();
+                var espesor_ok = espesor.split(" ");
+                espesor = espesor_ok[0];
+                espesor = parseFloat(espesor);
+
+               realizarCalculosLadrillos(parseFloat(results.input1),largoLadrillo,espesor);
+
+          }else{
+
+              $("#anchoLadrilloLadrilloResultado").text(results.input1+ " cm");
+               if(verificarValoresFaltantesLadrillos()){
+                var largoLadrillo = $("#largoLadrilloLadrilloResultado").text();
+                var largoLadrillo_ok = largoLadrillo.split(" ");
+                largoLadrillo = largoLadrillo_ok[0];
+                largoLadrillo = parseFloat(largoLadrillo);
+
+                var espesor = $("#espesorLadrilloResultado").text();
+                var espesor_ok = espesor.split(" ");
+                espesor = espesor_ok[0];
+                espesor = parseFloat(espesor);
+
+               realizarCalculosLadrillos(parseFloat(results.input1),largoLadrillo,espesor);
+               }
+
+              //$("#largoLadrilloLadrilloResultado").text(largoLadrillo+ " m2");
+              //$("#espesorLadrilloResultado").text(espesor+" cm");
+
+            return true;
+          }
+          return true;
+           
+
+
+
+        }
+        else{
+           //alert("short");
+          shortToast("Ingrese números correctos");
+          return false;
+        }
+               
+    }else{
+
+      return false;
+
+    }
+
+}
+
+function onPromptLargoLadrillo(results){
+       //toolstip
+      if(results.buttonIndex == 1){
+
+          
+        if(!results.input1 == ""  && !isNaN(results.input1)){
+
+          //var ren = $("#rendimientoCeramicaresultado").text();
+          //ren = parseFloat(ren);
+
+          //var heightt = $("#largoCeramicaresultado").text();
+          //heightt = parseFloat(heightt);
+
+          //RealizarCalculosCeramicas(ren, parseFloat(results.input1), heightt);
+
+          if(verificarValoresFaltantesLadrillos()){
+                var anchoLadrillo = $("#anchoLadrilloLadrilloResultado").text();
+                var anchoLadrillo_ok = anchoLadrillo.split(" ");
+                anchoLadrillo = anchoLadrillo_ok[0];
+                anchoLadrillo = parseFloat(anchoLadrillo);
+
+                //var largoLadrillo = $("#largoLadrilloLadrilloResultado").text();
+                //var largoLadrillo_ok = largoLadrillo.split(" ");
+                //largoLadrillo = largoLadrillo_ok[0];
+                //largoLadrillo = parseFloat(largoLadrillo);
+
+                var espesor = $("#espesorLadrilloResultado").text();
+                var espesor_ok = espesor.split(" ");
+                espesor = espesor_ok[0];
+                espesor = parseFloat(espesor);
+
+               realizarCalculosLadrillos(anchoLadrillo, parseFloat(results.input1),espesor);
+
+          }else{
+
+              //$("#anchoLadrilloLadrilloResultado").text(anchoLadrillo+ " m2");
+              $("#largoLadrilloLadrilloResultado").text(results.input1+ " cm");
+              if(verificarValoresFaltantesLadrillos()){
+
+                var anchoLadrillo = $("#anchoLadrilloLadrilloResultado").text();
+                var anchoLadrillo_ok = anchoLadrillo.split(" ");
+                anchoLadrillo = anchoLadrillo_ok[0];
+                anchoLadrillo = parseFloat(anchoLadrillo);
+
+                //var largoLadrillo = $("#largoLadrilloLadrilloResultado").text();
+                //var largoLadrillo_ok = largoLadrillo.split(" ");
+                //largoLadrillo = largoLadrillo_ok[0];
+                //largoLadrillo = parseFloat(largoLadrillo);
+
+                var espesor = $("#espesorLadrilloResultado").text();
+                var espesor_ok = espesor.split(" ");
+                espesor = espesor_ok[0];
+                espesor = parseFloat(espesor);
+
+               realizarCalculosLadrillos(anchoLadrillo, parseFloat(results.input1),espesor);
+
+
+
+              }
+              //$("#espesorLadrilloResultado").text(espesor+" cm");
+
+            return true;
+          }
+          return true;
+           
+
+
+
+        }
+        else{
+           //alert("short");
+          shortToast("Ingrese números correctos");
+          return false;
+        }
+               
+    }else{
+
+      return false;
+
+    }
+
+}
+
+function onPromptEspesorLadrillo(results){
+       //toolstip
+      if(results.buttonIndex == 1){
+
+          
+        if(!results.input1 == ""  && !isNaN(results.input1)){
+
+          //var ren = $("#rendimientoCeramicaresultado").text();
+          //ren = parseFloat(ren);
+
+          //var heightt = $("#largoCeramicaresultado").text();
+          //heightt = parseFloat(heightt);
+
+          //RealizarCalculosCeramicas(ren, parseFloat(results.input1), heightt);
+
+          if(verificarValoresFaltantesLadrillos()){
+                var anchoLadrillo = $("#anchoLadrilloLadrilloResultado").text();
+                var anchoLadrillo_ok = anchoLadrillo.split(" ");
+                anchoLadrillo = anchoLadrillo_ok[0];
+                anchoLadrillo = parseFloat(anchoLadrillo);
+
+                var largoLadrillo = $("#largoLadrilloLadrilloResultado").text();
+                var largoLadrillo_ok = largoLadrillo.split(" ");
+                largoLadrillo = largoLadrillo_ok[0];
+                largoLadrillo = parseFloat(largoLadrillo);
+
+                //var espesor = $("#espesorLadrilloResultado").text();
+                //var espesor_ok = espesor.split(" ");
+                //espesor = espesor_ok[0];
+                //espesor = parseFloat(espesor);
+
+               realizarCalculosLadrillos(anchoLadrillo, largoLadrillo, parseFloat(results.input1));
+
+          }else{
+
+              //$("#anchoLadrilloLadrilloResultado").text(anchoLadrillo+ " m2");
+              //$("#largoLadrilloLadrilloResultado").text(results.input1+ " m2");
+              $("#espesorLadrilloResultado").text(results.input1+" cm");
+              if(verificarValoresFaltantesLadrillos()){
+                var anchoLadrillo = $("#anchoLadrilloLadrilloResultado").text();
+                var anchoLadrillo_ok = anchoLadrillo.split(" ");
+                anchoLadrillo = anchoLadrillo_ok[0];
+                anchoLadrillo = parseFloat(anchoLadrillo);
+
+                var largoLadrillo = $("#largoLadrilloLadrilloResultado").text();
+                var largoLadrillo_ok = largoLadrillo.split(" ");
+                largoLadrillo = largoLadrillo_ok[0];
+                largoLadrillo = parseFloat(largoLadrillo);
+
+                //var espesor = $("#espesorLadrilloResultado").text();
+                //var espesor_ok = espesor.split(" ");
+                //espesor = espesor_ok[0];
+                //espesor = parseFloat(espesor);
+
+               realizarCalculosLadrillos(anchoLadrillo, largoLadrillo, parseFloat(results.input1));
+
+              }
+
+            return true;
+          }
+          return true;
+           
+
+
+
+        }
+        else{
+           //alert("short");
+          shortToast("Ingrese números correctos");
+          return false;
+        }
+               
+    }else{
+
+      return false;
+
+    }
 
 }
 
@@ -3475,7 +4098,39 @@ alert($(this).attr("id"));
           radSpan.innerHTML = radio;
 }*/
 
+function verificarValoresFaltantesLadrillos(){
 
+  var anchoLadrillo = $("#anchoLadrilloLadrilloResultado").text();
+  var largoLadrillo = $("#largoLadrilloLadrilloResultado").text();
+  var espesor = $("#espesorLadrilloResultado").text();
+
+  if (anchoLadrillo == "0" || largoLadrillo == "0" || espesor == "0"){
+
+    return false; //Si algun valor es igual a 0, no puede realizar calculos
+
+  }else{
+    return true;
+  }
+
+}
+
+function ponerSuperficieTotalLadrillos(){
+
+  var anchoSuperficie = $("#anchoLadrilloresultado").text();
+  var largoSuperficie = $("#largoLadrilloresultado").text();
+
+        var anchoSuperficie_ok = anchoSuperficie.split(" ");
+        anchoSuperficie = anchoSuperficie_ok[0];
+        anchoSuperficie = parseFloat(anchoSuperficie);
+
+        var largoSuperficie_ok = largoSuperficie.split(" ");
+        largoSuperficie = largoSuperficie_ok[0];
+        largoSuperficie = parseFloat(largoSuperficie);
+      var superficieTotal  = Math.round(anchoSuperficie * largoSuperficie);
+      $("#superficieTotalLadrilloResultado").text(superficieTotal+ " m2");
+  
+  
+  }
 
 function setColor(color){
  
@@ -3555,7 +4210,10 @@ function resetarEventos(){
    $(".msgRendimientoPintura").unbind("click", ingresarRendimientoPintura);
    $(".editarAnchoGeneral").unbind("click", editarAnchoGeneral);
    $(".editarLargoGeneral").unbind("click", editarLargoGeneral);
+   $(".msgAnchoLadrillo").unbind("click", ingresarAnchoLadrillo);
    //$("#imgGuardarDatos").unbind("click", ActualizarDatosCeramicaDB);
+   $(".msgLargoLadrillo").unbind("click", ingresarLargoLadrillo);
+   $(".msgEspesor").unbind("click", ingresarEspesorLadrillo);
 
 }
 

@@ -1,7 +1,5 @@
               <div id="contenedor">
-                   
-                   <div id="simple">
-                    <h1 class="calculoHerramientas">Cálculos De Herramientas</h1>
+                  <h1 class="calculoHerramientas">Cálculos De Herramientas</h1>
                     <div id="miniMenuHerramientas">
                       <img src="img/ic_minimenu.png" id="imgMiniMenu"/>
 
@@ -11,6 +9,8 @@
                                 <div id="editarAncho" class="editarAnchoGeneral">Editar Ancho</div>
                                 <div id="editarLargo" class="editarLargoGeneral">Editar Largo</div>
                       </div>
+                   
+                   <div id="simple">
                      <div class="container1">
                        <div id="resultadoCeramicas">
                            <h1 class="tituloResultadoCeramica">Cerámica</h1>
@@ -80,7 +80,7 @@
 
                            <div class="containerGuardar">
                               <label class="labelGuardar">Guardar</label>
-                              <img src="img/img_guardar.png" id="imgGuardarDatosPinturas">
+                              <img src="img/img_guardar.png" id="imgGuardarDatosPinturas" style="margin-top: 24% !important;">
                            </div>
                                <hr id="brTituloResultadoPintura"/>
 
@@ -108,7 +108,7 @@
 
                                <h1 class="tituloResultadoLadrillo">Ladrillo</h1>
                               <div class="containerEditar">
-                                 <label class="labelEditar" id="labelEditarMedidasLadrillo">Medidas</label>
+                                 <label class="labelEditar" id="labelEditarMedidasLadrillo" style="margin-left: 13% !important;">Medidas</label>
                                  <img src="img/ic_lapiz.png">
 
                               </div>
@@ -124,7 +124,7 @@
 
                            <div class="containerGuardar">
                               <label class="labelGuardar">Guardar</label>
-                              <img src="img/img_guardar.png" id="imgGuardarDatosLadrillos">
+                              <img src="img/img_guardar.png" id="imgGuardarDatosLadrillos" style="margin-top: 34% !important;">
                            </div>
                                <hr id="brTituloResultadoLadrillo"/>
 
@@ -136,7 +136,7 @@
                                <label id="largoLadrilloLadrillo">Largo Ladrillo:</label> <label id="largoLadrilloLadrilloResultado">0</label>
 
                                <label id="espesorLadrillo">Espesor:</label> <label id="espesorLadrilloResultado">0</label>
-                               <span id="toolstipLadrillos">Ingrese datos faltantes.</span>
+                               <span id="toolstipLadrillos">Ingrese datos.</span>
 
                                <!--<img src="img/ceramica/2.jpg"/>-->
                              
@@ -148,9 +148,58 @@
                               <div class="container2">
                                 <label id="ladrilloEn1M2">Ladrillo(s) en un m2:</label><label id="ladrilloEn1M2Resultado">0</label>
                                    <label id="totalLadrillo">Total Ladrillo(s):</label><label id="totalLadrilloResultado">0</label>
+                                <label id="totalCal">Total Cal:</label><label id="totalCalResultado">0</label>
+                                <label id="totalArena">Total Arena:</label><label id="totalArenaResultado">0</label>
+                                <label id="totalCemento">Total Cemento:</label><label id="totalCementoResultado">0</label>
 
                               </div>
                             </div>
+
+                        <div id="simple4Resultados">
+                           <div class="container1">
+                               <div id="resultadoPisoFlotante">
+                                   <h1 class="tituloResultadoCeramica">Piso Flotante</h1>
+                                   <div class="containerEditar">
+                                      <label class="labelEditar" id="labelEditarPisoFlotante">Rendimiento</label>
+                                      <img src="img/ic_lapiz.png">
+                                      
+
+                                   </div>
+                                      <div id="divFlotante" class="flotantePisos flotante" style="display: none;">
+                                        <div id="msgRendimientoPiso" class="msgRendimientoPiso">Ingresar Rendimiento Caja</div>
+                                        <!--<div id="editarAncho" class="editarAnchoCeramica">Editar Ancho</div>
+                                        <div id="editarLargo" class="editarLargoCeramica">Editar Largo</div>-->
+                                      </div>
+
+                                   <div class="containerDetalles">
+                                      <label class="labelDetalles" id="labelDetallesCeramica">Detalles</label>
+                                      <img src="img/img_detalles.png">
+                                   </div>
+
+                                   <div class="containerGuardar">
+                                      <label class="labelGuardar">Guardar</label>
+                                      <img src="img/img_guardar.png" id="imgGuardarDatosPisos" style="margin-top: 21% !important;">
+                                   </div>
+
+
+                                   <hr id="brTituloResultadoPisos"/>
+
+                                   <label id="anchoPiso">Ancho superficie:</label> <label id="anchoPisoResultado">0</label><br/>
+                                   <label id="largoPiso">Largo superficie:</label> <label id="largoPisoResultado">0</label><br/>
+                                   <label id="superficieTotalPiso">Superficie total:</label> <label id="superficieTotalPisoResultado">0</label>
+                                   <label id="rendimientoPiso">Rendimiento:</label> <label id="rendimientoPisoResultado">0</label>
+                                   <!--<img src="img/ceramica/1.jpg"/>-->
+                              </div>
+                      </div>
+                             <hr id="brResultadoPiso"/>
+                          <div class="container2">
+
+                             <label id="cajasPiso">Cajas necesarias:</label> <label id="cajasPisoResultado">0</label><br/>
+                             <!--<label id="fragueCeramica">Frague necesario:</label> <label id="fragueCeramicaresultado"></label><br/>
+                             <label id="PegamentoCeramica">Pegamento necesario:</label> <label id="pegamentoCeramicaresultado"></label>-->
+                          </div>
+                         </div>
+                     
                 </div>
                 <div id="mask"></div>
     </div>

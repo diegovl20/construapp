@@ -1271,7 +1271,7 @@ span#verTienda{
 
 #map-canvas{ 
                 width:100%; 
-                height:400px; 
+                height:425px; 
             }
 h1#h1ComoLlegar{
 
@@ -1480,7 +1480,7 @@ margin-top: 23px;
 #slcLugarDeVenta {
 font-family: 'Contra';
 border: 2px solid #FBC636;
-top: 17px;
+top: 4.5%;
 margin-left: 75px;
 position: absolute;
 font-size: 11px;
@@ -1726,7 +1726,7 @@ position: absolute;
 #brTituloResultadoCeramica , #brTituloPrecioCeramica, #brTituloPrecioPintura, #brTituloPrecioLadrillo, #brTituloPrecioPiso{
 
           margin-top: -15px;
-  box-shadow: inset 0 5px 6px 5px #000000 !important;
+  box-shadow: inset 0 5px 6px 5px rgb(9, 142, 142) !important;
   height: 2px;
 
 }
@@ -1750,6 +1750,12 @@ position: absolute;
   margin-top: -13px;
   box-shadow: inset 0 5px 6px 5px #000000 !important;
   height: 2px;
+
+}
+
+
+
+#precioTotalCeramicasResultado{
 
 }
 
@@ -1982,12 +1988,12 @@ width: 500%;
 
 }
 
-#largoCeramica, #precioFrague, #largoPiso, #totalGalones, #totalCal, #totalPrecioCajasPisos{
+#largoCeramica, #precioFrague, #largoPiso, #totalGalones, #totalCal, #totalPrecioCajasPisos, #totalPrecioEspuma{
     width: 40%;
 
 }
 
-#largoCeramicaresultado, #precioFragueresultado, #largoPisoResultado, #totalGalonesResultado, #totalCalResultado, #totalPrecioCajasPisosResultado, #totalArenaResultado, #totalCementoResultado{
+#largoCeramicaresultado, #precioFragueresultado, #largoPisoResultado, #totalGalonesResultado, #totalCalResultado, #totalPrecioCajasPisosResultado, #totalArenaResultado, #totalCementoResultado, #totalPrecioEspumaResultado{
     margin-left: 13% !important;
 
 }
@@ -2002,12 +2008,12 @@ width: 500%;
 
 }
 
-#cajasCeramica, #precioTotalCeramicas, #cajasPiso, #precioTotalLadrillos, #precioTotalPiso{
+#cajasCeramica, #precioTotalCeramicas, #cajasPiso, #precioTotalLadrillos, #precioTotalPiso, #espumaNiveladora{
     width: 40%;
 
 }
 
-#cajasCeramicaresultado, #precioTotalCeramicasResultado, #cajasPisoResultado, #precioTotalPinturaResultado, #precioTotalLadrillosResultado, #precioTotalPisoResultado{
+#cajasCeramicaresultado, #precioTotalCeramicasResultado, #cajasPisoResultado, #espumaNiveladoraResultado, #precioTotalPinturaResultado, #precioTotalLadrillosResultado, #precioTotalPisoResultado{
   margin-left: 13% !important;
 
 }
@@ -2219,6 +2225,12 @@ margin-left: 3%;
 
 }
 
+#espumaNiveladora, #espumaNiveladoraResultado{
+  display: inline-block;
+  margin-left: 3%;
+
+}
+
 #rendimientoCeramica, #rendimientoCeramicaresultado{
     display: inline-block;
   margin-left: 3%;
@@ -2346,12 +2358,20 @@ margin-left: 3%;
 }
 
 .container2{
-  background: rgba(255, 255, 255, 1);
+  /*background: rgba(255, 255, 255, 1);*/
   margin-top: 6%;
   color: black;
   /* font-weight: bold; */
   padding-bottom: 3%;
   border: 1px solid black;
+  background: rgba(242,246,248,1);
+background: -moz-linear-gradient(left, rgba(242,246,248,1) 0%, rgba(181,198,208,1) 51%, rgba(224,239,249,1) 100%);
+background: -webkit-gradient(left top, right top, color-stop(0%, rgba(242,246,248,1)), color-stop(51%, rgba(181,198,208,1)), color-stop(100%, rgba(224,239,249,1)));
+background: -webkit-linear-gradient(left, rgba(242,246,248,1) 0%, rgba(181,198,208,1) 51%, rgba(224,239,249,1) 100%);
+background: -o-linear-gradient(left, rgba(242,246,248,1) 0%, rgba(181,198,208,1) 51%, rgba(224,239,249,1) 100%);
+background: -ms-linear-gradient(left, rgba(242,246,248,1) 0%, rgba(181,198,208,1) 51%, rgba(224,239,249,1) 100%);
+background: linear-gradient(to right, rgba(242,246,248,1) 0%, rgba(181,198,208,1) 51%, rgba(224,239,249,1) 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f2f6f8', endColorstr='#e0eff9', GradientType=1 );
 
 }
 
@@ -2360,7 +2380,7 @@ margin-left: 3%;
   /*background-color: rgb(49, 125, 153);*/
   padding: 2%;
   width: 95%;
-  border-bottom: 3px solid black;
+  border-bottom: 1px solid rgb(9, 142, 142);
 
 }
 
@@ -2566,12 +2586,40 @@ span#toolstipLadrillos:after{
 
 }
 
-.presCeramica{
+#tituloPresupuestoPintura{
+  background-image: url("../img/fondo_pintura.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 90px;
+  background-size: cover;
+  margin-top: -4%;
+
+}
+
+#tituloPresupuestoPiso{
+  background-image: url("../img/fondo_piso_flotante.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 90px;
+  background-size: cover;
+  margin-top: -4%;
+
+}
+
+.presCeramica, #tituloPresupuestoPiso{
   font-family: 'Contra';
   text-align: center;
 
 }
 .segundoBloque{
+  background-color: white;
+  height: 129px;
+  margin-top: -4%;
+
+}
+
+.primeraLineaP{
+  width: 100%;
   background-color: white;
   height: 129px;
   margin-top: -4%;
@@ -2591,6 +2639,14 @@ font-size: 12px;
   padding: 3%;
 }
 
+.primeraLineaP p{
+font-size: 12px;
+  font-family: 'Contra';
+  text-align: justify;
+  padding: 3%;
+
+}
+
 #footerPresupuestoCeramica{
   background-image: url("../img/fondo_ceramica.jpg");
   background-repeat: no-repeat;
@@ -2600,6 +2656,28 @@ font-size: 12px;
   margin-top: 0%;
 
 }
+
+#footerPresupuestoPintura{
+  background-image: url("../img/fondo_pintura.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  height:  172px;
+  background-size: cover;
+  margin-top: 0%;
+
+}
+
+#footerPresupuestoPiso{
+  background-image: url("../img/fondo_piso_flotante.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  height:  172px;
+  background-size: cover;
+  margin-top: 0%;
+
+}
+
+
 
 #footerPresupuestoLadrillo{
   background-image: url("../img/fondo_ladrillo.jpg");
@@ -2616,6 +2694,12 @@ font-size: 12px;
   font-family: 'Contra';
   text-align: center;
 
+
+}
+
+#tituloPresupuestoPintura h1{
+  font-family: 'Contra';
+  text-align: center;
 
 }
 
@@ -2646,6 +2730,12 @@ width: 49.5%;
 .primeraLineaC h3{
   font-family: 'Contra';
   text-align: center;
+}
+
+.primeraLineaP h3{
+  font-family: 'Contra';
+  text-align: center;
+
 }
 
 .primeraLineaC p{
@@ -2704,6 +2794,24 @@ width: 49.5%;
 
 }
 
+#tituloPresupuesto{
+  padding: 0.1%;
+}
+
+#tituloPresupuesto, .container1{
+  background: -moz-linear-gradient(left, rgba(226,226,226,1) 0%, rgba(219,219,219,1) 50%, rgba(209,209,209,1) 51%, rgba(254,254,254,1) 100%);
+background: -webkit-gradient(left top, right top, color-stop(0%, rgba(226,226,226,1)), color-stop(50%, rgba(219,219,219,1)), color-stop(51%, rgba(209,209,209,1)), color-stop(100%, rgba(254,254,254,1)));
+background: -webkit-linear-gradient(left, rgba(226,226,226,1) 0%, rgba(219,219,219,1) 50%, rgba(209,209,209,1) 51%, rgba(254,254,254,1) 100%);
+background: -o-linear-gradient(left, rgba(226,226,226,1) 0%, rgba(219,219,219,1) 50%, rgba(209,209,209,1) 51%, rgba(254,254,254,1) 100%);
+background: -ms-linear-gradient(left, rgba(226,226,226,1) 0%, rgba(219,219,219,1) 50%, rgba(209,209,209,1) 51%, rgba(254,254,254,1) 100%);
+background: linear-gradient(to right, rgba(226,226,226,1) 0%, rgba(219,219,219,1) 50%, rgba(209,209,209,1) 51%, rgba(254,254,254,1) 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e2e2e2', endColorstr='#fefefe', GradientType=1 );
+}
+
+#simple2Resultados, #simple, #simple3Resultados, #simple4Resultados{
+  width: 99%;
+  margin-left: -1%;
+}
 
 
 

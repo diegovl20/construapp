@@ -67,6 +67,7 @@ var total_pegamento_presupuesto = 0;
 var total_cal_ladrillo_presupuesto = 0;
 var total_cemento_ladrillo_presupuesto = 0;
 var total_arena_ladrillo_presupuesto = 0;
+var total_espuma_niveladora_presupuesto = 0;
 var total_super_total = 0;
 var sacosCal = 0;
 var sacosArena = 0;
@@ -77,6 +78,8 @@ var sacosPegamentoPres = 0;
 var kgDeFraguePres = 0;
 var precioCajaCeramicaPres = 0
 var totalCajasCeramicaPres = 0;
+var precioPisosPress = 0;
+var galonesPress = 0;
 //EN DUDA
 
 var fotografiaComplementar = ""; 
@@ -208,7 +211,7 @@ function menuOpciones(){
 
            var tabla_tipo_proyecto = "CREATE TABLE IF NOT EXISTS tipo_proyecto( id_tipo_proyecto INTEGER PRIMARY KEY, nombre TEXT)";
            var tabla_ceramicas = "CREATE TABLE IF NOT EXISTS ceramicas( id_ceramicas INTEGER PRIMARY KEY AUTOINCREMENT, url TEXT, rendimiento_caja FLOAT, modelo TEXT, marca TEXT, color TEXT, uso TEXT, formato TEXT, precio INTEGER, lugar TEXT)";                                                                                                                                                                                                                                                                                                                                                                                                                                         //anchoLadrillo, largoLadrillo, espesor, ladrillosEnUnM2, total_ladrillos;;;                             
-           var tabla_proyecto = "CREATE TABLE IF NOT EXISTS proyecto( id_proyecto INTEGER PRIMARY KEY AUTOINCREMENT, id_tipo_proyecto INTEGER, fecha DATE, fotografia TEXT, largo FLOAT, ancho FLOAT, superficie_total FLOAT, total_cajas FLOAT, precio_total INTEGER,id_ceramicas INTEGER, id_pinturas INTEGER, id_alfombras, total_litros INTEGER, id_ladrillos INTEGER, total_ladrillos INTEGER, pintura_bool BOOLEAN, ladrillo_bool BOOLEAN, alfombra_bool BOOLEAN, ceramica_bool BOOLEAN, nombre_proyecto TEXT, tipo_proyecto TEXT, precio_frague INTEGER, precio_pegamento INTEGER, total_frague INTEGER, total_pegamento INTEGER, rendimiento_caja FLOAT, rendimiento_pintura FLOAT, anchoLadrillo FLOAT, largoLadrillo FLOAT, espesorLadrillo FLOAT, ladrillosEnUnM2 INTEGER, total_cajas_pisos INTEGER, rendimiento_caja_pisos FLOAT, cal_ladrillo FLOAT, arena_ladrillo FLOAT, cemento_ladrillo FLOAT, FOREIGN KEY(id_tipo_proyecto) references tipo_proyecto(id_tipo_proyecto))";
+           var tabla_proyecto = "CREATE TABLE IF NOT EXISTS proyecto( id_proyecto INTEGER PRIMARY KEY AUTOINCREMENT, id_tipo_proyecto INTEGER, fecha DATE, fotografia TEXT, largo FLOAT, ancho FLOAT, superficie_total FLOAT, total_cajas FLOAT, precio_total INTEGER,id_ceramicas INTEGER, id_pinturas INTEGER, id_alfombras, total_litros INTEGER, id_ladrillos INTEGER, total_ladrillos INTEGER, pintura_bool BOOLEAN, ladrillo_bool BOOLEAN, alfombra_bool BOOLEAN, ceramica_bool BOOLEAN, nombre_proyecto TEXT, tipo_proyecto TEXT, precio_frague INTEGER, precio_pegamento INTEGER, total_frague INTEGER, total_pegamento INTEGER, rendimiento_caja FLOAT, rendimiento_pintura FLOAT, anchoLadrillo FLOAT, largoLadrillo FLOAT, espesorLadrillo FLOAT, ladrillosEnUnM2 INTEGER, total_cajas_pisos INTEGER, rendimiento_caja_pisos FLOAT, cal_ladrillo FLOAT, arena_ladrillo FLOAT, cemento_ladrillo FLOAT, espuma_niveladora FLOAT, FOREIGN KEY(id_tipo_proyecto) references tipo_proyecto(id_tipo_proyecto))";
            var tabla_pinturas = "CREATE TABLE IF NOT EXISTS pintura (id_pintura INTEGER PRIMARY KEY AUTOINCREMENT, nombre_color TEXT, codigo TEXT, rgba_color TEXT)";
            var tabla_ladrillos = "CREATE TABLE IF NOT EXISTS ladrillo(id_ladrillos INTEGER PRIMARY KEY, imagen TEXT, modelo TEXT, observacion TEXT, caracteristica TEXT, precio INTEGER, lugar TEXT, color TEXT)";
            var tabla_pisos = "CREATE TABLE IF NOT EXISTS pisos(id_pisos INTEGER PRIMARY KEY, imagen TEXT, precio INTEGER, rendimiento_caja FLOAT, lugar TEXT, espesor INTEGER, marca TEXT, modelo TEXT)";
@@ -784,7 +787,7 @@ function menuOpciones(){
          function queryObtenerIdHerramientasClickeadasPresupuesto(tx){
            //"(id_proyecto INTEGER PRIMARY KEY AUTOINCREMENT, id_tipo_proyecto INTEGER, fecha DATE, fotografia TEXT, largo FLOAT, ancho FLOAT, superficie_total FLOAT, total_cajas FLOAT, precio_total INTEGER,id_ceramicas INTEGER, id_pinturas INTEGER, id_alfombras, total_litros INTEGER, id_ladrillos INTEGER, total_ladrillos INTEGER, pintura_bool BOOLEAN, ladrillo_bool BOOLEAN, alfombra_bool BOOLEAN, ceramica_bool BOOLEAN, nombre_proyecto TEXT, tipo_proyecto TEXT, precio_frague INTEGER, precio_pegamento INTEGER, total_frague INTEGER, total_pegamento INTEGER, rendimiento_caja FLOAT, rendimiento_pintura FLOAT, anchoLadrillo FLOAT, largoLadrillo FLOAT, espesorLadrillo FLOAT, ladrillosEnUnM2 INTEGER, total_cajas_pisos INTEGER, rendimiento_caja_pisos FLOAT, FOREIGN KEY(id_tipo_proyecto) references tipo_proyecto(id_tipo_proyecto))";
 
-          var consulta = "SELECT id_ceramicas, id_pinturas, id_alfombras, id_ladrillos, total_cajas, total_litros, total_ladrillos, total_pegamento, total_frague, total_cajas_pisos, cal_ladrillo, arena_ladrillo, cemento_ladrillo, superficie_total FROM proyecto WHERE id_proyecto ="+idComplementar;
+          var consulta = "SELECT id_ceramicas, id_pinturas, id_alfombras, id_ladrillos, total_cajas, total_litros, total_ladrillos, total_pegamento, total_frague, total_cajas_pisos, cal_ladrillo, arena_ladrillo, cemento_ladrillo, superficie_total, espuma_niveladora FROM proyecto WHERE id_proyecto ="+idComplementar;
           tx.executeSql(consulta,[],SuccesQueryObtenerIdHerramientasClickeadasPresupuesto, consultaComplementarError);
 
          }
@@ -840,6 +843,7 @@ function menuOpciones(){
                  total_cemento_ladrillo_presupuesto = item.cemento_ladrillo;
                  total_arena_ladrillo_presupuesto = item.arena_ladrillo;
                  total_super_total = item.superficie_total;
+                 total_espuma_niveladora_presupuesto = item.espuma_niveladora;
 
 
 
@@ -851,7 +855,8 @@ function menuOpciones(){
 
                if(idCeramicaClickeada  == 0){
                   //No mostrar el cuadro de ceramicas
-                  //$("#simple").css("display", "none");
+                  $("#simple").css("display", "none");
+
 
                }
                else{
@@ -861,7 +866,7 @@ function menuOpciones(){
 
                if(idColorCirculoClickeado  == 0){
                   //no mostrar el cuadro de pinturas
-                  //$("#simple2Resultados").css("display", "none");
+                  $("#simple2Resultados").css("display", "none");
                   
                }else{
                   //calculoLitrosPintura(rendimiento_pintura, ancho_py, largo_py);
@@ -871,7 +876,7 @@ function menuOpciones(){
 
                if(idLadrilloClickeado == 0){
                   //no mostrar el cuadro de ladrillo
-                  //$("#simple3Resultados").css("display", "none");
+                  $("#simple3Resultados").css("display", "none");
                }
                else{
                    realizarCalculoPrecioLadrilloDB();
@@ -880,7 +885,7 @@ function menuOpciones(){
 
                if(idAlfombraClickeada == 0){
                   //no mostrar el cuadro de alfombra
-                  //$("#simple4Resultados").css("display", "none");
+                  $("#simple4Resultados").css("display", "none");
                }
                else{
                 realizarCalculoPrecioPisoDB()
@@ -1178,6 +1183,10 @@ function menuOpciones(){
 
                                  });
                                  //totalCajasComplementar = Math.round(item.total_cajas);
+                                 $("#btn_lugar_de_compra2").on("click", function(){
+                                  shortToast("Debes decorar la imagén primero.");
+
+                                 });
 
 
 
@@ -1447,7 +1456,7 @@ function menuOpciones(){
             var fecha_actual = new Date();
             var fecha = fecha_actual.getDate()+"-"+(fecha_actual.getMonth()+1)+"-"+fecha_actual.getFullYear();
             //tx.executeSql("INSERT INTO proyecto (id_proyecto, id_tipo_proyecto, fecha, superficie_total, total_cajas, precio_total, id_ceramicas) values (?,?,?,?,?,?,?,?)",[null,tipo,fecha,superficieTotal,totalCajas,0,0]);                                                                                                                                                                                                                   anchoLadrillo FLOAT, largoLadrillo FLOAT, espesorLadrillo FLOAT
-            tx.executeSql("INSERT INTO proyecto (id_proyecto, id_tipo_proyecto, fecha, fotografia, largo, ancho, superficie_total, total_cajas, precio_total, id_ceramicas, id_pinturas, id_alfombras, total_litros, id_ladrillos, total_ladrillos, pintura_bool, ladrillo_bool, alfombra_bool, ceramica_bool, nombre_proyecto, tipo_proyecto, precio_frague, precio_pegamento, total_frague, total_pegamento, rendimiento_caja, rendimiento_pintura, anchoLadrillo, largoLadrillo, espesorLadrillo, ladrillosEnUnM2, total_cajas_pisos, rendimiento_caja_pisos, cal_ladrillo, arena_ladrillo, cemento_ladrillo) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",[null,tipo,fecha,"#NA", largo,ancho,0,0,0,0,0,0,0,0,0,pintura, ladrillo, alfombra, ceramica, nombreProyecto, tipo_superficie,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]);
+            tx.executeSql("INSERT INTO proyecto (id_proyecto, id_tipo_proyecto, fecha, fotografia, largo, ancho, superficie_total, total_cajas, precio_total, id_ceramicas, id_pinturas, id_alfombras, total_litros, id_ladrillos, total_ladrillos, pintura_bool, ladrillo_bool, alfombra_bool, ceramica_bool, nombre_proyecto, tipo_proyecto, precio_frague, precio_pegamento, total_frague, total_pegamento, rendimiento_caja, rendimiento_pintura, anchoLadrillo, largoLadrillo, espesorLadrillo, ladrillosEnUnM2, total_cajas_pisos, rendimiento_caja_pisos, cal_ladrillo, arena_ladrillo, cemento_ladrillo, espuma_niveladora) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",[null,tipo,fecha,"#NA", largo,ancho,0,0,0,0,0,0,0,0,0,pintura, ladrillo, alfombra, ceramica, nombreProyecto, tipo_superficie,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]);
             //var tabla_proyecto = "CREATE TABLE ( id_proyecto INTEGER PRIMARY KEY AUTOINCREMENT, id_tipo_proyecto INTEGER, fecha DATE, fotografia TEXT, largo float, ancho float, superficie_total float, total_cajas float, precio_total INTEGER,id_ceramicas INTEGER, id_pinturas INTEGER, total_litros INTEGER, id_ladrillos INTEGER, total_ladrillos INTEGER, pintura_bool BOOLEAN, ladrillo_bool BOOLEAN, alfombra_bool BOOLEAN, ceramica_bool BOOLEAN, FOREIGN KEY(id_tipo_proyecto) references tipo_proyecto(id_tipo_proyecto))";
 
 
@@ -1592,13 +1601,18 @@ function menuOpciones(){
           cajas_db = cajas_db_ok[0];
           cajas_db = parseFloat(cajas_db);
 
-          var rendimiento_db = $("#rendimientoPisoResultado").text()
+          var rendimiento_db = $("#rendimientoPisoResultado").text();
           var rendimiento_db_ok = rendimiento_db.split(" ");
           rendimiento_db = rendimiento_db_ok[0];
           rendimiento_db = parseFloat(rendimiento_db);
 
+          var espuma_db = $("#espumaNiveladoraResultado").text();
+          var espuma_db_ok = espuma_db.split(" ");
+          espuma_db = espuma_db_ok[0];
+          espuma_db = parseFloat(espuma_db);
 
-          var consulta = "update proyecto set largo = "+largo_db+", ancho = "+ancho_db+", superficie_total = "+superficie_db+", total_cajas_pisos = "+cajas_db+", rendimiento_caja_pisos = "+rendimiento_db+" where id_proyecto ="+idComplementar;
+
+          var consulta = "update proyecto set largo = "+largo_db+", ancho = "+ancho_db+", superficie_total = "+superficie_db+", total_cajas_pisos = "+cajas_db+", rendimiento_caja_pisos = "+rendimiento_db+", espuma_niveladora = "+espuma_db+" where id_proyecto ="+idComplementar;
           tx.executeSql(consulta,[],consultaSuccessActualizarPisosCeramicaDB, errorQueryDB);
 
         }
@@ -3452,6 +3466,7 @@ function clickFlechaDerechaDecorar(origen){
             $("#btn_decorar3").on("click", elegirImagenDecorar);
             $("#btn_calculo_material3").on("click", calculosHerramientas);
             $("#btn_presupuesto3").on("click", presupuestoMaterial);
+            $("#btn_lugar_de_compra3").on("click", mostrarMapa);
             //$("#simple").css("margin-top", "0%");
             //$("h1.complementaProyecto").css("top", "88%");
             //$("#imgEscogidaAnt").attr("src", imagenALaBD);
@@ -3527,6 +3542,7 @@ function clickFlechaDerechaDecorar(origen){
             $("#btn_decorar3").on("click", elegirImagenDecorar);
             $("#btn_calculo_material3").on("click", calculosHerramientas);
             $("#btn_presupuesto3").on("click", presupuestoMaterial);
+            $("#btn_lugar_de_compra3").on("click", mostrarMapa);
             
             //$(".tituloProyecto").css("margin-top", "14%");
 
@@ -3555,6 +3571,14 @@ function alertaRendimientos(){
             $("#mask").css("display", "none");
 
       });
+}
+
+
+function mostrarMapa(){
+  lugar = "Sodimac";
+  verMapa();
+
+
 }
 
 
@@ -3823,10 +3847,12 @@ function RealizarCalculosPisos(rendimiento, ancho, largo){
        //capturamos los datos del usuario
      var superficie = ancho * largo;
      var superficieTotal = superficie * 1.05;
+     var espuma = Math.round(superficieTotal / 10);
      $("#superficieTotalPisoResultado").text(Math.round(superficieTotal)+ " m2");
      $("#anchoPisoResultado").text(ancho+" m2");
      $("#largoPisoResultado").text(largo+" m2");
      $("#rendimientoPisoResultado").text(rendimiento+ " m2");
+     $("#espumaNiveladoraResultado").text(espuma + " de 10m2 c/u");
 
      var totalCajas = Math.round(superficieTotal / rendimiento);
      //totalCajas = Math.round(totalCajas * 100) / 100;
@@ -3840,9 +3866,17 @@ function RealizarCalculosPisos(rendimiento, ancho, largo){
 
 function RealizarCalculosPrecioPisos(precio){
 
+  var precioEspuma = 8250;
   var totalCajasPiso = total_cajas_pisos_presupuesto;
+  var totalEspuma = total_espuma_niveladora_presupuesto;
+  precioPisosPress = precio;
+  var total = 0;
   $("#totalPrecioCajasPisosResultado").text("$"+format(totalCajasPiso * precio));
-  $("#precioTotalPisoResultado").text("$"+format(totalCajasPiso * precio));
+  $("#totalPrecioEspumaResultado").text("$"+format(Math.round(totalEspuma * precioEspuma)));
+  total = total + totalCajasPiso * precio;
+  total = total + totalEspuma * precioEspuma;
+  total = Math.round(total);
+  $("#precioTotalPisoResultado").text("$"+format(total));
 }
 
 function realizarCalculosLadrillos(anchoLadrillo, largoLadrillo, espesor){
@@ -3999,9 +4033,12 @@ function RealizarCalculosPrecioLadrillos(precio,modelo){
   var precio = 6290;
 
   galones = (mililitros < 1000) ? galones = 1 :  galones = Math.round(mililitros / 250);
-  $("#totalGalonesResultado").text(galones + "galón(es)");
+  galonesPress = galones;
+  $("#totalGalonesResultado").text(galones);
   $("#precioPinturaresultado").text("$"+format(Math.round(galones * precio)));
   $("#precioTotalPinturaResultado").text("$"+format(Math.round(galones * precio)));
+
+
   
 
  }
@@ -4930,6 +4967,29 @@ function presupuestoMaterial(){
         $("#cajasCeramicaPres").text(totalCajasCeramicaPres);
 
         labelDetallesPresupuesto = true;
+
+      });
+
+      $("#labelDetallesPintura").on("click", function(){
+        xhReq.open("GET", "detalles_presupuesto/detalles_presupuesto_pinturas.html", false);
+        xhReq.send(null);
+        document.getElementById("contenidoCuerpo").innerHTML=xhReq.responseText;
+
+        $("#galonesPres").text(galonesPress);
+        labelDetallesPresupuesto = true;
+
+      });
+
+      $("#labelDetallesPisos").on("click", function(){
+        xhReq.open("GET", "detalles_presupuesto/detalles_presupuesto_pisos_flotantes.html", false);
+        xhReq.send(null);
+        document.getElementById("contenidoCuerpo").innerHTML=xhReq.responseText;
+
+        $("#CajasPisosPres").text(total_cajas_pisos_presupuesto);
+        $("#cantidadEspuma").text(total_espuma_niveladora_presupuesto);
+        $("#precioCajaPisosPres").text(precioPisosPress);
+        labelDetallesPresupuesto = true;
+
 
       });
 

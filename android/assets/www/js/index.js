@@ -181,6 +181,8 @@ function main(){
     //Crear la base de datos
     var db = window.openDatabase("ConstruApp", "1.0", "DB ConstruApp", 200000);
     db.transaction(populateDB, errorDB, succesDB);
+  
+  
     //destinationType=navigator.camera.DestinationType;
     //pictureSource = navigator.camera.PictureSourceType;
     
@@ -1436,6 +1438,7 @@ function menuOpciones(){
 
                       }
                       $(".item").on("click", accederProyecto);
+
                       OpcionesMenu = false;
 
                }
@@ -2953,7 +2956,7 @@ function menu(opcion){
         });
 
         }
-        if(opcion == 4){
+        /*if(opcion == 4){
 
           $("#btn_ayudaPintura").css({"display": "inline-block", "width": "40%"});
           $("#btn_guardar").css({"display": "inline-block", "width": "40%", "margin-left": "22px"});
@@ -2961,7 +2964,32 @@ function menu(opcion){
         }
         $("#ic_camara").on("click", capturarFotografiaEditable);
         $("#btn_ayudaPintura").on("click", ayudaPintura);
-        //$("#imgLugar").css("background","url(img/logo.png)");
+        //$("#imgLugar").css("background","url(img/logo.png)");*/
+        if(opcion == 4){
+              xhReq.open("GET", "copia_datos/copia_seguridad_datos.html", false);
+              xhReq.send(null);
+              document.getElementById("contenidoCuerpo").innerHTML=xhReq.responseText;
+
+              $(".copiaDeDatos").on("click",function(){
+                startBackup();
+
+              });
+          
+        }
+
+        if(opcion == 5){
+              xhReq.open("GET", "copia_datos/restaurar_datos.html", false);
+              xhReq.send(null);
+              document.getElementById("contenidoCuerpo").innerHTML=xhReq.responseText;
+
+              $(".restaurarDatos").on("click", function(){
+
+                startRestore();
+                     
+
+              });
+
+        }
         
         // Refrescamos el elemento iscroll segœn el contenido ya a–adido mediante ajax, y hacemos que se desplace al top
         //myScroll.refresh();
@@ -5025,6 +5053,20 @@ function resetarBoolTipos(){
     alfombra = false;
 }
 
+
+function failFiles(error) {        
+  if (error.code == FileError.NOT_FOUND_ERR) alert("Message : NOT_FOUND_ERR" )
+  else if (error.code == FileError.SECURITY_ERR) alert("Message : SECURITY_ERR" )
+  else if (error.code == FileError.ABORT_ERR) alert("Message : ABORT_ERR" )
+  else if (error.code == FileError.NOT_READABLE_ERR) alert("Message : NOT_READABLE_ERR" )
+  else if (error.code ==   FileError.ENCODING_ERR) alert("Message : ENCODING_ERR" )
+  else if (error.code == FileError.NO_MODIFICATION_ALLOWED_ERR) alert("Message : NO_MODIFICATION_ALLOWED_ERR" )
+  else if (error.code == FileError.INVALID_STATE_ERR) alert("Message : INVALID_STATE_ERR" )
+  else if (error.code == FileError.SYNTAX_ERR) alert("Message : SYNTAX_ERR" )
+  else if (error.code == FileError.INVALID_MODIFICATION_ERR) alert("Message :  INVALID_MODIFICATION_ERR" )
+  else if (error.code == FileError.QUOTA_EXCEEDED_ERR) alert("Message : QUOTA_EXCEEDED_ERR" )
+  else if (error.code == FileError.PATH_EXISTS_ERR) alert("Message : PATH_EXISTS_ERR" )  
+}  
 
 
 

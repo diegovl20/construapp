@@ -90,7 +90,11 @@ var superficieTotalComplementar, totalCajasComplementar;
 $(document).on('ready', main);
 
 
+function loaded(){
+  myScroll = new IScroll('contenidoCuerpo',{checkDOMChanges:true});
+}
 
+//document.addEventListener("DOMContentLoaded",loaded);
 // device APIs are available
 //
 function onDeviceReady() {
@@ -3680,6 +3684,7 @@ function calculosHerramientas(){
     $("#labelEditarPintura").on("click", function(){
 
       $(".flotantePinturas").css("display", "block");
+
         //transition effect      
         $('#mask').fadeIn(500);
         //$("#mask").css("opacity", "0.6");      
@@ -5070,7 +5075,10 @@ function failFiles(error) {
 
 
 
+function altoDelBody(){
 
+  return document.body.clientHeight;
+}
 
 
 

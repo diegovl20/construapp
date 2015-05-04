@@ -2942,11 +2942,17 @@ function menu(opcion){
                     alfombra = true;
                     
               }
-              xhReq.open("GET", "proyectos/opcion1_continuacion.html", false);
-              xhReq.send(null);
-              document.getElementById("contenidoCuerpo").innerHTML=xhReq.responseText;
 
-              $("#btn_guardar_proyecto").on("click", guardarProyectoOriginal)
+              if(pintura != false || alfombra != false || ceramica != false || ladrillo != false){
+                xhReq.open("GET", "proyectos/opcion1_continuacion.html", false);
+                xhReq.send(null);
+                document.getElementById("contenidoCuerpo").innerHTML=xhReq.responseText;
+
+                $("#btn_guardar_proyecto").on("click", guardarProyectoOriginal);
+              }else{
+
+                shortToast("Debe seleccionar aunque sea una herramienta a su proyecto");
+              }
          }else{
 
              if (n = 0){
@@ -2976,6 +2982,7 @@ function menu(opcion){
 
               $(".copiaDeDatos").on("click",function(){
                 startBackup();
+                //backupDatabase();
 
               });
           
@@ -2988,7 +2995,9 @@ function menu(opcion){
 
               $(".restaurarDatos").on("click", function(){
 
+                
                 startRestore();
+                //restoreDatabase("files/respaldo.txt");
                      
 
               });
@@ -3009,6 +3018,23 @@ function menu(opcion){
        }
 
 }
+
+            /*    function backupDatabase(){
+                        var d   = new LocalBackup();
+ 
+                        d.run({
+                                packageName : "com.proyecto.construApp",
+                                backupName : "files/respaldo.txt"
+                                });
+ 
+                }
+                function restoreDatabase(filename){
+                        var d   = new LocalBackup();
+                        d.restore({
+                                packageName : "com.proyecto.construApp",
+                                backupName : "files/respaldo.txt"
+                                });
+                }*/
 
 function pantallaPrincipal()
 {

@@ -41,9 +41,15 @@ function backupContent() {
       }
       tag = tag + ']}';
       window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(fileSystem) {
+      
        // Change the place where your backup will be written
+      
+      //fileSystem.root.getDirectory("/storaged/", {create: true, exclusive: false}, dirReady, fail);
+      
        fileSystem.root.getFile("backup1.txt", {create: true, exclusive: false}, function(fileEntry) {
+         
         fileEntry.createWriter(function(writer) {
+
          writer.write(tag);
         }, failFile);
        }, failFile);
@@ -58,6 +64,15 @@ function backupContent() {
   }
  );
 }
+
+            function dirReady(entry) {
+        
+                console.log("application dir is ready");
+            }
+
+                        function fail() {
+                console.log("failed to get filesystem");
+            }
  
 // start restore (trigger this function with a button or a page load or something)
 function startRestore() {
@@ -86,6 +101,7 @@ function restoreContent() {
 function startRestoreContent() {
  window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(fileSystem) {
   // Change the place where your backup is placed
+  //fileSystem.root.getDirectory("/storaged/", {create: true, exclusive: false}, dirReady, fail);
   fileSystem.root.getFile("backup1.txt", null, function(fileEntry) {
    fileEntry.file(function(file) {
     var reader = new FileReader();
@@ -117,3 +133,5 @@ function errorHandlerSqlTransaction(error) {
 	console.error('SQLite - Error code: ' + error.code + ' - Error message: ' + error.message);
 	return true;
 }
+
+

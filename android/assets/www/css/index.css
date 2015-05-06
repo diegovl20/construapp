@@ -12,6 +12,7 @@ body {
     margin:0;
     border:0;
     position: fixed;
+    overflow: auto;
 }
 
 a {
@@ -3153,12 +3154,23 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e2e2e2', end
       margin-left: 11% !important;
     }
 
+    #formulario img {
+  display: none !important;
+   }
+
 }
 /*@media only screen and (min-width: 500px) and (max-width: 540px)*/
 @media (min-width: 530px) { /* landscape */
 
  #header .btn{
   width: 6% !important;
+  }
+
+  .eliminar-proyecto img {
+  width: 36% !important;
+  margin-top: 10% !important;
+  /* position: absolute; */
+  margin-bottom: 35% !important;
   }
 
   #imagen-proyecto{
@@ -3817,6 +3829,15 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e2e2e2', end
 
 
   }
+
+    .eliminar-proyecto img {
+  width: 34% !important;
+  margin-top: 20% !important;
+}
+
+#formulario img {
+  display: none !important;
+}
 
 
 

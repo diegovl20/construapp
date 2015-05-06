@@ -2594,15 +2594,18 @@ function menuOpciones(){
 
    function eliminarProyecto(){
     id_eliminar_py = $(this).attr('data-id');
-    navigator.notification.confirm('¿Eliminar proyecto?.', onConfirmDelete, 'Confirmar la eliminación', 'Si,No');
+    navigator.notification.confirm('¿Eliminar proyecto?.', onConfirmDelete, 'Confirmar la eliminación', ['Si','No']);
     
     
 
    }
 
-   function onConfirmDelete(){
+   function onConfirmDelete(button){
+    
+    if(button == 1){
     respaldarProyectoEliminado(id_eliminar_py);
     eliminarProyectoDB();
+  }
 
 
    }

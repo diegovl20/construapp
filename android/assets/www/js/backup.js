@@ -11,11 +11,12 @@ function failFile(error) {
  
 // start backup (trigger this function with a button or a page load or something)
 function startBackup() {
- navigator.notification.confirm('¿Desea realizar una copia de seguridad de su información en la memoria interna del teléfono?', onConfirmBackup, 'Backup', 'Si,Cancel');
+ navigator.notification.confirm('¿Desea realizar una copia de seguridad de su información en la memoria interna del teléfono?', onConfirmBackup, 'Backup', ['Si','Cancel']);
 }
  
 // backup confirmed
 function onConfirmBackup(button) {
+
  if(button==1) {
   backupContent();
  }
@@ -160,7 +161,7 @@ function terminarJSON(){
  
 // start restore (trigger this function with a button or a page load or something)
 function startRestore() {
- navigator.notification.confirm('¿Desea restaurar todos los datos?', onConfirmRestore, 'Restaurar', 'Si,Cancel');
+ navigator.notification.confirm('¿Desea restaurar todos los datos?', onConfirmRestore, 'Restaurar', ['Si','Cancel']);
 }
  
 // restore confirmed
@@ -233,7 +234,7 @@ function startRestoreContent() {
      });
     };
     reader.readAsText(file);
-    shortToast("Restauracion se ha realizado con exito.");
+    shortToast("Restauracion se ha realizado con éxito.");
    }, failFile);
   }, failFile);
  }, failFile);

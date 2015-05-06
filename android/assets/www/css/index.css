@@ -637,16 +637,17 @@ img#imgLugar{
 
 }
 
-#eliminar-proyecto{
+.eliminar-proyecto{
   margin-left: 86%;
   margin-top: -11%;
 
 }
 
-#eliminar-proyecto img{
-    width: 50%;
-  margin-top: 18%;
-
+.eliminar-proyecto img{
+  width: 50%;
+  margin-top: -4%;
+  /* position: absolute; */
+  margin-bottom: 28%;
 }
 
 .item{
@@ -2812,7 +2813,7 @@ width: 49.5%;
   padding: 0.1%;
 }
 
-#itemListaSeguridadDatos{
+.itemListaSeguridadDatos{
 margin-top: 6%;
   padding: 6%;
   width: 88%;

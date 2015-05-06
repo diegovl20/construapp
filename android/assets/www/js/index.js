@@ -6,7 +6,8 @@ var pintura = false;
 var alfombra = false;
 var toolstip = false;
 var ceramica_bool = false;
-var pintura_bool = false; 
+var pintura_bool = false;
+var id_eliminar_py = 0; 
 var alfombra_bool = false;
 var ladrillo_bool = false;
 var OpcionesMenu = false;
@@ -26,6 +27,7 @@ var pictureSource,destinationType;
 var imagen = null;
 var imagenCeramicaEscogida;
 var key = "estado";
+var key2 = "guardado";
 var imagenAMenu = "undefined";
 var storage;
 var tipo;
@@ -1309,7 +1311,7 @@ function menuOpciones(){
                               
                                  //$("#lista").append('<li class="detalles-lista" data-tipo="'+item.tipo_proyecto+'" id="'+item.id_proyecto+'"><h2> '+item.nombre_proyecto+'</h2> <br/><p>Click para ver los detalles.</p> <br/> <p>"'+item.fecha+'"</p></li>');
                                  //sin lista, solo div
-                                 $("#lista").append('<div class="item" id="'+item.id_proyecto+'" data-tipo="'+item.tipo_proyecto+'"><div id="titulo-proyecto">'+item.nombre_proyecto+'</div><div id="descripcion-proyecto">Click para ver más detalles</div><div id="fecha-proyecto">'+item.fecha+'</div><div id="imagen-proyecto"><img src="img/ic_entrar.png"/></div><div id="eliminar-proyecto"> <img src="img/img_eliminar.png"></div></div>');
+                                 $("#lista").append('<div class="item" id="'+item.id_proyecto+'" data-tipo="'+item.tipo_proyecto+'"><div id="titulo-proyecto">'+item.nombre_proyecto+'</div><div id="descripcion-proyecto">Click para ver más detalles</div><div id="fecha-proyecto">'+item.fecha+'</div><div id="imagen-proyecto"><img src="img/ic_entrar.png"/></div></div><div class="eliminar-proyecto" data-id="'+item.id_proyecto+'"> <img src="img/img_eliminar.png"></div>');
 
                                  //Obtener margin-top original
                                  /*var margin = $(".fecha-proyecto").css("margin-top");
@@ -1442,6 +1444,7 @@ function menuOpciones(){
 
                       }
                       $(".item").on("click", accederProyecto);
+                      $(".eliminar-proyecto").on("click", eliminarProyecto)
 
                       OpcionesMenu = false;
 
@@ -1466,6 +1469,29 @@ function menuOpciones(){
             tx.executeSql("INSERT INTO proyecto (id_proyecto, id_tipo_proyecto, fecha, fotografia, largo, ancho, superficie_total, total_cajas, precio_total, id_ceramicas, id_pinturas, id_alfombras, total_litros, id_ladrillos, total_ladrillos, pintura_bool, ladrillo_bool, alfombra_bool, ceramica_bool, nombre_proyecto, tipo_proyecto, precio_frague, precio_pegamento, total_frague, total_pegamento, rendimiento_caja, rendimiento_pintura, anchoLadrillo, largoLadrillo, espesorLadrillo, ladrillosEnUnM2, total_cajas_pisos, rendimiento_caja_pisos, cal_ladrillo, arena_ladrillo, cemento_ladrillo, espuma_niveladora) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",[null,tipo,fecha,"#NA", largo,ancho,0,0,0,0,0,0,0,0,0,pintura, ladrillo, alfombra, ceramica, nombreProyecto, tipo_superficie,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]);
             //var tabla_proyecto = "CREATE TABLE ( id_proyecto INTEGER PRIMARY KEY AUTOINCREMENT, id_tipo_proyecto INTEGER, fecha DATE, fotografia TEXT, largo float, ancho float, superficie_total float, total_cajas float, precio_total INTEGER,id_ceramicas INTEGER, id_pinturas INTEGER, total_litros INTEGER, id_ladrillos INTEGER, total_ladrillos INTEGER, pintura_bool BOOLEAN, ladrillo_bool BOOLEAN, alfombra_bool BOOLEAN, ceramica_bool BOOLEAN, FOREIGN KEY(id_tipo_proyecto) references tipo_proyecto(id_tipo_proyecto))";
 
+
+         }
+
+         function eliminarProyectoDB(){
+              var db = window.openDatabase("ConstruApp", "1.0", "DB ConstruApp", 20000);
+              //consulta principar para listar proyectos
+              db.transaction(queryEliminarProyectoDB, errorQueryDB);
+
+         }
+
+
+         function queryEliminarProyectoDB(tx){
+           var consulta = "delete from proyecto where id_proyecto ="+id_eliminar_py;
+           tx.executeSql(consulta, [], consultaEliminarSucces, consultaError);
+
+         }
+
+
+         function consultaEliminarSucces(){
+           pantallaPrincipal();
+           verificarProyectos();
+
+           shortToast("Eliminado correctamente");
 
          }
 
@@ -2401,6 +2427,7 @@ function menuOpciones(){
            $("#scrollDecorarCeramica").css("display" , "none");
            $("#scrollColores").css("display" , "none");
            $("#scrollLadrillos").css("display", "block");
+           $("#scrollDecorarPisos").css("display", "none");
            $("#imagenDecorar").attr("src", imagenALaBD);
 
         }
@@ -2564,6 +2591,22 @@ function menuOpciones(){
   }
    
    /*FIN FUNCIONES BASE DE DATOS */
+
+   function eliminarProyecto(){
+    id_eliminar_py = $(this).attr('data-id');
+    navigator.notification.confirm('¿Eliminar proyecto?.', onConfirmDelete, 'Confirmar la eliminación', 'Si,No');
+    
+    
+
+   }
+
+   function onConfirmDelete(){
+    respaldarProyectoEliminado(id_eliminar_py);
+    eliminarProyectoDB();
+
+
+   }
+
 
 
 
@@ -2984,6 +3027,7 @@ function menu(opcion){
                 startBackup();
                 //backupDatabase();
 
+
               });
           
         }
@@ -2997,8 +3041,15 @@ function menu(opcion){
 
                 
                 startRestore();
-                //restoreDatabase("files/respaldo.txt");
+                //restoreDatabase("respaldo/respaldo.txt");
                      
+
+              });
+
+              $(".restaurarDatosEliminados").on("click", function(){
+
+                terminarJSON();
+                startRestoreContentEliminados();
 
               });
 
@@ -3019,12 +3070,12 @@ function menu(opcion){
 
 }
 
-            /*    function backupDatabase(){
+                function backupDatabase(){
                         var d   = new LocalBackup();
  
                         d.run({
                                 packageName : "com.proyecto.construApp",
-                                backupName : "files/respaldo.txt"
+                                backupName : "respaldo/respaldo.txt"
                                 });
  
                 }
@@ -3032,9 +3083,9 @@ function menu(opcion){
                         var d   = new LocalBackup();
                         d.restore({
                                 packageName : "com.proyecto.construApp",
-                                backupName : "files/respaldo.txt"
+                                backupName : "respaldo/respaldo.txt"
                                 });
-                }*/
+                }
 
 function pantallaPrincipal()
 {
@@ -3555,25 +3606,25 @@ function clickFlechaDerechaDecorar(origen){
 
            if(idCeramicaClickeada != 0){
               contadorId = contadorId + 1;
-              alert("idCeramicaClickeada");
+              
            }
 
            if(idColorCirculoClickeado != 0){
               contadorId = contadorId + 1;
-              alert("idColorCirculoClickeado");
+              
            }
 
            if(idLadrilloClickeado != 0){
              contadorId = contadorId + 1;
-             alert("idLadrilloClickeado");
+             
            }
 
            if(idAlfombraClickeada != 0){
              contadorId = contadorId + 1;
-             alert("idAlfombraClickeada");
+            
            }
 
-           alert(contadorBool+" "+ contadorId);
+           
 
           if((contadorBool == contadorId) && (contadorId != 0)){
 

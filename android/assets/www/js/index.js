@@ -11,6 +11,7 @@ var id_eliminar_py = 0;
 var alfombra_bool = false;
 var ladrillo_bool = false;
 var OpcionesMenu = false;
+var zindex= true;
 var accederProyecto_bool = false;
 var contador= 0;
 var ancho_py, largo_py;
@@ -82,6 +83,11 @@ var precioCajaCeramicaPres = 0
 var totalCajasCeramicaPres = 0;
 var precioPisosPress = 0;
 var galonesPress = 0;
+var totalPresupuesto = 0;
+var totalPresupuestoCeramica = 0;
+var totalPresupuestoLadrillos = 0;
+var totalPresupuestoPisos = 0;
+var totalPresupuestoPinturas = 0;
 //EN DUDA
 
 var fotografiaComplementar = ""; 
@@ -127,6 +133,10 @@ function onDeviceReady() {
         labelDetallesPresupuestoLadrillos = false;
         presupuestoMaterial();
 
+       }
+       else if(sacarPresupuestaGrande){
+        verPresupuestoTotalGrande();
+        sacarPresupuestaGrande = false;
        }
        //else if(OpcionesMenu){
         //complementarBD();
@@ -219,7 +229,7 @@ function menuOpciones(){
 
            var tabla_tipo_proyecto = "CREATE TABLE IF NOT EXISTS tipo_proyecto( id_tipo_proyecto INTEGER PRIMARY KEY, nombre TEXT)";
            var tabla_ceramicas = "CREATE TABLE IF NOT EXISTS ceramicas( id_ceramicas INTEGER PRIMARY KEY AUTOINCREMENT, url TEXT, rendimiento_caja FLOAT, modelo TEXT, marca TEXT, color TEXT, uso TEXT, formato TEXT, precio INTEGER, lugar TEXT)";                                                                                                                                                                                                                                                                                                                                                                                                                                         //anchoLadrillo, largoLadrillo, espesor, ladrillosEnUnM2, total_ladrillos;;;                             
-           var tabla_proyecto = "CREATE TABLE IF NOT EXISTS proyecto( id_proyecto INTEGER PRIMARY KEY AUTOINCREMENT, id_tipo_proyecto INTEGER, fecha DATE, fotografia TEXT, largo FLOAT, ancho FLOAT, superficie_total FLOAT, total_cajas FLOAT, precio_total INTEGER,id_ceramicas INTEGER, id_pinturas INTEGER, id_alfombras, total_litros INTEGER, id_ladrillos INTEGER, total_ladrillos INTEGER, pintura_bool BOOLEAN, ladrillo_bool BOOLEAN, alfombra_bool BOOLEAN, ceramica_bool BOOLEAN, nombre_proyecto TEXT, tipo_proyecto TEXT, precio_frague INTEGER, precio_pegamento INTEGER, total_frague INTEGER, total_pegamento INTEGER, rendimiento_caja FLOAT, rendimiento_pintura FLOAT, anchoLadrillo FLOAT, largoLadrillo FLOAT, espesorLadrillo FLOAT, ladrillosEnUnM2 INTEGER, total_cajas_pisos INTEGER, rendimiento_caja_pisos FLOAT, cal_ladrillo FLOAT, arena_ladrillo FLOAT, cemento_ladrillo FLOAT, espuma_niveladora FLOAT, FOREIGN KEY(id_tipo_proyecto) references tipo_proyecto(id_tipo_proyecto))";
+           var tabla_proyecto = "CREATE TABLE IF NOT EXISTS proyecto( id_proyecto INTEGER PRIMARY KEY AUTOINCREMENT, id_tipo_proyecto INTEGER, fecha DATE, fotografia TEXT, largo FLOAT, ancho FLOAT, superficie_total FLOAT, total_cajas FLOAT, precio_total INTEGER,id_ceramicas INTEGER, id_pinturas INTEGER, id_alfombras, total_litros INTEGER, id_ladrillos INTEGER, total_ladrillos INTEGER, pintura_bool BOOLEAN, ladrillo_bool BOOLEAN, alfombra_bool BOOLEAN, ceramica_bool BOOLEAN, nombre_proyecto TEXT, tipo_proyecto TEXT, precio_frague INTEGER, precio_pegamento INTEGER, total_frague INTEGER, total_pegamento INTEGER, rendimiento_caja FLOAT, rendimiento_pintura FLOAT, anchoLadrillo FLOAT, largoLadrillo FLOAT, espesorLadrillo FLOAT, ladrillosEnUnM2 INTEGER, total_cajas_pisos INTEGER, rendimiento_caja_pisos FLOAT, cal_ladrillo FLOAT, arena_ladrillo FLOAT, cemento_ladrillo FLOAT, espuma_niveladora FLOAT, precio_total_ceramica INTEGER, precio_total_pintura INTEGER, precio_total_ladrillo INTEGER, precio_total_pisos INTEGER, FOREIGN KEY(id_tipo_proyecto) references tipo_proyecto(id_tipo_proyecto))";
            var tabla_pinturas = "CREATE TABLE IF NOT EXISTS pintura (id_pintura INTEGER PRIMARY KEY AUTOINCREMENT, nombre_color TEXT, codigo TEXT, rgba_color TEXT)";
            var tabla_ladrillos = "CREATE TABLE IF NOT EXISTS ladrillo(id_ladrillos INTEGER PRIMARY KEY, imagen TEXT, modelo TEXT, observacion TEXT, caracteristica TEXT, precio INTEGER, lugar TEXT, color TEXT)";
            var tabla_pisos = "CREATE TABLE IF NOT EXISTS pisos(id_pisos INTEGER PRIMARY KEY, imagen TEXT, precio INTEGER, rendimiento_caja FLOAT, lugar TEXT, espesor INTEGER, marca TEXT, modelo TEXT)";
@@ -786,6 +796,20 @@ function menuOpciones(){
 
          }
 
+         function seleccionarTodosLosProyectosDB(){
+          var db = window.openDatabase("ConstruApp", "1.0", "DB ConstruApp", 20000);
+              //consulta para listar proyectos en la opcion presupuestos
+           db.transaction(querySeleccionarTodosLosProyectosDB, errorComplementarDBQueryDB);
+
+         }
+
+         function querySeleccionarTodosLosProyectosDB(tx){
+
+          var consulta = "SELECT * FROM proyecto";
+          tx.executeSql(consulta,[],SuccesQuerySeleccionarTodosLosProyectosDB, consultaComplementarError);
+
+         }
+
          function queryObtenerIdHerramientasClickeadas(tx){
           var consulta = "SELECT id_ceramicas, id_pinturas, id_alfombras, id_ladrillos, ancho, largo, rendimiento_pintura, anchoLadrillo, largoLadrillo, espesorLadrillo, total_ladrillos, ladrillosEnUnM2 FROM proyecto WHERE id_proyecto ="+idComplementar;
           tx.executeSql(consulta,[],SuccesQueryObtenerIdHerramientasClickeadas, consultaComplementarError);
@@ -837,7 +861,9 @@ function menuOpciones(){
 
 
          function SuccesQueryObtenerIdHerramientasClickeadasPresupuesto(tx, results){
+               navigator.notification.activityStart("Please Wait", "Its loading.....");
                for (var i = 0; i < results.rows.length ; i++) {
+                
 
                  var item = results.rows.item(i);
                  //total_cajas, total_litros, total_ladrillos, total_pegamento, total_frague, total_cajas_pisos
@@ -901,6 +927,8 @@ function menuOpciones(){
                 //Resetear IdAlfombraClickeada
 
                }
+
+               navigator.notification.activityStop();
 
          }
 
@@ -1273,7 +1301,54 @@ function menuOpciones(){
          }
 
 
+         function SuccesQuerySeleccionarTodosLosProyectosDB(tx, results){
+            var filas = results.rows.length;
+            if(filas <=0){
 
+            }else{
+               var total = 0;
+                    for (var i = 0; i < results.rows.length ; i++) {
+                           
+                          var item = results.rows.item(i);
+                          total += total + item.precio_total;
+//"id_proyecto INTEGER PRIMARY KEY AUTOINCREMENT, id_tipo_proyecto INTEGER, fecha DATE, fotografia TEXT, largo FLOAT, ancho FLOAT, superficie_total FLOAT, total_cajas FLOAT, precio_total INTEGER,id_ceramicas INTEGER, id_pinturas INTEGER, id_alfombras, total_litros INTEGER, id_ladrillos INTEGER, total_ladrillos INTEGER, pintura_bool BOOLEAN, ladrillo_bool BOOLEAN, alfombra_bool BOOLEAN, ceramica_bool BOOLEAN, nombre_proyecto TEXT, tipo_proyecto TEXT, precio_frague INTEGER, precio_pegamento INTEGER, total_frague INTEGER, total_pegamento INTEGER, rendimiento_caja FLOAT, rendimiento_pintura FLOAT, anchoLadrillo FLOAT, largoLadrillo FLOAT, espesorLadrillo FLOAT, ladrillosEnUnM2 INTEGER, total_cajas_pisos INTEGER, rendimiento_caja_pisos FLOAT, cal_ladrillo FLOAT, arena_ladrillo FLOAT, cemento_ladrillo FLOAT, espuma_niveladora FLOAT, precio_total_ceramica INTEGER, precio_total_pintura INTEGER, precio_total_ladrillo INTEGER, precio_total_pisos INTEGER, FOREIGN KEY(id_tipo_proyecto) references tipo_proyecto(id_tipo_proyecto))";
+
+                          
+                          $(".dl").append('<dt><a href="#accordion'+item.id_proyecto+'" aria-expanded="false" aria-controls="accordion1" class="accordion-title accordionTitle js-accordionTrigger"><span class="nombrePy">| '+retornarLasDiesPrimerasLetras(primeraLetraMayuscula(item.nombre_proyecto))+' | </span> <span class="tipoPy"> '+primeraLetraMayuscula(item.tipo_proyecto)+'  </span> <span class="fechaPy">| '+item.fecha+' |</span></a></dt><dd class="accordion-content accordionItem is-collapsed" id="accordion'+item.id_proyecto+'" aria-hidden="true"><p class="headerP">Este proyecto incluye:</p><p class="ceramicasP">Ceramicas:</p> <span class="precioC">$'+format(item.precio_total_ceramica)+'</span><br/><p class="pinturasP">Pintura:  </p> <span class="precioPP">$'+format(item.precio_total_pintura)+'</span><br/><p class="ladrillosP">Ladrillos:</p> <span class="precioL">$'+format(item.precio_total_ladrillo)+'</span><br/><p class="pisosP">Pisos:    </p> <span class="precioPi">$'+format(item.precio_total_pisos)+'</span><br/><p class="totalPy">El total de este proyecto es: </p> <span class="totalP">$'+format(item.precio_total)+'</span><br/></dd>');
+                     }
+                     eventoAcordeon();
+
+
+                    $("#count-number").attr('data-to', total);
+                    sacarPresupuestaGrande = true;
+
+
+                     $("#verPresupuestoTotal").on("click", verPresupuestoTotalGrande);
+
+            }
+
+         }
+
+         function verPresupuestoTotalGrande(){
+
+                 /*if(zindex){
+                  $(".accordion").css("z-index", "-1");
+                  zindex = false;
+                 }
+                 else{
+                  $(".accordion").css("z-index", "1");
+                  zindex = true;
+
+                 }*/
+                  $("#mask2").toggle("fast");
+                  $("#containerNumero").toggle("slow");
+                  $(".accordion").toggle("slow");
+                  numberEfecto();
+            
+        }
+
+
+         
          function consultaSuccess(tx, results) //Mostrar listado de proyectos
          {
           
@@ -1466,7 +1541,7 @@ function menuOpciones(){
             var fecha_actual = new Date();
             var fecha = fecha_actual.getDate()+"-"+(fecha_actual.getMonth()+1)+"-"+fecha_actual.getFullYear();
             //tx.executeSql("INSERT INTO proyecto (id_proyecto, id_tipo_proyecto, fecha, superficie_total, total_cajas, precio_total, id_ceramicas) values (?,?,?,?,?,?,?,?)",[null,tipo,fecha,superficieTotal,totalCajas,0,0]);                                                                                                                                                                                                                   anchoLadrillo FLOAT, largoLadrillo FLOAT, espesorLadrillo FLOAT
-            tx.executeSql("INSERT INTO proyecto (id_proyecto, id_tipo_proyecto, fecha, fotografia, largo, ancho, superficie_total, total_cajas, precio_total, id_ceramicas, id_pinturas, id_alfombras, total_litros, id_ladrillos, total_ladrillos, pintura_bool, ladrillo_bool, alfombra_bool, ceramica_bool, nombre_proyecto, tipo_proyecto, precio_frague, precio_pegamento, total_frague, total_pegamento, rendimiento_caja, rendimiento_pintura, anchoLadrillo, largoLadrillo, espesorLadrillo, ladrillosEnUnM2, total_cajas_pisos, rendimiento_caja_pisos, cal_ladrillo, arena_ladrillo, cemento_ladrillo, espuma_niveladora) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",[null,tipo,fecha,"#NA", largo,ancho,0,0,0,0,0,0,0,0,0,pintura, ladrillo, alfombra, ceramica, nombreProyecto, tipo_superficie,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]);
+            tx.executeSql("INSERT INTO proyecto (id_proyecto, id_tipo_proyecto, fecha, fotografia, largo, ancho, superficie_total, total_cajas, precio_total, id_ceramicas, id_pinturas, id_alfombras, total_litros, id_ladrillos, total_ladrillos, pintura_bool, ladrillo_bool, alfombra_bool, ceramica_bool, nombre_proyecto, tipo_proyecto, precio_frague, precio_pegamento, total_frague, total_pegamento, rendimiento_caja, rendimiento_pintura, anchoLadrillo, largoLadrillo, espesorLadrillo, ladrillosEnUnM2, total_cajas_pisos, rendimiento_caja_pisos, cal_ladrillo, arena_ladrillo, cemento_ladrillo, espuma_niveladora, precio_total_ceramica, precio_total_pintura, precio_total_ladrillo, precio_total_pisos) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",[null,tipo,fecha,"#NA", largo,ancho,0,0,0,0,0,0,0,0,0,pintura, ladrillo, alfombra, ceramica, nombreProyecto, tipo_superficie,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]);
             //var tabla_proyecto = "CREATE TABLE ( id_proyecto INTEGER PRIMARY KEY AUTOINCREMENT, id_tipo_proyecto INTEGER, fecha DATE, fotografia TEXT, largo float, ancho float, superficie_total float, total_cajas float, precio_total INTEGER,id_ceramicas INTEGER, id_pinturas INTEGER, total_litros INTEGER, id_ladrillos INTEGER, total_ladrillos INTEGER, pintura_bool BOOLEAN, ladrillo_bool BOOLEAN, alfombra_bool BOOLEAN, ceramica_bool BOOLEAN, FOREIGN KEY(id_tipo_proyecto) references tipo_proyecto(id_tipo_proyecto))";
 
 
@@ -1549,6 +1624,14 @@ function menuOpciones(){
 
         }
 
+        function guardarTotalesPresupuestoDB(){
+
+              var db = window.openDatabase("ConstruApp", "1.0", "DB ConstruApp", 20000);
+
+              db.transaction(queryGuardarTotalesPresupuesto, errorQueryDB);
+
+        }
+
 
 
 
@@ -1564,6 +1647,16 @@ function menuOpciones(){
              tx.executeSql(consulta,[],consultaSuccesActualizarPrecioDB, errorQueryDB);
 
 
+        }
+
+        function queryGuardarTotalesPresupuesto(tx){
+             var consulta = "update proyecto set precio_total ="+totalPresupuesto+", precio_total_ceramica = "+totalPresupuestoCeramica+", precio_total_pisos = "+totalPresupuestoPisos+", precio_total_ladrillo = "+totalPresupuestoLadrillos+", precio_total_pintura = "+totalPresupuestoPinturas+" where id_proyecto ="+idComplementar;
+             tx.executeSql(consulta,[],consultaSuccesGuardarTotalesPresupuesto, errorQueryDB);
+
+        }
+
+        function consultaSuccesGuardarTotalesPresupuesto(tx, results){
+          shortToast("Guardado Correctamente");
         }
 
 
@@ -2587,6 +2680,7 @@ function menuOpciones(){
   function MostrarcontenedorVacio(){
 
       $("#contenidoCuerpo").load("contenedor_vacio/contenedor_vacio.html");
+      
   
   }
    
@@ -3057,6 +3151,18 @@ function menu(opcion){
               });
 
         }
+
+        if(opcion == 6){
+
+              xhReq.open("GET", "presupuesto/presupuesto_totales.html", false);
+              xhReq.send(null);
+              document.getElementById("contenidoCuerpo").innerHTML=xhReq.responseText;
+              seleccionarTodosLosProyectosDB();
+              
+
+
+
+        }
         
         // Refrescamos el elemento iscroll segœn el contenido ya a–adido mediante ajax, y hacemos que se desplace al top
         //myScroll.refresh();
@@ -3073,22 +3179,66 @@ function menu(opcion){
 
 }
 
-                function backupDatabase(){
-                        var d   = new LocalBackup();
- 
-                        d.run({
-                                packageName : "com.proyecto.construApp",
-                                backupName : "respaldo/respaldo.txt"
-                                });
- 
-                }
-                function restoreDatabase(filename){
-                        var d   = new LocalBackup();
-                        d.restore({
-                                packageName : "com.proyecto.construApp",
-                                backupName : "respaldo/respaldo.txt"
-                                });
-                }
+function eventoAcordeon(){
+  (function(){
+  var d = document,
+  accordionToggles = d.querySelectorAll('.js-accordionTrigger'),
+  setAria,
+  setAccordionAria,
+  switchAccordion,
+  touchSupported = ('ontouchstart' in window),
+  pointerSupported = ('pointerdown' in window);
+  
+  skipClickDelay = function(e){
+    e.preventDefault();
+    e.target.click();
+  }
+
+    setAriaAttr = function(el, ariaType, newProperty){
+    el.setAttribute(ariaType, newProperty);
+  };
+  setAccordionAria = function(el1, el2, expanded){
+    switch(expanded) {
+      case "true":
+        setAriaAttr(el1, 'aria-expanded', 'true');
+        setAriaAttr(el2, 'aria-hidden', 'false');
+        break;
+      case "false":
+        setAriaAttr(el1, 'aria-expanded', 'false');
+        setAriaAttr(el2, 'aria-hidden', 'true');
+        break;
+      default:
+        break;
+    }
+  };
+//function
+switchAccordion = function(e) {
+  e.preventDefault();
+  var thisAnswer = e.target.parentNode.nextElementSibling;
+  var thisQuestion = e.target;
+  if(thisAnswer.classList.contains('is-collapsed')) {
+    setAccordionAria(thisQuestion, thisAnswer, 'true');
+  } else {
+    setAccordionAria(thisQuestion, thisAnswer, 'false');
+  }
+    thisQuestion.classList.toggle('is-collapsed');
+    thisQuestion.classList.toggle('is-expanded');
+    thisAnswer.classList.toggle('is-collapsed');
+    thisAnswer.classList.toggle('is-expanded');
+  
+    thisAnswer.classList.toggle('animateIn');
+  };
+  for (var i=0,len=accordionToggles.length; i<len; i++) {
+    if(touchSupported) {
+      accordionToggles[i].addEventListener('touchstart', skipClickDelay, false);
+    }
+    if(pointerSupported){
+      accordionToggles[i].addEventListener('pointerdown', skipClickDelay, false);
+    }
+    accordionToggles[i].addEventListener('click', switchAccordion, false);
+  }
+})();
+}
 
 function pantallaPrincipal()
 {
@@ -3527,7 +3677,7 @@ function mostrarMenuDecorar(){
   }
   else{
     shortToast("Debes Seleccionar Una Imagén");
-    alert("Debes seleccionar una imagen");
+    
 
   }
 
@@ -3935,7 +4085,11 @@ function RealizarCalculosPrecioCeramicas(precio){
   $("#precioCeramicaresultado").text("$"+format(Math.round(precio * total_cajas_presupuesto)));
   $("#precioFragueresultado").text("$"+ format(Math.round(precioFrague * total_frague_presupuesto)));
   $("#precioPegamentoresultado").text(format(Math.round(sacos* 2300)));
+  totalPresupuesto = parseInt(total + totalPresupuesto);
+  totalPresupuestoCeramica = total; 
+  $(".odometer").html("$"+format(totalPresupuesto));
   $("#precioTotalCeramicasResultado").text("$"+format(total));
+
 
 
 
@@ -3989,6 +4143,9 @@ function RealizarCalculosPrecioPisos(precio){
   total = total + totalCajasPiso * precio;
   total = total + totalEspuma * precioEspuma;
   total = Math.round(total);
+  totalPresupuesto = parseInt(total + totalPresupuesto);
+  totalPresupuestoPisos = total; 
+  $(".odometer").html("$"+format(totalPresupuesto));
   $("#precioTotalPisoResultado").text("$"+format(total));
 }
 
@@ -4105,6 +4262,9 @@ function RealizarCalculosPrecioLadrillos(precio,modelo){
   $("#precioArenaResultado").text("$"+format(Math.round(totalLtArena * precioArena)));
   $("#precioCementoResultado").text("$"+format(totalCemento * 5400));
   $("#precioLadrilloResultado").text("$"+format(Math.round(total_ladrillos_presupuesto * precio)));
+    totalPresupuesto = parseInt(presupuesto + totalPresupuesto);
+    totalPresupuestoLadrillos = presupuesto; 
+  $(".odometer").html("$"+format(totalPresupuesto));
   $("#precioTotalLadrillosResultado").text("$"+format(presupuesto));
 
   /*1000cm3 es -> 1litro*/
@@ -4150,6 +4310,9 @@ function RealizarCalculosPrecioLadrillos(precio,modelo){
   $("#totalGalonesResultado").text(galones);
   $("#precioPinturaresultado").text("$"+format(Math.round(galones * precio)));
   $("#precioTotalPinturaResultado").text("$"+format(Math.round(galones * precio)));
+  totalPresupuesto = parseInt((galones * precio) + totalPresupuesto);
+  totalPresupuestoPinturas = (galones * precio);
+  $(".odometer").html("$"+format(totalPresupuesto));
 
 
   
@@ -5047,7 +5210,11 @@ function primeraLetraMayuscula(s) {
 
 
 function presupuestoMaterial(){
-
+        totalPresupuesto = 0;
+        totalPresupuestoCeramica = 0;
+        totalPresupuestoPisos = 0;
+        totalPresupuestoLadrillos = 0;
+        totalPresupuestoPinturas = 0;
         xhReq.open("GET", "presupuesto/presupuestos.html", false);
       xhReq.send(null);
       document.getElementById("contenidoCuerpo").innerHTML=xhReq.responseText;
@@ -5106,6 +5273,16 @@ function presupuestoMaterial(){
 
       });
 
+
+      $("#imgGuardarTotalesPresupuesto").on("click", function(){
+
+        guardarTotalesPresupuestoDB();
+
+      });
+
+      
+
+      
 }
 
 function resetarEventos(){
@@ -5158,6 +5335,124 @@ function failFiles(error) {
 function altoDelBody(){
 
   return document.body.clientHeight;
+}
+         function retornarLasDiesPrimerasLetras(palabra){
+
+          var array = new Array();
+          array = palabra;
+          var oracion = "";
+        if(array.length >=10){
+            for(var i=0; i<10;i++){
+              oracion+= array[i];
+            }
+            return oracion;
+
+           }
+         else{
+        return palabra;
+       }
+      }
+
+function numberEfecto(){
+(function ($) {
+  $.fn.countTo = function (options) {
+    options = options || {};
+    
+    return $(this).each(function () {
+      // set options for current element
+      var settings = $.extend({}, $.fn.countTo.defaults, {
+        from:            $(this).data('from'),
+        to:              $(this).data('to'),
+        speed:           $(this).data('speed'),
+        refreshInterval: $(this).data('refresh-interval'),
+        decimals:        $(this).data('decimals')
+      }, options);
+      
+      // how many times to update the value, and how much to increment the value on each update
+      var loops = Math.ceil(settings.speed / settings.refreshInterval),
+        increment = (settings.to - settings.from) / loops;
+      
+      // references & variables that will change with each update
+      var self = this,
+        $self = $(this),
+        loopCount = 0,
+        value = settings.from,
+        data = $self.data('countTo') || {};
+      
+      $self.data('countTo', data);
+      
+      // if an existing interval can be found, clear it first
+      if (data.interval) {
+        clearInterval(data.interval);
+      }
+      data.interval = setInterval(updateTimer, settings.refreshInterval);
+      
+      // initialize the element with the starting value
+      render(value);
+      
+      function updateTimer() {
+        value += increment;
+        loopCount++;
+        
+        render(value);
+        
+        if (typeof(settings.onUpdate) == 'function') {
+          settings.onUpdate.call(self, value);
+        }
+        
+        if (loopCount >= loops) {
+          // remove the interval
+          $self.removeData('countTo');
+          clearInterval(data.interval);
+          value = settings.to;
+          
+          if (typeof(settings.onComplete) == 'function') {
+            settings.onComplete.call(self, value);
+          }
+        }
+      }
+      
+      function render(value) {
+        var formattedValue = settings.formatter.call(self, value, settings);
+        $self.html(formattedValue);
+      }
+    });
+  };
+  
+  $.fn.countTo.defaults = {
+    from: 0,               // the number the element should start at
+    to: 0,                 // the number the element should end at
+    speed: 1000,           // how long it should take to count between the target numbers
+    refreshInterval: 100,  // how often the element should be updated
+    decimals: 0,           // the number of decimal places to show
+    formatter: formatter,  // handler for formatting the value before rendering
+    onUpdate: null,        // callback method for every time the element is updated
+    onComplete: null       // callback method for when the element finishes updating
+  };
+  
+  function formatter(value, settings) {
+    return value.toFixed(settings.decimals);
+  }
+}(jQuery));
+
+jQuery(function ($) {
+  // custom formatting example
+  $('#count-number').data('countToOptions', {
+  formatter: function (value, options) {
+    return value.toFixed(options.decimals).replace(/\B(?=(?:\d{3})+(?!\d))/g, '.');
+
+  }
+  });
+  
+  // start all the timers
+  $('.timer').each(count);  
+  
+  function count(options) {
+  var $this = $(this);
+  options = $.extend({}, options || {}, $this.data('countToOptions') || {});
+  $this.countTo(options);
+  }
+});
 }
 
 
@@ -5243,3 +5538,6 @@ $.extend( proto, {
 
 
 }
+
+
+

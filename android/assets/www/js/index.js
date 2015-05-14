@@ -3163,6 +3163,20 @@ function menu(opcion){
 
 
         }
+
+        if(opcion == 2){
+              xhReq.open("GET", "calculador/calculador.html", false);
+              xhReq.send(null);
+              document.getElementById("contenidoCuerpo").innerHTML=xhReq.responseText;
+              var lugar = $("#slcLugarDeVenta").val();
+              $(".calcSelect").on("change",actualizarHtml);
+              calculosCalculador();
+
+              //calculosCalculador();
+
+
+
+        }
         
         // Refrescamos el elemento iscroll segœn el contenido ya a–adido mediante ajax, y hacemos que se desplace al top
         //myScroll.refresh();
@@ -3176,6 +3190,47 @@ function menu(opcion){
         }, 300);
          
        }
+
+}
+
+
+function actualizarHtml(){
+ var tipo = $(".calcSelect").val();
+ if(tipo == "ceramica"){
+   
+   $("#simple2Resultados").css("display", "none");
+   $("#simple3Resultados").css("display", "none");
+   $("#simple4Resultados").css("display", "none");
+   $("#simple").toggle("slow");
+ }
+ else if(tipo == "pintura"){
+   $("#simple").css("display", "none");
+   $("#simple3Resultados").css("display", "none");
+   $("#simple4Resultados").css("display", "none");
+   $("#simple2Resultados").toggle("slow");
+ }
+ else if(tipo == "ladrillo"){
+
+   $("#simple").css("display", "none");
+   $("#simple2Resultados").css("display", "none");
+   $("#simple4Resultados").css("display", "none");
+   $("#simple3Resultados").toggle("slow");
+
+ }
+ else if(tipo == "piso"){
+   $("#simple").css("display", "none");
+   $("#simple3Resultados").css("display", "none");
+   $("#simple2Resultados").css("display", "none");
+   $("#simple4Resultados").toggle("slow");
+ }
+ else{
+   $("#simple").css("display", "none");
+   $("#simple3Resultados").css("display", "none");
+   $("#simple2Resultados").css("display", "none");
+   $("#simple4Resultados").css("display", "none");
+
+ }
+
 
 }
 
@@ -3865,8 +3920,8 @@ function calculosHerramientas(){
       $('#mask').fadeIn(500);
         //$("#mask").css("opacity", "0.6");      
       $('#mask').fadeTo("fast", 1);
-      $(".editarAnchoGeneral").on("click", editarAnchoGeneral);
-      $(".editarLargoGeneral").on("click", editarLargoGeneral);
+      $(".editarAnchoGeneral").on("click", function(){editarAnchoGeneral(false)});
+      $(".editarLargoGeneral").on("click", function(){editarLargoGeneral(false)});
 
      });
     /*Ceramicas*/    
@@ -4012,19 +4067,36 @@ function ingresarRendimientoPintura(){
 
 }
 
-function editarAnchoGeneral(){
+function editarAnchoGeneral(calculador){
+  if(!calculador){
    $(".editarAnchoLargo").hide("slow");
    $("#mask").css("display", "none");
    resetarEventos();
    promptEditarAnchoGeneral();
+   }
+   else{
+   $(".editarAnchoLargo").hide("slow");
+   $("#mask").css("display", "none");
+   resetarEventos();
+   promptEditarAnchoGeneralCalculador();
+
+   }
 
 }
 
-function editarLargoGeneral(){
+function editarLargoGeneral(calculador){
+  if(!calculador){
    $(".editarAnchoLargo").hide("slow");
    $("#mask").css("display", "none");
    resetarEventos();
    promptEditarLargoGeneral();
+   }else{
+   $(".editarAnchoLargo").hide("slow");
+   $("#mask").css("display", "none");
+   resetarEventos();
+   promptEditarLargoGeneralCalculador();
+
+   }
 
 }
 
@@ -4392,6 +4464,30 @@ function promptEditarAnchoGeneral(){
 
 }
 
+
+function promptEditarAnchoGeneralCalculador(){
+
+         navigator.notification.prompt(
+        'Ingrese ancho superficie ',  // message
+        onPromptAnchoGeneralCalculador,                  // callback to invoke
+        'Ancho Superficie m2',            // title
+        ['Ok','Cancel'],             // buttonLabels
+        ''                 // defaultText
+    );
+
+}
+
+function promptEditarLargoGeneralCalculador(){
+    navigator.notification.prompt(
+        'Ingrese largo superficie ',  // message
+        onPromptLargoGeneralCalculador,                  // callback to invoke
+        'Ancho Superficie m2',            // title
+        ['Ok','Cancel'],             // buttonLabels
+        ''                 // defaultText
+    );
+
+}
+
 function promptEditarLargoGeneral(){
     navigator.notification.prompt(
         'Ingrese largo superficie ',  // message
@@ -4603,6 +4699,68 @@ function onPromptAnchoGeneral(results){
          if(idAlfombraClickeada !=0){
 
          }*/
+
+     }else{
+      shortToast("Ingrese números correctos");
+     }
+
+   }else{
+    return false;
+   }
+
+}
+
+function onPromptAnchoGeneralCalculador(results){
+   if(results.buttonIndex == 1){
+     if(!results.input1 == ""  && !isNaN(results.input1)){
+       
+         
+          //var widthh = $("#anchoCeramicaresultado").text();
+          //widthh = parseFloat(widthh);
+          //var ancho = $("#anchoCeramicaresultado").text();
+          //var largo = $("#largoCeramicaresultado").text();
+          
+               $("#anchoCeramicaresultado").text(results.input1+" m2");
+
+               $("#anchoPinturaresultado").text(results.input1+" m2");
+               $("#anchoLadrilloresultado").text(results.input1+" m2");
+
+               
+              
+                //ponerSuperficieTotalLadrillos();
+                $("#anchoPisoResultado").text(results.input1+" m2");
+
+         
+            //ponerSuperficieTotalLadrillos();
+
+
+
+
+     }else{
+      shortToast("Ingrese números correctos");
+     }
+
+   }else{
+    return false;
+   }
+
+}
+
+function onPromptLargoGeneralCalculador(results){
+   if(results.buttonIndex == 1){
+     if(!results.input1 == ""  && !isNaN(results.input1)){
+       
+         
+          $("#largoCeramicaresultado").text(results.input1+" m2");
+
+           $("#largoPinturaresultado").text(results.input1+" m2");
+           $("#largoLadrilloresultado").text(results.input1+" m2");
+
+           
+          
+            //ponerSuperficieTotalLadrillos();
+            $("#largoPisoResultado").text(results.input1+" m2");
+
 
      }else{
       shortToast("Ingrese números correctos");
@@ -5290,8 +5448,8 @@ function resetarEventos(){
    $(".msgRendimientoCeramica").unbind("click", ingresarRendimientoCeramica);
    $(".editarLargoCeramica").unbind("click", modificarLargoCeramica);
    $(".msgRendimientoPintura").unbind("click", ingresarRendimientoPintura);
-   $(".editarAnchoGeneral").unbind("click", editarAnchoGeneral);
-   $(".editarLargoGeneral").unbind("click", editarLargoGeneral);
+   $(".editarAnchoGeneral").unbind("click");
+   $(".editarLargoGeneral").unbind("click");
    $(".msgAnchoLadrillo").unbind("click", ingresarAnchoLadrillo);
    //$("#imgGuardarDatos").unbind("click", ActualizarDatosCeramicaDB);
    $(".msgLargoLadrillo").unbind("click", ingresarLargoLadrillo);
@@ -5453,6 +5611,111 @@ jQuery(function ($) {
   $this.countTo(options);
   }
 });
+}
+
+
+function calculosCalculador(){
+
+$("#imgMiniMenu").on("click", function(){
+
+      $(".editarAnchoLargo").css("display", "block");
+      $('#mask').fadeIn(500);
+        //$("#mask").css("opacity", "0.6");      
+      $('#mask').fadeTo("fast", 1);
+      $(".editarAnchoGeneral").on("click", function(){editarAnchoGeneral(true)});
+      $(".editarLargoGeneral").on("click", function(){editarLargoGeneral(true)});
+      $(".limpiarDatos").on("click", function(){menu(2)});
+
+     });
+    /*Ceramicas*/    
+    $("#labelEditarCeramica").on("click", function(){
+      var ancho = $("#anchoCeramicaresultado").text();
+      var largo = $("#largoCeramicaresultado").text();
+
+      if(ancho != 0 && largo !=0){
+
+
+        
+        $(".flotanteCeramicas").css("display", "block");
+        //transition effect      
+        $('#mask').fadeIn(500);
+        //$("#mask").css("opacity", "0.6");      
+        $('#mask').fadeTo("fast", 1);
+        
+        $(".msgRendimientoCeramica").on("click", ingresarRendimientoCeramica);
+        //$(".editarAnchoCeramica").on("click", modificarAnchoCeramica);
+        //$(".editarLargoCeramica").on("click", modificarLargoCeramica);
+        quitarCapa = true;
+      }else{
+        shortToast("Primero Debe Ingresar Ancho y Alto");
+      }
+     
+
+    });
+
+
+
+
+    /*Pinturas*/
+
+    $("#labelEditarPintura").on("click", function(){
+    var ancho1 = $("#anchoCeramicaresultado").text();
+    var largo1 = $("#largoCeramicaresultado").text();
+    if(ancho1 != 0 && largo1 !=0){
+
+      $(".flotantePinturas").css("display", "block");
+
+        //transition effect      
+        $('#mask').fadeIn(500);
+        //$("#mask").css("opacity", "0.6");      
+        $('#mask').fadeTo("fast", 1);
+        quitarCapa = true;
+        $(".msgRendimientoPintura").on("click", ingresarRendimientoPintura);
+      }else{
+        shortToast("Primero Debe Ingresar Ancho y Alto");
+      }
+     
+
+    });
+
+    $("#labelEditarMedidasLadrillo").on("click", function(){
+    var ancho2 = $("#anchoCeramicaresultado").text();
+    var largo2 = $("#largoCeramicaresultado").text();
+    if(ancho2 != 0 && largo2 !=0){
+
+       $(".flotanteLadrillos").css("display", "block");
+       $('#mask').fadeIn(500);
+        //$("#mask").css("opacity", "0.6");      
+       $('#mask').fadeTo("fast", 1);
+        quitarCapa = true;
+       $(".msgAnchoLadrillo").on("click", ingresarAnchoLadrillo);
+       $(".msgLargoLadrillo").on("click", ingresarLargoLadrillo);
+       $(".msgEspesor").on("click", ingresarEspesorLadrillo);
+      }else{
+        shortToast("Primero Debe Ingresar Ancho y Alto");
+      }
+
+    });
+
+
+    $("#labelEditarPisoFlotante").on("click", function(){
+    var ancho3 = $("#anchoCeramicaresultado").text();
+    var largo3 = $("#largoCeramicaresultado").text();
+    if(ancho3 != 0 && largo3 !=0){
+
+       $(".flotantePisos").css("display", "block");
+       $('#mask').fadeIn(500);
+        //$("#mask").css("opacity", "0.6");      
+       $('#mask').fadeTo("fast", 1);
+        quitarCapa = true;
+
+      $(".msgRendimientoPiso").on("click", ingresarRendimientoPisos);
+      }else{
+        shortToast("Primero Debe Ingresar Ancho y Alto");
+      }
+
+
+    });
 }
 
 

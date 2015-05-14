@@ -1,0 +1,214 @@
+ <div id="contenedor">
+                  <h1 class="calculoHerramientas">Cálculos De Herramientas</h1>
+                  <select id="slcLugarDeVenta" class="calcSelect">
+                   <option value="0">Seleccione Tipo de herramientas</option>
+                   <option value="ceramica">Cerámica</option>
+                   <option value="pintura">Pintura</option>
+                   <option value="ladrillo">Ladrillo</option>
+                   <option value="piso">Pisos</option>
+                  </select>
+                    <div id="miniMenuHerramientas">
+                      <img src="img/ic_minimenu.png" id="imgMiniMenu" class="calImgMenu"/>
+
+                    </div>
+
+                      <div id="divFlotante" class="editarAnchoLargo flotante" style="display: none;">
+                                <div id="editarAncho" class="editarAnchoGeneral">Editar Ancho</div>
+                                <div id="editarLargo" class="editarLargoGeneral">Editar Largo</div>
+                                <div id="limpiar" class="limpiarDatos">Limpiar Datos</div>
+                      </div>
+                   
+                   <div id="simple" class="simpleCalculador">
+                     <div class="container1">
+                       <div id="resultadoCeramicas">
+                           <h1 class="tituloResultadoCeramica">Cerámica</h1>
+                           <div class="containerEditar">
+                              <label class="labelEditar" id="labelEditarCeramica">Rendimiento</label>
+                              <img src="img/ic_lapiz.png">
+                              
+
+                           </div>
+                              <div id="divFlotante" class="flotanteCeramicas flotante" style="display: none;">
+                                <div id="msgRendimiento" class="msgRendimientoCeramica">Ingresar Rendimiento Caja</div>
+                                <!--<div id="editarAncho" class="editarAnchoCeramica">Editar Ancho</div>
+                                <div id="editarLargo" class="editarLargoCeramica">Editar Largo</div>-->
+                              </div>
+
+                           <div class="containerDetalles">
+                              <label class="labelDetalles" id="labelDetallesCeramica">Detalles</label>
+                              <img src="img/img_detalles.png">
+                           </div>
+
+                           <div class="containerGuardar cnt1">
+                              <label class="labelGuardar">Guardar</label>
+                              <img src="img/img_guardar.png" id="imgGuardarDatos">
+                           </div>
+
+
+                           <hr id="brTituloResultadoCeramica"/>
+
+                           <label id="anchoCeramica">Ancho superficie:</label> <label id="anchoCeramicaresultado">0</label><br/>
+                           <label id="largoCeramica">Largo superficie:</label> <label id="largoCeramicaresultado">0</label><br/>
+                           <label id="superficieTotalCeramica">Superficie total:</label> <label id="superficieTotalCeramicaResultado">0</label>
+                           <label id="rendimientoCeramica">Rendimiento:</label> <label id="rendimientoCeramicaresultado">0</label>
+                           <!--<img src="img/ceramica/1.jpg"/>-->
+                      </div>
+                    </div>
+                           <hr id="brResultadoCeramica"/>
+                        <div class="container2">
+
+                           <label id="cajasCeramica">Cajas necesarias:</label> <label id="cajasCeramicaresultado">0</label><br/>
+                           <label id="fragueCeramica">Frague necesario:</label> <label id="fragueCeramicaresultado">0</label><br/>
+                           <label id="PegamentoCeramica">Pegamento necesario:</label> <label id="pegamentoCeramicaresultado">0</label>
+                        </div>
+
+
+                       
+                    </div>
+
+                    <div id="simple2Resultados" class="simple2Calculador">
+                       <div class="container1">
+                           <div id="resultadoPinturas">
+
+                               <h1 class="tituloResultadoPintura">Pintura</h1>
+                              <div class="containerEditar">
+                                 <label class="labelEditar" id="labelEditarPintura">Rendimiento</label>
+                                 <img src="img/ic_lapiz.png">
+
+                              </div>
+                              <div id="divFlotante" class="flotantePinturas flotante" style="top: 31%;display: none;">
+                                <div id="msgRendimiento" class="msgRendimientoPintura">Ingresar Rendimiento Pintura</div>
+                                <!--div id="editarAncho" class="editarAnchoPintura">Editar Ancho</div>
+                                <div id="editarLargo" class="editarLargoPintura">Editar Largo</div>-->
+                              </div>
+                            <div class="containerDetalles">
+                              <label class="labelDetalles">Detalles</label>
+                              <img src="img/img_detalles.png">
+                           </div>
+
+                           <div class="containerGuardar cnt2">
+                              <label class="labelGuardar">Guardar</label>
+                              <img src="img/img_guardar.png" id="imgGuardarDatosPinturas" style="margin-top: 24%;">
+                           </div>
+                               <hr id="brTituloResultadoPintura"/>
+
+                               <label id="anchoPintura">Ancho superficie:</label> <label id="anchoPinturaresultado"> 0</label><br/>
+                               <label id="largoPintura">Largo superficie:</label> <label id="largoPinturaresultado"> 0</label><br/>
+                               <label id="superficieTotalPintura">Superficie total:</label> <label id="superficieTotalPinturaResultado">0</label>
+                               <label id="RendimientoPintura">Rendimiento:</label> <label id="RendimientoPinturaresultado">0 <span id="toolstipPintura">Ingrese rendimiento</span></label>
+
+                               <!--<img src="img/ceramica/2.jpg"/>-->
+                             
+                           </div> 
+                        </div>
+                         
+                               <hr id="brResultadoPintura"/>
+
+                              <div class="container2">
+                                   <label id="totalPintura">Total Pintura:</label><label id="totalPinturaresultado">0</label>
+
+                              </div>
+                            </div>
+
+                    <div id="simple3Resultados" class="simple3Calculador">
+                       <div class="container1">
+                           <div id="resultadoLadrillos">
+
+                               <h1 class="tituloResultadoLadrillo">Ladrillo</h1>
+                              <div class="containerEditar">
+                                 <label class="labelEditar" id="labelEditarMedidasLadrillo" style="margin-left: 13% !important;">Medidas</label>
+                                 <img src="img/ic_lapiz.png">
+
+                              </div>
+                              <div id="divFlotante" class="flotanteLadrillos flotante" style="top: 75%;display: none;">
+                                <div id="msgAnchoLadrillo" class="msgAnchoLadrillo">Editar Ancho Ladrillo </div>
+                                <div id="msgLargoLadrillo" class="msgLargoLadrillo">Editar Largo Ladrillo</div>
+                                <div id="msgEspesor" class="msgEspesor">Editar Espesor</div>
+                              </div>
+                            <div class="containerDetalles">
+                              <label class="labelDetalles" id="labelDetallesLadrillos">Detalles</label>
+                              <img src="img/img_detalles.png">
+                           </div>
+
+                           <div class="containerGuardar cnt3">
+                              <label class="labelGuardar">Guardar</label>
+                              <img src="img/img_guardar.png" id="imgGuardarDatosLadrillos" style="margin-top: 34%;">
+                           </div>
+                               <hr id="brTituloResultadoLadrillo"/>
+
+                               <label id="anchoLadrillo">Ancho superficie:</label> <label id="anchoLadrilloresultado">0</label><br/>
+                               <label id="largoLadrillo">Largo superficie:</label> <label id="largoLadrilloresultado">0</label><br/>
+                               <label id="superficieTotalLadrillo">Superficie total:</label> <label id="superficieTotalLadrilloResultado">0</label>
+                               <label id="anchoLadrilloLadrillo">Ancho Ladrillo:</label> <label id="anchoLadrilloLadrilloResultado">0</label>
+
+                               <label id="largoLadrilloLadrillo">Largo Ladrillo:</label> <label id="largoLadrilloLadrilloResultado">0</label>
+
+                               <label id="espesorLadrillo">Espesor:</label> <label id="espesorLadrilloResultado">0</label>
+                               <span id="toolstipLadrillos">Ingrese datos.</span>
+
+                               <!--<img src="img/ceramica/2.jpg"/>-->
+                             
+                           </div> 
+                        </div>
+                         
+                               <hr id="brResultadoLadrillo"/>
+
+                              <div class="container2">
+                                <label id="ladrilloEn1M2">Ladrillo(s) en un m2:</label><label id="ladrilloEn1M2Resultado">0</label>
+                                   <label id="totalLadrillo">Total Ladrillo(s):</label><label id="totalLadrilloResultado">0</label>
+                                <label id="totalCal">Total Cal:</label><label id="totalCalResultado">0</label>
+                                <label id="totalArena">Total Arena:</label><label id="totalArenaResultado">0</label>
+                                <label id="totalCemento">Total Cemento:</label><label id="totalCementoResultado">0</label>
+
+                              </div>
+                            </div>
+
+                        <div id="simple4Resultados" class="simple4Calculador">
+                           <div class="container1">
+                               <div id="resultadoPisoFlotante">
+                                   <h1 class="tituloResultadoCeramica">Piso Flotante</h1>
+                                   <div class="containerEditar">
+                                      <label class="labelEditar" id="labelEditarPisoFlotante">Rendimiento</label>
+                                      <img src="img/ic_lapiz.png">
+                                      
+
+                                   </div>
+                                      <div id="divFlotante" class="flotantePisos flotante" style="display: none;">
+                                        <div id="msgRendimientoPiso" class="msgRendimientoPiso">Ingresar Rendimiento Caja</div>
+                                        <!--<div id="editarAncho" class="editarAnchoCeramica">Editar Ancho</div>
+                                        <div id="editarLargo" class="editarLargoCeramica">Editar Largo</div>-->
+                                      </div>
+
+                                   <div class="containerDetalles">
+                                      <label class="labelDetalles" id="labelDetallesCeramica">Detalles</label>
+                                      <img src="img/img_detalles.png">
+                                   </div>
+
+                                   <div class="containerGuardar cnt4">
+                                      <label class="labelGuardar">Guardar</label>
+                                      <img src="img/img_guardar.png" id="imgGuardarDatosPisos" style="margin-top: 21%;">
+                                   </div>
+
+
+                                   <hr id="brTituloResultadoPisos"/>
+
+                                   <label id="anchoPiso">Ancho superficie:</label> <label id="anchoPisoResultado">0</label><br/>
+                                   <label id="largoPiso">Largo superficie:</label> <label id="largoPisoResultado">0</label><br/>
+                                   <label id="superficieTotalPiso">Superficie total:</label> <label id="superficieTotalPisoResultado">0</label>
+                                   <label id="rendimientoPiso">Rendimiento:</label> <label id="rendimientoPisoResultado">0</label>
+                                   <!--<img src="img/ceramica/1.jpg"/>-->
+                              </div>
+                      </div>
+                             <hr id="brResultadoPiso"/>
+                          <div class="container2">
+
+                             <label id="cajasPiso">Cajas necesarias:</label> <label id="cajasPisoResultado">0</label><br/>
+                             <label id="espumaNiveladora">Espuma Niveladora:</label> <label id="espumaNiveladoraResultado">0</label>
+                             <!--<label id="fragueCeramica">Frague necesario:</label> <label id="fragueCeramicaresultado"></label><br/>
+                             <label id="PegamentoCeramica">Pegamento necesario:</label> <label id="pegamentoCeramicaresultado"></label>-->
+                          </div>
+                         </div>
+                     
+                </div>
+                <div id="mask"></div>
+    </div>

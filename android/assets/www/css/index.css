@@ -368,7 +368,7 @@ h1.complementaProyecto{
   height: 240%;
 }
 
-#msgRendimiento, #editarAncho, #editarLargo, #msgAnchoLadrillo, #msgLargoLadrillo, #msgEspesor, #msgRendimientoPiso{
+#msgRendimiento, #editarAncho, #editarLargo, #msgAnchoLadrillo, #msgLargoLadrillo, #msgEspesor, #msgRendimientoPiso, #limpiar{
     border-bottom: 2px solid skyblue;
   padding: 6%;
   font-weight: bold;
@@ -2985,6 +2985,21 @@ border-bottom: 8px solid rgb(60, 89, 43);
   height: 190%;
 }
 
+.simpleCalculador, .simple2Calculador, .simple3Calculador, .simple4Calculador, .cnt1,.cnt2,.cnt3,.cnt4{
+display: none;
+}
+.calcSelect{
+  position: relative !important;
+  width: 98% !important;
+  margin-left: 1% !important;
+  height: 30px;
+  font-size: 13px !important;
+
+}
+
+.calImgMenu{
+  margin-top: -21% !important;
+}
 .itemListaSeguridadDatos{
 margin-top: 6%;
   padding: 6%;

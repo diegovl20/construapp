@@ -3000,6 +3000,32 @@ display: none;
 .calImgMenu{
   margin-top: -21% !important;
 }
+
+.linkVideo{
+  padding: 0 10px !important;
+  border-bottom: 1px solid #202328 !important;
+  border-top: 1px solid #202529 !important;
+  background-color: #202529 !important;
+  height: 44px !important;
+  line-height: 44px !important;
+  font-size: 14px !important;
+  text-align: center !important;
+  /*linkeado background-color: #202529;*/
+}
+
+
+.tres1,.tres2,.tres3,.tres4,.tres5,.tres6{
+display: inline-block;
+}
+#Ayuda1,#Ayuda2,#Ayuda3,#Ayuda4,#Ayuda5,#Ayuda6,#Ayuda7,#Ayuda8,#Ayuda9,#Ayuda10,#Ayuda11,#Ayuda12,#Ayuda13,#Ayuda14,#Ayuda15,#Ayuda16,#Ayuda17,#Ayuda18{
+  width: 32%;
+  height: 40px;
+}
+#help1,#help2,#help3,#help4,#help5,#help6,#help7,#help8,#help9,#help10,#help11,#help12,#help13,#help14,#help15,#help16,#help17,#help18{
+  width: 32%;
+  height: 150px;
+}
+
 .itemListaSeguridadDatos{
 margin-top: 6%;
   padding: 6%;

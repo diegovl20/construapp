@@ -3106,6 +3106,15 @@ function menu(opcion){
         });
 
         }
+
+        if(opcion == 3){
+              xhReq.open("GET", "videos/videos.html", false);
+              xhReq.send(null);
+              document.getElementById("contenidoCuerpo").innerHTML=xhReq.responseText;
+              $('.episode_list-2 a').on("click", irAVideo);
+              $(".linkVideo").on("click", linkClickeado);
+
+        }
         /*if(opcion == 4){
 
           $("#btn_ayudaPintura").css({"display": "inline-block", "width": "40%"});
@@ -3177,6 +3186,13 @@ function menu(opcion){
 
 
         }
+
+        if(opcion == 7){
+              xhReq.open("GET", "ayuda/ayuda.html", false);
+              xhReq.send(null);
+              document.getElementById("contenidoCuerpo").innerHTML=xhReq.responseText;
+
+        }
         
         // Refrescamos el elemento iscroll segœn el contenido ya a–adido mediante ajax, y hacemos que se desplace al top
         //myScroll.refresh();
@@ -3190,6 +3206,20 @@ function menu(opcion){
         }, 300);
          
        }
+
+}
+
+function linkClickeado(){
+  $(".linkVideo").css("cssText", "background-color: #202529 !important")
+  $(this).css("cssText", "background-color: #181c1f !important");
+
+
+}
+
+function irAVideo(e){
+    e.preventDefault();
+    var target = $(this).attr('href');
+    $('.video-player').html('<iframe width="100%" height="315" src="' + target + '" frameborder="0" allowfullscreen></iframe>');
 
 }
 

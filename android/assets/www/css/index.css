@@ -345,17 +345,40 @@ h1.complementaProyecto{
     margin-bottom: 4%;
 }
 
-#divFlotante{
+#divFlotante, #divFlotante2{
 
-    position: absolute;
+  position: absolute;
   width: 74%;
   background-color: rgb(240, 240, 240);
   padding: 1%;
   text-align: left;
   margin-left: 8%;
   border-radius: 3%;
-    z-index: 999;
+  z-index: 999;
 
+}
+
+#divFlotante2{
+  width: 85% !important;
+  top:11%;
+background: rgba(212,228,239,1);
+background: -moz-linear-gradient(left, rgba(212,228,239,1) 0%, rgba(134,174,204,1) 100%);
+background: -webkit-gradient(left top, right top, color-stop(0%, rgba(212,228,239,1)), color-stop(100%, rgba(134,174,204,1)));
+background: -webkit-linear-gradient(left, rgba(212,228,239,1) 0%, rgba(134,174,204,1) 100%);
+background: -o-linear-gradient(left, rgba(212,228,239,1) 0%, rgba(134,174,204,1) 100%);
+background: -ms-linear-gradient(left, rgba(212,228,239,1) 0%, rgba(134,174,204,1) 100%);
+background: linear-gradient(to right, rgba(212,228,239,1) 0%, rgba(134,174,204,1) 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d4e4ef', endColorstr='#86aecc', GradientType=1 );
+
+}
+
+.listaPyEliminados{
+  border-bottom: 2px solid black;
+  padding: 6%;
+  font-weight: bold;
+  color: black;
+  z-index: 1;
+    text-align: center;
 }
 
 #mask {
@@ -2982,7 +3005,7 @@ border-bottom: 8px solid rgb(60, 89, 43);
   display: none;
   width: 100%;
   margin-top: -123%;
-  height: 190%;
+  height: 203%;
 }
 
 .simpleCalculador, .simple2Calculador, .simple3Calculador, .simple4Calculador, .cnt1,.cnt2,.cnt3,.cnt4{

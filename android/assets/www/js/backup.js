@@ -209,7 +209,7 @@ function startRestoreContentEliminados() {
 }
 
 
-function startRestoreContent() {
+function startRestoreContent(id) {
  window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(fileSystem) {
   // Change the place where your backup is placed
   fileSystem.root.getFile("backup.txt", null, function(fileEntry) {
@@ -219,7 +219,52 @@ function startRestoreContent() {
      var data = JSON.parse(evt.target.result);
      var items = data.items;
      count = items.length;
+     $.each(items,function(index,item){
+         
+     });
+
      db.transaction(
+      function(transaction) {
+        var numero=1000;
+       $.each(items, function(index, item) {
+        if(item.id_proyecto == id){
+          transaction.executeSql(
+
+          // change and expand this according to your table name and attributes
+          'INSERT INTO proyecto (id_proyecto, id_tipo_proyecto, fecha, fotografia, largo, ancho, superficie_total, total_cajas, precio_total, id_ceramicas, id_pinturas, id_alfombras, total_litros, id_ladrillos, total_ladrillos, pintura_bool, ladrillo_bool, alfombra_bool, ceramica_bool, nombre_proyecto, tipo_proyecto, precio_frague, precio_pegamento, total_frague, total_pegamento, rendimiento_caja, rendimiento_pintura, anchoLadrillo, largoLadrillo, espesorLadrillo, ladrillosEnUnM2, total_cajas_pisos, rendimiento_caja_pisos, cal_ladrillo, arena_ladrillo, cemento_ladrillo, espuma_niveladora) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+          [item.id_proyecto, item.id_tipo_proyecto, item.fecha, item.fotografia, item.largo, item.ancho, item.superficie_total, item.total_cajas, item.precio_total, item.id_ceramicas, item.id_pinturas, item.id_alfombras, item.total_litros, item.id_ladrillos, item.total_ladrillos, item.pintura_bool, item.ladrillo_bool, item.alfombra_bool, item.ceramica_bool, item.nombre_proyecto, item.tipo_proyecto, item.precio_frague, item.precio_pegamento, item.total_frague, item.total_pegamento, item.rendimiento_caja, item.rendimiento_pintura, item.anchoLadrillo, item.largoLadrillo, item.espesorLadrillo, item.ladrillosEnUnM2, item.total_cajas_pisos, item.rendimiento_caja_pisos, item.cal_ladrillo, item.arena_ladrillo, item.cemento_ladrillo, item.espuma_niveladora],
+          null
+         );
+      }
+        numero++;
+      });
+     });
+    };
+    reader.readAsText(file);
+    shortToast("Restauracion se ha realizado con éxito.");
+   }, failFile);
+  }, failFile);
+ }, failFile);
+}
+
+function listarProyectosRespaldados(){
+ window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(fileSystem) {
+  // Change the place where your backup is placed
+  fileSystem.root.getFile("backup.txt", null, function(fileEntry) {
+   fileEntry.file(function(file) {
+    var reader = new FileReader();
+    reader.onloadend = function(evt) {
+     var data = JSON.parse(evt.target.result);
+     var items = data.items;
+     count = items.length;
+     $.each(items,function(index,item){
+
+      $("#divFlotante2").append('<div id="'+item.id_proyecto+'" class="listaPyEliminados">'+primeraLetraMayuscula(item.nombre_proyecto)      +'    ||        '+item.fecha      +'         ||          '+ primeraLetraMayuscula(item.tipo_proyecto)+' </div>');
+         
+     });
+     $(".listaPyEliminados").on("click", obtenerIdPyEliminadoTxt);
+
+     /*db.transaction(
       function(transaction) {
         var numero=1000;
        $.each(items, function(index, item) {
@@ -231,13 +276,25 @@ function startRestoreContent() {
        );
         numero++;
       });
-     });
+     });*/
     };
     reader.readAsText(file);
-    shortToast("Restauracion se ha realizado con éxito.");
+    //shortToast("Restauracion se ha realizado con éxito.");
    }, failFile);
   }, failFile);
  }, failFile);
+  
+}
+
+function failFile(){
+  alert("Error");
+}
+
+function obtenerIdPyEliminadoTxt(){
+  $('#mask2').css("display", "none");
+  var id = $(this).attr("id");
+  startRestoreContent(id);
+  
 }
  
 // database sql transaction error message

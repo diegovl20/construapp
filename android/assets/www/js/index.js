@@ -5,6 +5,7 @@ var ladrillo = false;
 var pintura = false;
 var alfombra = false;
 var toolstip = false;
+var divflotante2 = false;
 var ceramica_bool = false;
 var pintura_bool = false;
 var id_eliminar_py = 0; 
@@ -137,6 +138,12 @@ function onDeviceReady() {
        else if(sacarPresupuestaGrande){
         verPresupuestoTotalGrande();
         sacarPresupuestaGrande = false;
+       }
+       else if(divflotante2){
+         $("#divFlotante2").hide("slow");
+         $("#mask2").css("display", "none");
+         divflotante2 = false;
+
        }
        //else if(OpcionesMenu){
         //complementarBD();
@@ -1304,8 +1311,13 @@ function menuOpciones(){
          function SuccesQuerySeleccionarTodosLosProyectosDB(tx, results){
             var filas = results.rows.length;
             if(filas <=0){
+              $("#hay").css("display", "none");
+              $("#noHay").css("display", "block");
 
             }else{
+
+              $("#hay").css("display", "block");
+              $("#noHay").css("display", "none");
                var total = 0;
                     for (var i = 0; i < results.rows.length ; i++) {
                            
@@ -2697,7 +2709,7 @@ function menuOpciones(){
    function onConfirmDelete(button){
     
     if(button == 1){
-    respaldarProyectoEliminado(id_eliminar_py);
+    //respaldarProyectoEliminado(id_eliminar_py);
     eliminarProyectoDB();
   }
 
@@ -3143,7 +3155,7 @@ function menu(opcion){
               xhReq.send(null);
               document.getElementById("contenidoCuerpo").innerHTML=xhReq.responseText;
 
-              $(".restaurarDatos").on("click", function(){
+              /*$(".restaurarDatos").on("click", function(){
 
                 
                 startRestore();
@@ -3157,7 +3169,21 @@ function menu(opcion){
                 terminarJSON();
                 startRestoreContentEliminados();
 
-              });
+              });*/
+             //startRestore();
+             $(".restaurarDatos").on("click", function(){
+              divflotante2 = true;
+              $("#divFlotante2").css("display", "block");
+              $("#mask2").css("z-index", "0");
+              $('#mask2').fadeIn(500);
+        //$("#mask").css("opacity", "0.6");      
+               $('#mask2').fadeTo("fast", 1);
+
+              listarProyectosRespaldados();
+
+             });
+             
+          
 
         }
 

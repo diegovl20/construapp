@@ -89,6 +89,7 @@ var totalPresupuestoCeramica = 0;
 var totalPresupuestoLadrillos = 0;
 var totalPresupuestoPisos = 0;
 var totalPresupuestoPinturas = 0;
+var sacarPresupuestaGrande = false;
 //EN DUDA
 
 var fotografiaComplementar = ""; 
@@ -1323,6 +1324,7 @@ function menuOpciones(){
                            
                           var item = results.rows.item(i);
                           total += total + item.precio_total;
+
 //"id_proyecto INTEGER PRIMARY KEY AUTOINCREMENT, id_tipo_proyecto INTEGER, fecha DATE, fotografia TEXT, largo FLOAT, ancho FLOAT, superficie_total FLOAT, total_cajas FLOAT, precio_total INTEGER,id_ceramicas INTEGER, id_pinturas INTEGER, id_alfombras, total_litros INTEGER, id_ladrillos INTEGER, total_ladrillos INTEGER, pintura_bool BOOLEAN, ladrillo_bool BOOLEAN, alfombra_bool BOOLEAN, ceramica_bool BOOLEAN, nombre_proyecto TEXT, tipo_proyecto TEXT, precio_frague INTEGER, precio_pegamento INTEGER, total_frague INTEGER, total_pegamento INTEGER, rendimiento_caja FLOAT, rendimiento_pintura FLOAT, anchoLadrillo FLOAT, largoLadrillo FLOAT, espesorLadrillo FLOAT, ladrillosEnUnM2 INTEGER, total_cajas_pisos INTEGER, rendimiento_caja_pisos FLOAT, cal_ladrillo FLOAT, arena_ladrillo FLOAT, cemento_ladrillo FLOAT, espuma_niveladora FLOAT, precio_total_ceramica INTEGER, precio_total_pintura INTEGER, precio_total_ladrillo INTEGER, precio_total_pisos INTEGER, FOREIGN KEY(id_tipo_proyecto) references tipo_proyecto(id_tipo_proyecto))";
 
                           
